@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.wire-active {
+  stroke-dasharray: 8 4;
+  animation: flow 0.55s linear infinite;
+}
+
+.glow-amber {
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.75);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
+}
+
+.glow-rose {
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.85);
+}
+
+.glow-pink {
+  box-shadow: 0 0 14px rgba(236, 72, 153, 0.85);
+}
