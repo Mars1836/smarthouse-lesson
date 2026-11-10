@@ -559,50 +559,110 @@ export const coreModules: ModuleData[] = [
   {
     id: 'mod3',
     step: 'Chặng 3',
-    title: 'Bài 2: Bộ Trung Tâm HC/LC, Xử Lý Trễ Mạng & AI Camera Hub',
-    subtitle: 'Kiến trúc 4 tầng, 1 HC + 6 LC qua LAN, trị bệnh trễ 5-6s do trùng kênh Wi-Fi/Zigbee & AI Hub LMAI 2.0',
-    badge: 'Video Bài 2 (Full)',
+    title: 'Bài 2: Bộ Trung Tâm HC/LC (LM-HC/3.0), Xử Lý Trễ Mạng & AI Camera Hub (LM-AI/2.0)',
+    subtitle: 'Đầy đủ mã LM-HC/3.0, 5 đèn LED, 450 Endpoint, 20 Rule an ninh, Proxy Node, nút Config AP/Reset & AI Hub LM-AI/2.0 (Sub-stream 640x480)',
+    badge: 'Video Bài 2 (Full Slide)',
     badgeColor: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
     videoUrl: 'https://www.youtube.com/watch?v=nPyDl1cZFkc',
     timestamps: [
-      { label: '00:38 Kiến trúc 4 tầng & Offline', sec: 38 },
-      { label: '07:04 Phân biệt HC và LC (Qua LAN)', sec: 424 },
-      { label: '13:32 Giới hạn 450 Endpoints', sec: 812 },
-      { label: '16:45 Lỗi trễ 5-6s do trùng kênh Wi-Fi', sec: 1005 },
-      { label: '18:35 Ưu thế kênh 37,38,39 BLE Mesh', sec: 1115 },
-      { label: '20:25 AI Camera Hub LMAI 2.0', sec: 1225 }
+      { label: '00:38 Kiến trúc & Z-Wave/Âm thanh', sec: 38 },
+      { label: '04:39 Mã LM-HC/3.0 & 5 Đèn LED', sec: 279 },
+      { label: '07:04 HC/LC qua LAN & Works with Lumi', sec: 424 },
+      { label: '12:12 Nút Config (AP Mode / Reset)', sec: 732 },
+      { label: '13:30 Giới hạn 450 Endpoint & Sóng', sec: 810 },
+      { label: '16:45 Trễ 5-6s trùng kênh Wi-Fi/Zigbee', sec: 1005 },
+      { label: '21:00 AI Camera Hub LM-AI/2.0', sec: 1260 },
+      { label: '26:01 Sub-stream 640x480 & Góc 10-45°', sec: 1561 }
     ],
-    summary: 'Hiểu rõ trái tim hệ thống HC/LC, lý do mất mạng Internet vẫn điều khiển qua App bình thường, cách xử lý triệt để lỗi bấm App trễ 5-6 giây và quy chuẩn lắp AI Camera Hub.',
+    summary: 'Nắm trọn 100% thông số kỹ thuật của Bộ điều khiển trung tâm LM-HC/3.0 và AI Camera Hub LM-AI/2.0: Giải mã 5 đèn LED, thao tác nút Config (AP Mode & Reset Factory), bảng giới hạn 450 Endpoint, thông số sóng Zigbee/BLE Mesh, xử lý trễ 5-6s và cấu hình Sub-stream cho Camera AI.',
     theoryBlocks: [
       {
-        title: '1. Chế Độ Offline Khi Mất Internet & Phân Biệt HC (Master) vs. LC (Slave)',
+        title: '1. Giải Mã LM-HC/3.0, 5 Đèn LED Mặt Trước & Sơ Đồ "Works with Lumi Life" [00:00:38 - 00:09:28]',
         html: `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
-            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
-                <h4 class="font-bold text-emerald-400">🌐 Khi Nhà Khách Đứt Cáp Quang Internet [01:32]:</h4>
-                <p>• <strong>Vẫn chạy 100%:</strong> Bấm công tắc, Cảnh, Rule tự động, Hẹn giờ và <strong>điều khiển qua App khi điện thoại bắt chung Wi-Fi nội bộ (Local)</strong>.</p>
-                <p>• <strong>Chỉ mất:</strong> Điều khiển từ xa qua 4G và Giọng nói. Tự động Backup lên Cloud mỗi <strong>2 giờ/lần</strong>.</p>
+        <div class="space-y-4 text-xs sm:text-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-indigo-400">🧠 Mã Sản Phẩm & Chuẩn Sóng [00:04:39]:</h4>
+                        <code class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold">LM-HC/3.0</code>
+                    </div>
+                    <p>• <strong>3 Chuẩn không dây:</strong> <strong>Zigbee</strong> (Smart Home), <strong>BLE Mesh</strong> (Smart Lighting), và <strong>Z-Wave</strong> (<em>chỉ cung cấp cho thị trường nước ngoài</em>, VN không dùng) [00:03:04].</p>
+                    <p>• <strong>Âm thanh đa vùng (Multi-room Amplifier):</strong> Kết nối qua <strong>IP Connect (mạng LAN)</strong>, phát nhạc qua AirPlay, Bluetooth, USB, Spotify, SoundCloud [00:04:14].</p>
+                    <p>• <strong>Chế độ Offline [01:32]:</strong> Đứt cáp quang vẫn bấm công tắc, chạy Rule/Cảnh/Hẹn giờ và điều khiển App qua Wi-Fi nội bộ bình thường. Tự Backup Cloud mỗi <strong>2 giờ/lần</strong>.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
+                    <h4 class="font-bold text-emerald-400">💡 Ý Nghĩa 5 Đèn LED Mặt Trước HC [00:06:21]:</h4>
+                    <p>1. <strong>Power:</strong> Trạng thái HC được cấp nguồn.</p>
+                    <p>2. <strong>Internet:</strong> Kết nối mạng nội bộ / Internet.</p>
+                    <p>3. <strong>Service:</strong> Tình trạng kết nối tới <strong>Lumi Server</strong> (mạng ổn định thì Internet & Service đều sáng xanh).</p>
+                    <p>4. <strong>Zigbee:</strong> Hoạt động của <strong>Bridge Zigbee</strong>.</p>
+                    <p>5. <strong>Bluetooth:</strong> Hoạt động của <strong>Bridge Bluetooth</strong>.</p>
+                </div>
             </div>
-            <div class="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 space-y-1.5">
-                <h4 class="font-bold text-indigo-400">🧠 Giới Hạn Hệ Thống & Kết Nối HC - LC [07:04 & 13:32]:</h4>
-                <p>• Tối đa <strong>1 HC (Master) + 6 LC (Slave)</strong>, quản lý <strong>450 Endpoints</strong>, 70–100 Rule/Cảnh, 40 Nhóm.</p>
-                <p>• <strong>Cực kỳ lưu ý:</strong> HC và LC nói chuyện với nhau qua <strong>Mạng LAN / IP (cùng lớp mạng Router)</strong>, KHÔNG phải qua sóng Zigbee!</p>
+            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs">
+                <span class="font-bold text-amber-400">🔗 Sơ đồ tích hợp ngoại vi "Works with Lumi Life" [00:09:28]:</span>
+                <span class="block mt-1">• <strong>Nhánh 1 (Cảm biến hàng rào/cửa hãng ngoài):</strong> Tiếp điểm khô (<code>NO/NC</code>) ➔ <code>Module Input</code> ➔ Sóng Zigbee ➔ HC.</span>
+                <span class="block mt-0.5">• <strong>Nhánh 2 (Cổng tự động DEA):</strong> Tín hiệu <code>RS485</code> ➔ <code>Module LM-GATE</code> ➔ Sóng Zigbee ➔ HC.</span>
             </div>
         </div>`
       },
       {
-        title: '2. Trị Bệnh "Bấm App 5-6 Giây Mới Sáng" & AI Camera Hub LMAI 2.0',
+        title: '2. Bảng Giới Hạn 1 Hệ Thống & Thông Số Sóng Zigbee / BLE Mesh [00:13:30 - 00:18:47]',
+        html: `
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                <h4 class="font-bold text-amber-400 text-sm">📊 Giới Hạn 1 Hệ Thống Trên Slide [00:13:30]:</h4>
+                <p>• <strong>Thiết bị trung tâm:</strong> Tối đa <code>1 HC + 6 LC</code> (nối với nhau qua <strong>mạng LAN/IP</strong>, KHÔNG qua Zigbee), <code>6 Camera an ninh</code>, <code>6 Âm thanh đa vùng</code>.</p>
+                <p>• <strong>Tổng Endpoint:</strong> Tối đa <strong>450 Endpoint</strong> (VD: Công tắc 4 nút = 4 endpoint; Cảm biến chuyển động = 5 endpoint gồm chuyển động, nhiệt độ, độ ẩm, ánh sáng, % pin).</p>
+                <p>• <strong>Rule / Cảnh / Lịch:</strong> <code>70 – 100</code> Rule/Cảnh/Lịch thường + <strong>20 Rule an ninh</strong>.</p>
+                <p>• <strong>Nhóm & Tài khoản:</strong> <code>40 nhóm thường/nhà</code> + <strong>Không giới hạn Binding</strong>; Tỷ lệ <strong>50 nhà / 1 User</strong>.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                <h4 class="font-bold text-cyan-400 text-sm">📡 Thông Số Sóng Zigbee & BLE Mesh [00:14:22]:</h4>
+                <p>• <strong>Zigbee:</strong> Quốc tế <code>2.4 GHz</code> (Bắc Mỹ 915MHz, Châu Âu/Nhật 868MHz). <strong>16 kênh (11→26)</strong>, thực tế dùng <code>11→25</code>.</p>
+                <p>• <strong>BLE Mesh:</strong> <code>2.4 GHz</code>, dùng <strong>3 kênh quảng bá (37, 38, 39)</strong> nằm ngoài vùng nhiễu Wi-Fi (1, 6, 11) và tự nhảy kênh.</p>
+                <p>• <strong>Tốc độ & Khoảng cách:</strong> <code>250 kbps</code> | <strong>10m (có vật cản) / 40m (không vật cản)</strong>.</p>
+                <p>• <strong>Thành phần BLE Mesh [00:16:12]:</strong> <code>Coordinator</code> (HC), <code>Relay Node</code> (thiết bị 220V), <code>Low Power Node</code> (cảm biến pin), và <strong><code>Proxy Node</code></strong> (giúp điện thoại kết nối Bluetooth trực tiếp vào mạng Mesh).</p>
+            </div>
+        </div>`
+      },
+      {
+        title: '3. Quy Trình Bấm Nút Config Trên Thân HC & Trị Bệnh Trễ 5-6s [00:12:12 & 00:16:45]',
         html: `
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
-            <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1.5">
-                <h4 class="font-bold text-rose-400">📶 Xung Đột Kênh Wi-Fi 2.4GHz & Zigbee [16:45]:</h4>
-                <p>• Wi-Fi kênh 1, 6, 11 (nhất là <strong>Kênh 6</strong>) đè trực tiếp lên <strong>Kênh 17 của Zigbee</strong> làm nghẽn bản tin.</p>
-                <p>• <strong>Cách khắc phục:</strong> Vào App <strong>Xóa mạng Zigbee</strong> trước khi cài đặt để HC tự quét chọn kênh Zigbee sạch. (BLE Mesh chạy ở <strong>Kênh 37, 38, 39</strong> nằm ở khe trống nên không bao giờ trùng Wi-Fi).</p>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                <h4 class="font-bold text-emerald-400">🔘 Bấm Nút Config Bên Hông HC [00:12:12]:</h4>
+                <p>• <strong>Bật lại AP Mode (Đổi Wi-Fi):</strong> Nhấn giữ Config (tất cả đèn tắt, chỉ <code>Power</code> sáng) ➔ đợi <strong><code>LED Internet</code> sáng</strong> ➔ nhả tay ➔ HC phát Wi-Fi <code>HC_xxxx</code>.</p>
+                <p>• <strong>Reset Factory (Khôi phục gốc):</strong> Nhấn giữ Config qua mốc <code>Internet</code> ➔ đợi <strong><code>LED Service</code> sáng</strong> ➔ nhả tay ➔ <code>Service</code> nháy báo <em>Reset Bridge</em> ➔ tự khởi động lại về <code>AP Mode</code>.</p>
             </div>
-            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
-                <h4 class="font-bold text-amber-400">📹 Thông Số AI Camera Hub (LMAI 2.0) [20:25]:</h4>
-                <p>• <strong>Bắt buộc cắm dây LAN</strong>. Phải bật tính năng AI trên App thì <strong>đèn LED AI mới sáng xanh</strong>.</p>
-                <p>• Tối đa <strong>6 Camera IP</strong> thuộc 4 hãng: <strong>Hikvision, Dahua, EZViz, KBVision</strong> (luồng phụ Sub-stream, lắp cao <strong>2.5m – 6m</strong>, tối đa 4 vùng x 8 điểm).</p>
+            <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1.5">
+                <h4 class="font-bold text-rose-400">📶 Xung Đột Kênh Wi-Fi 2.4GHz & Zigbee [00:16:45]:</h4>
+                <p>• Wi-Fi kênh 1, 6, 11 (nhất là <strong>Kênh 6</strong>) đè trực tiếp lên <strong>Kênh 17 của Zigbee</strong> làm bấm App trễ <strong>5–6 giây</strong>.</p>
+                <p>• <strong>Cách xử lý:</strong> Vào App <strong>Xóa mạng Zigbee</strong> để HC tự quét chuyển sang kênh sạch (VD: Kênh 25).</p>
+            </div>
+        </div>`
+      },
+      {
+        title: '4. Bộ Trung Tâm Xử Lý Camera — AI Camera Hub (LM-AI/2.0) [00:21:00 - 00:28:36]',
+        html: `
+        <div class="space-y-3 text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-amber-400 text-sm">📹 Phần Cứng & Lưu Trữ LM-AI/2.0:</h4>
+                        <code class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">LM-AI/2.0 (HC G1)</code>
+                    </div>
+                    <p>• <strong>Cổng mặt sau [21:05]:</strong> <code>3 tiếp điểm sạch 10A (A1, A2, A3)</code>, <code>2 ăng-ten</code> (Zigbee trái, BLE phải), <code>USB 3.0 & 2.0</code>, <strong><code>LAN 1Gbps</code></strong> (không dùng Wi-Fi), nguồn <code>12V DC - 2A</code>.</p>
+                    <p>• <strong>5 Đèn LED [22:00]:</strong> <code>Power | Service | AI | Zigbee | Bluetooth</code>. Mặc định <strong>đèn AI tắt</strong>, phải bật tính năng AI trên App để sáng xanh mới thêm được cam.</p>
+                    <p>• <strong>Lưu trữ [24:11]:</strong> Event (<code>Snapshot + Video 20s / 30 phút</code>) & ghi liên tục <code>Timelapse 24/24</code>.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                    <h4 class="font-bold text-cyan-400 text-sm">⚙️ Thông Số Sub-stream & Lắp Đặt Camera [25:14 - 28:36]:</h4>
+                    <p>• <strong>Hỗ trợ:</strong> Tối đa <strong>6 Camera IP</strong> (<code>Hikvision, Dahua, Ezviz, Kbvision</code>), <strong>4 vùng/cam x 8 điểm</strong>, Livestream/Playback qua <strong>P2P</strong>.</p>
+                    <p>• <strong>Cài đặt Luồng phụ (Sub-stream) [26:01]:</strong> Chuẩn <code>H.264 / H.265</code> | Độ phân giải <strong><code>640 x 480</code></strong> | Max Bitrate <strong><code>1024 Kbps</code></strong> | <strong><code>25 fps</code></strong> | Quality <code>Higher / Highest</code>.</p>
+                    <p>• <strong>Lắp đặt vật lý [27:24]:</strong> Chiều cao <code>2.5m <= H <= 6m</code> | Góc cụp <strong><code>10° <= góc <= 45°</code></strong>.</p>
+                    <p>• <strong>Thêm trên App [28:36]:</strong> Theo IP Đầu ghi NVR (nhập đúng <code>Cổng RTSP</code> + <code>Số Kênh</code>) hoặc IP Camera lẻ (<code>Kênh mặc định = 1</code>). Chỉnh độ nhạy AI: Thấp / TB / Cao.</p>
+                </div>
             </div>
         </div>`
       }

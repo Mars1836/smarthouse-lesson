@@ -1,19 +1,19 @@
 # smarthouse-lesson
 
-> **Lumi SmartHome Academy (Phiên Bản Nâng Cấp V2)** — Nền tảng Học & Thực Hành Nghề Điện Thông Minh Toàn Diện 4-Trong-1.
+> **Lumi SmartHome Academy (Phiên Bản Nâng Cấp V3)** — Nền tảng Học & Thực Hành Nghề Điện Thông Minh Toàn Diện 4-Trong-1.
 
-Ứng dụng web tương tác hiện đại được xây dựng bằng **Vite + React + TypeScript + Tailwind CSS** chuyển đổi và nâng cấp từ cuốn Sổ tay Kỹ thuật viên Lumi Smart Home (Bản cập nhật Version 2 đầy đủ mã sản phẩm, sơ đồ chân và thông số thực tế tại công trình).
+Ứng dụng web tương tác hiện đại được xây dựng bằng **Vite + React + TypeScript + Tailwind CSS** chuyển đổi và nâng cấp từ cuốn Sổ tay Kỹ thuật viên Lumi Smart Home (Bản cập nhật Version 3 hoàn thiện sâu toàn bộ Bài 1A, 1B và Bài 2 đầy đủ mã sản phẩm, 5 đèn LED HC, nút Config AP/Reset, giới hạn hệ thống, thông số sóng và AI Camera Hub).
 
 ---
 
-## 🌟 Tính Năng Nổi Bật & Cập Nhật Version 2
+## 🌟 Tính Năng Nổi Bật & Cập Nhật Version 3
 
 ### 1. 📚 Lộ Trình 6 Chặng Học Cốt Lõi (Từ Zero Đến Thợ Cứng)
 - **Chặng 0: Nhập Môn Điện Dân Dụng & An Toàn Đế Âm**
   - Phân biệt 4 loại dây trong đế âm (L, N, Tải, PE).
   - Giải mã tình huống "5 dây đỏ cùng màu + cụm dây xanh".
   - Nguyên lý hoạt động của Aptomat chống giật (RCBO) và lý do mượn dây Mát (N) ổ cắm bị nhảy CB.
-- **Chặng 1: Bài 1A - Công Tắc Cảm Ứng, Đế Âm & Hệ Thống Cảm Biến (Cập Nhật V2)**
+- **Chặng 1: Bài 1A - Công Tắc Cảm Ứng, Đế Âm & Hệ Thống Cảm Biến**
   - **Mã sản phẩm chi tiết & thứ tự chân:**
     - `LM-SxN`: Công tắc thường (1-4 nút, 700W trở / 150W LED, cầu đấu `L | 1 | 2 | 3 | 4 | N`).
     - `LM-S1D`: Chiết áp Dimmer TRIAC (1 nút, 500W trở / 150W LED Dim, cầu đấu `L | 1 | 2 | N`, cấm On/Off tải thường).
@@ -37,7 +37,7 @@
     - `LM-MC`: Cảm biến gắn trần bản thường độc lập (Không sóng, 220VAC, 2 biến trở 10 nấc Time 5s-30p & Lux 20-300).
     - `LM-MSZ`: Công tắc cảm biến cầu thang 2in1 (Góc ngang 150° lắp mắt che còn 50°, đế vuông chôn dọc, chữ nhật chôn ngang, Rule Bật OR - Tắt AND).
     - `LM-DSZ/1.1`: Cảm biến cửa Pin 3.3V (To gắn cánh, Nhỏ gắn khung, rãnh quay vào nhau $\le$ 2cm).
-- **Chặng 2: Bài 1B - Hồng Ngoại LM-IR/2.0, VRV Daikin LM-DK & Bộ 3 Module (Cập Nhật V2)**
+- **Chặng 2: Bài 1B - Hồng Ngoại LM-IR/2.0, VRV Daikin LM-DK & Bộ 3 Module**
   - `LM-IR/2.0`: Bộ hồng ngoại (5VDC/1A, $\le$ 5m, Thư viện vs Học lệnh điều hòa tối đa 6 ô ngữ cảnh).
   - **Module VRV Daikin `LM-DK` + Mạch Daikin `DTA116A51`:**
     - Cục nóng Daikin ➔ DTA: `X37A` ➔ `X1A` (Nguồn 16-24VDC), `F1, F2` ➔ `X7A` (DIII-NET).
@@ -47,11 +47,33 @@
   - `LM-INPUT`: Module Input 4 kênh tiếp điểm khô (IN- vào COM, IN+ vào NO/NC, nguồn 9-24VDC).
   - `LM-2120/Z` & `LM-2120/B`: Module 2 In 2 Out giữ công tắc cơ (8 chân `IN2|IN1|O2|O1|S|NC|N|L`, Mode Any change).
   - `LM-5IN1/Z` & `LM-5IN1/B`: Module LED dây 12-24VDC (5 chế độ cấu hình, cấp nguồn sáng 100%, vào mạng HC tự giảm về 12%).
-- **Chặng 3: Bài 2 - Bộ Trung Tâm HC/LC, Xử Lý Trễ Mạng & AI Camera Hub**
-  - Kiến trúc 4 tầng, chế độ chạy Offline 100% khi mất cáp quang Internet.
-  - Kết nối HC (Master) và LC (Slave) qua mạng LAN / IP nội bộ (không qua Zigbee), quản lý 450 Endpoints.
-  - Phân tích phổ sóng 2.4GHz: Trị lỗi trễ 5-6s do trùng Kênh 6 Wi-Fi và Kênh 17 Zigbee. Ưu thế kênh quảng bá 37, 38, 39 của BLE Mesh.
-  - AI Camera Hub LMAI 2.0 (tối đa 6 camera IP Hikvision/Dahua/EZViz/KBVision).
+- **Chặng 3: Bài 2 - Bộ Trung Tâm HC/LC (LM-HC/3.0), Xử Lý Trễ Mạng & AI Camera Hub (LM-AI/2.0) (MỚI Ở V3)**
+  - **Mã sản phẩm `LM-HC/3.0` & 5 Đèn LED mặt trước:**
+    1. `Power`: Cấp nguồn.
+    2. `Internet`: Mạng nội bộ / Internet.
+    3. `Service`: Kết nối Lumi Cloud Server (mạng ổn định cả Internet & Service cùng sáng).
+    4. `Zigbee`: Bridge Zigbee.
+    5. `Bluetooth`: Bridge Bluetooth.
+  - **Quy trình nút Config bên hông HC:**
+    - **Bật AP Mode (đổi Wi-Fi):** Nhấn giữ Config đến khi `LED Internet` sáng ➔ Nhả tay ngay ➔ HC phát Wi-Fi `HC_xxxx`.
+    - **Reset Factory (khôi phục gốc):** Nhấn giữ Config qua mốc Internet đến khi `LED Service` sáng nhấp nháy ➔ Nhả tay ngay ➔ HC thực hiện Reset Bridge và tự về AP Mode.
+  - **Sơ đồ tích hợp Works with Lumi Life:**
+    - Nhánh 1 (Cảm biến báo cháy, hàng rào hãng thứ 3): Tiếp điểm khô `NO/NC` ➔ `Module LM-INPUT` ➔ Zigbee ➔ HC.
+    - Nhánh 2 (Cổng tự động DEA): Giao tiếp `RS485` ➔ `Module LM-GATE` ➔ Zigbee ➔ HC.
+  - **Bảng giới hạn hệ thống & kiến trúc:**
+    - Tối đa `1 HC + 6 LC` (**kết nối qua mạng LAN/IP nội bộ**, không qua Zigbee), 6 Camera an ninh, 6 Âm thanh đa vùng.
+    - Tối đa **450 Endpoint** (1 công tắc 4 nút = 4 endpoint, 1 cảm biến chuyển động = 5 endpoint).
+    - `70 - 100` Rule/Cảnh/Lịch + **20 Rule an ninh**.
+    - `40 nhóm` thường/nhà, không giới hạn Binding; tỷ lệ **50 nhà / 1 User**.
+  - **Thông số sóng Zigbee & BLE Mesh:**
+    - Zigbee: 2.4 GHz, 16 kênh (11→26, thực tế 11→25), 250 kbps, 10m vật cản / 40m thoáng.
+    - BLE Mesh: 2.4 GHz, 3 kênh quảng bá độc lập (37, 38, 39) tự nhảy kênh. 4 vai trò: Coordinator (HC), Relay Node (220V), Low Power Node (pin), **Proxy Node** (điện thoại kết nối trực tiếp vào mạng Mesh).
+    - Trị lỗi trễ 5–6s: Xung đột Kênh 6 Wi-Fi và Kênh 17 Zigbee. Xử lý bằng cách Xóa mạng Zigbee trên App để HC tự quét sang Kênh 25 sạch.
+  - **AI Camera Hub `LM-AI/2.0` (HC G1):**
+    - Phần cứng: 3 tiếp điểm sạch 10A (`A1, A2, A3`), 2 ăng-ten, LAN 1Gbps (không dùng Wi-Fi), nguồn 12V DC - 2A.
+    - 5 đèn LED: `Power | Service | AI | Zigbee | Bluetooth` (mặc định đèn AI tắt, phải bật AI trên App mới sáng xanh).
+    - Chuẩn cấu hình Luồng phụ (Sub-stream): `H.264/H.265`, Độ phân giải **`640 x 480`**, Max Bitrate **`1024 Kbps`**, **`25 fps`**, Quality `Higher/Highest`.
+    - Quy chuẩn lắp đặt: Chiều cao `2.5m <= H <= 6m`, Góc cụp `10° <= góc <= 45°`.
 - **Chặng 4: Bài 3 & 4 - Khoa Học Chiếu Sáng & Lumi Smart Lighting**
   - 5 thông số vàng: Nhiệt độ màu CCT (Kelvin), Hoàn màu (CRI), Quang thông (Lumen), Hiệu suất (Lm/W), Độ rọi (Lux = Lumen/m²).
 - **Chặng 5: Bài 5, 6, 7 - Nhóm Lighting, Cảnh Lighting & Nhịp Sinh Học HCL**
@@ -69,12 +91,13 @@
    - Sơ đồ tương tác mạch điện 220V: Bật/tắt CB, bật/tắt tải 1 & tải 2.
    - Mô phỏng quá tải cháy rơ-le chân 2 khi đấu nhầm Bình nóng lạnh 2500W.
    - Mô phỏng đổi màu LED nút Config cảm biến chuyển động (30s, 120s, 300s).
-3. **Lab Chặng 2 (Nâng cấp V2):**
+3. **Lab Chặng 2:**
    - Bắt bệnh qua đèn LED mạch `DTA116A51` (H1P–H4P) & Module `LM-DK` (Nguồn, Zigbee, RS485).
-   - **Máy tính nhanh NetID:** Nhập ID mặt lạnh (0-15) ➔ Tự động tính NetID = ID + 1.
+   - Máy tính nhanh NetID: Nhập ID mặt lạnh (0-15) ➔ Tự động tính NetID = ID + 1.
    - Cấu hình 5 chế độ ấn nút Config cho Module LED dây 5 in 1 kèm trạng thái độ sáng thực tế: Mới cấp nguồn 100% ➔ Gia nhập mạng HC 12%.
-4. **Lab Chặng 3:**
-   - Biểu đồ phổ tần 2.4GHz động: Xung đột Kênh Wi-Fi 6 và Kênh Zigbee 17, tính năng "Xóa Mạng Zigbee" để HC tự động né sang Kênh 25 sạch 100%.
+4. **Lab Chặng 3 (Nâng cấp V3 - 2 Phần mô phỏng):**
+   - **Thực hành 1:** Biểu đồ phổ tần 2.4GHz động: Xung đột Kênh Wi-Fi 6 và Kênh Zigbee 17, tính năng "Xóa Mạng Zigbee" để HC tự động né sang Kênh 25 sạch 100%.
+   - **Thực hành 2:** Mô phỏng tương tác bấm nút Config bên hông HC (`LM-HC/3.0`): Theo dõi trực tiếp 5 đèn LED mặt trước (Power, Internet, Service, Zigbee, Bluetooth) theo đúng thời gian thực khi Bật AP Mode hoặc Reset Factory.
 5. **Lab Chặng 4:**
    - Thanh trượt Kelvin (2700K - 6500K) đổi màu không gian phòng.
    - So sánh CRI 70 (xỉn màu) vs CRI 95 (chuẩn màu sắc) trên trái cây, thức ăn và quần áo.
@@ -88,7 +111,7 @@
 ### 3. 🎯 Đánh Giá & Tiện Ích Kỹ Thuật Viên
 - **Mini-Quiz theo từng chặng:** Trả lời đúng 100% tự động đánh dấu hoàn thành chặng.
 - **Thi Sát Hạch Toàn Diện (15+ Câu):** Đề thi tổng hợp sát với các tình huống thực tế tại công trình.
-- **Tra cứu nhanh tại công trình (Quick Search V2):** Gợi ý tức thì các mã sản phẩm và bệnh công trình (`LM-SxH`, `LM-MDB`, `LM-MC`, `DTA116A51`, `NetID`, `12%`, `nhảy CB`...).
+- **Tra cứu nhanh tại công trình (Quick Search V3):** Gợi ý tức thì các mã sản phẩm và bệnh công trình (`LM-HC/3.0`, `LM-AI/2.0`, `Sub-stream`, `LM-SxH`, `LM-MDB`, `LM-MC`, `DTA116A51`, `NetID`, `12%`, `nhảy CB`...).
 - **Sổ tay ghi chú cá nhân:** Lưu tự động ghi chú cho từng bài vào LocalStorage.
 - **Thêm chặng học mới:** Cho phép thợ/học viên tự thêm các bài học mở rộng (Bài 8, 9...).
 - **Sao lưu & Khôi phục dữ liệu:** Xuất và nhập dữ liệu học tập dưới dạng file `.json`.
