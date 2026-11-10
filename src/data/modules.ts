@@ -82,83 +82,235 @@ export const coreModules: ModuleData[] = [
   {
     id: 'mod1',
     step: 'Chặng 1',
-    title: 'Bài 1A: Công Tắc Cảm Ứng, Đế Âm & Cảm Biến Lumi',
-    subtitle: 'Phân loại công suất (Nút 1 = 3000W), chôn đế âm vuông dọc, Cảm biến chuyển động, Cầu thang 2in1 & Cửa',
+    title: 'Bài 1A: Công Tắc Cảm Ứng, Đế Âm & Hệ Thống Cảm Biến (Bản Đầy Đủ Mã SP)',
+    subtitle: 'Đầy đủ mã LM-SxN/LM-S1D/LM-SxH, thứ tự chân đấu, đế Sino S3157L/S2157, 6 thao tác Config, LM-MDZ/LM-MDB/LM-MC/LM-MSZ/LM-DSZ',
     badge: 'Video Bài 1 (00:00 - 18:50)',
     badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     videoUrl: 'https://www.youtube.com/watch?v=-RhVDFZZfnc',
     timestamps: [
-      { label: '00:27 Công tắc thường/Dimmer/CS Cao', sec: 27 },
-      { label: '02:32 Khảo sát chôn đế âm', sec: 152 },
-      { label: '05:56 6 Tính năng cài đặt', sec: 356 },
-      { label: '07:25 Cảm biến chuyển động', sec: 445 },
-      { label: '12:59 Cảm biến cầu thang 2in1', sec: 779 },
-      { label: '16:25 Cảm biến cửa (2cm)', sec: 985 }
+      { label: '00:29 4 Tiêu chí & 7 Dòng CT', sec: 29 },
+      { label: '00:59 Mã LM-SxN / LM-S1D / LM-SxH', sec: 59 },
+      { label: '02:32 Đế âm Sino S3157L & S2157', sec: 152 },
+      { label: '05:23 Địa chỉ MAC & 6 Tính năng Config', sec: 323 },
+      { label: '07:25 Mã LM-MDZ/2.0, LM-MDB, LM-MDZ/2.1', sec: 445 },
+      { label: '10:40 10 Nấc vặn biến trở LM-MC', sec: 640 },
+      { label: '12:59 Cầu thang 2in1 LM-MSZ', sec: 779 },
+      { label: '16:22 Cảm biến cửa LM-DSZ/1.1', sec: 982 }
     ],
-    summary: 'Nắm vững giới hạn công suất từng loại công tắc (đặc biệt Nút 1 công suất cao 3000W cho bình nóng lạnh), quy chuẩn chôn đế âm vuông tai dọc và cách cấu hình 3 loại cảm biến.',
+    summary: 'Tổng hợp 100% thông số trên từng slide Bài 1 (Phần 1 & 2): Giải mã ký hiệu mã sản phẩm, sự ngược chân N trên công tắc công suất cao LM-SxH, kích thước milimet đế âm Sino, 6 thao tác vật lý và toàn bộ 6 mã cảm biến (bao gồm 10 nấc vặn biến trở Time/Lux).',
     theoryBlocks: [
       {
-        title: '1. Bảng Công Suất 3 Loại Công Tắc & Quy Chuẩn Chôn Đế Âm',
+        title: '1. Phân Loại Ngoại Hình & Giải Mã Mã Sản Phẩm + Thứ Tự Chân Đấu Trên Tem [00:00:29 - 00:05:15]',
         html: `
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs sm:text-sm">
-            <div class="lg:col-span-7 overflow-x-auto">
-                <table class="w-full border-collapse text-left">
+        <div class="space-y-4 text-xs sm:text-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    <div class="font-bold text-emerald-400 mb-1">🎨 4 Tiêu Chí Ngoại Hình Công Tắc [00:00:29]:</div>
+                    <p>• <strong>Màu sắc:</strong> Đen, Trắng &nbsp;|&nbsp; <strong>Hình dạng:</strong> Vuông, Chữ nhật</p>
+                    <p>• <strong>Viền:</strong> Viền thẳng, Viền bo &nbsp;|&nbsp; <strong>Mặt kính:</strong> Kính phẳng, Kính lõm</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    <div class="font-bold text-amber-400 mb-1">⚡ 7 Dòng Công Tắc Cảm Ứng Lumi:</div>
+                    <p>1. CS Thường &bull; 2. CS Cao &bull; 3. Chiết áp (Dimmer) &bull; 4. Công tắc Rèm &bull; 5. Cửa cuốn &bull; 6. Cổng &bull; 7. Dual Mode.</p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                <table class="w-full border-collapse text-left text-xs">
                     <thead>
-                        <tr class="bg-slate-100 dark:bg-slate-800 text-slate-300">
+                        <tr class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
                             <th class="p-2.5">Loại Công Tắc</th>
-                            <th class="p-2.5">Số Nút</th>
-                            <th class="p-2.5">Tải Tối Đa / Nút</th>
-                            <th class="p-2.5">Lưu Ý Sống Còn</th>
+                            <th class="p-2.5">Mã Sản Phẩm & Giải Nghĩa Ký Hiệu</th>
+                            <th class="p-2.5">Công Suất & Thông Số Tem</th>
+                            <th class="p-2.5">Thứ Tự Cầu Đấu Trên Tem</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                         <tr>
-                            <td class="p-2.5 font-bold text-emerald-400">Công tắc thường</td>
-                            <td class="p-2.5">1-4 nút</td>
-                            <td class="p-2.5"><strong>150W LED</strong> / 700W trở</td>
-                            <td class="p-2.5">Chỉ lắp đèn chiếu sáng, quạt hút nhỏ.</td>
+                            <td class="p-2.5 font-bold text-emerald-400">1. Công tắc thường<br><span class="text-[10px] text-slate-400">[00:00:59]</span></td>
+                            <td class="p-2.5">
+                                <code class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LM-SxN</code><br>
+                                <span class="text-[11px] text-slate-400">Tem hộp: <code>LM-SZN-xK(G)/W(B)/V.2</code></span><br>
+                                • <b>LM</b>: Lumi | <b>S</b>: Switch<br>
+                                • <b>x = 1, 2, 3, 4</b>: Số nút (tối đa 4 nút)<br>
+                                • <b>N</b>: Normal (Loại thường)
+                            </td>
+                            <td class="p-2.5">
+                                • Nguồn: <code>100–240V AC ~ 50/60Hz</code><br>
+                                • Tải mỗi rơ-le (1 nút): <strong>700W thuần trở</strong> / <strong>150W LED</strong><br>
+                                • Nhiệt độ: <code>0°C–50°C</code> | Bảo vệ: <code>IP2X</code>
+                            </td>
+                            <td class="p-2.5 font-mono font-bold">
+                                <span class="px-1.5 py-1 rounded bg-slate-900 text-red-400 border border-slate-700">L | 1 | 2 | 3 | 4 | N</span><br>
+                                <span class="text-[10px] text-slate-400 font-sans">Chân L bên trái, chân N ngoài cùng bên phải</span>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="p-2.5 font-bold text-purple-400">Chiết áp (Dimmer)</td>
-                            <td class="p-2.5">1 nút</td>
-                            <td class="p-2.5">150W LED Dim / 500W</td>
-                            <td class="p-2.5"><strong>Cấm</strong> dùng bật/tắt (On/Off) thiết bị thường.</td>
+                            <td class="p-2.5 font-bold text-purple-400">2. Công tắc chiết áp (Dimmer/Quạt)<br><span class="text-[10px] text-slate-400">[00:01:22]</span></td>
+                            <td class="p-2.5">
+                                <code class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">LM-S1D</code><br>
+                                <span class="text-[11px] text-slate-400">Tem hộp: <code>LM-S1D/A(W)</code></span><br>
+                                • <b>1</b>: Chỉ có duy nhất <strong>1 nút bấm</strong><br>
+                                • <b>D</b>: Dimmer (Chiết áp TRIAC)
+                            </td>
+                            <td class="p-2.5">
+                                • Tải: <strong>500W thuần trở</strong> / <strong>150W LED Dim</strong><br>
+                                • <span class="text-rose-400 font-bold">Cảnh báo:</span> Cấm dùng bật/tắt (On/Off) thiết bị thường vì sẽ gây hỏng mạch TRIAC!
+                            </td>
+                            <td class="p-2.5 font-mono font-bold">
+                                <span class="px-1.5 py-1 rounded bg-slate-900 text-purple-300 border border-slate-700">L | 1 | 2 | N</span><br>
+                                <span class="text-[10px] text-amber-400 font-sans">Dây tải đấu vào chân 1, chân 2 bỏ trống [00:04:50]</span>
+                            </td>
                         </tr>
                         <tr class="bg-rose-500/10">
-                            <td class="p-2.5 font-bold text-rose-400">Công suất cao</td>
-                            <td class="p-2.5">1-3 nút</td>
-                            <td class="p-2.5"><strong>Nút 1: 3000W trở</strong><br><span class="text-[11px] text-slate-400">Nút 2,3: 150W LED</span></td>
-                            <td class="p-2.5"><strong>Bình nóng lạnh (2500W), máy bơm bắt buộc đấu vào CHÂN SỐ 1!</strong></td>
+                            <td class="p-2.5 font-bold text-rose-400">3. Công tắc công suất cao<br><span class="text-[10px] text-slate-400">[00:01:43]</span></td>
+                            <td class="p-2.5">
+                                <code class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">LM-SxH</code><br>
+                                • <b>x = 1, 2, 3</b>: Tối đa <strong>3 nút</strong><br>
+                                • <b>H</b>: High power (Công suất cao)
+                            </td>
+                            <td class="p-2.5">
+                                • <strong>Duy nhất Nút 1: 3000W thuần trở (~16A) / 300W LED</strong> (Bình nóng lạnh 30L 2500W, máy bơm, đèn sưởi)<br>
+                                • <strong>Nút 2 & 3:</strong> CS thường (<strong>700W trở / 150W LED</strong>)
+                            </td>
+                            <td class="p-2.5 font-mono font-bold">
+                                <span class="px-1.5 py-1 rounded bg-slate-900 text-amber-300 border border-rose-500">N | L | 1 | 2 | 3</span><br>
+                                <span class="text-[10px] text-rose-400 font-sans font-bold">⚠️ Chú ý: Chân N nằm ngoài cùng bên trái (ngược với LM-SxN!) [00:05:09]</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="lg:col-span-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 space-y-1.5">
-                <h4 class="font-bold text-amber-400">📐 Khảo Sát Đế Âm & 6 Tính Năng [00:02:32]:</h4>
-                <p>• <strong>Đế vuông:</strong> Bắt buộc chôn 2 tai vít <strong>NẰM DỌC</strong>. Đế chữ nhật: Ngang/dọc đều được.</p>
-                <p>• <strong>Độ sâu:</strong> Chôn bằng mặt gạch chưa trát. Khoảng cách ghép nhiều đế: <strong>1cm – 3cm</strong> (tối thiểu 2cm).</p>
-                <p>• <strong>Reset công tắc:</strong> Dùng bút thử điện <strong>ấn 5 lần nút Config</strong>. Hỗ trợ chỉnh LED nền 100% hoặc 30% (phòng ngủ).</p>
+        </div>`
+      },
+      {
+        title: '2. Khảo Sát Đế Âm (Sino S3157L / S2157) & 6 Thao Tác Vật Lý Nút Config [00:02:32 - 00:07:05]',
+        html: `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
+            <div class="lg:col-span-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <h4 class="font-bold text-amber-400 text-sm">📐 Kích Thước Đế Âm Chuẩn & Độ Sâu [00:02:49]:</h4>
+                <p>• <strong>Đế vuông (<code class="text-emerald-400">Sino S3157L</code>):</strong> Rộng <code>75mm</code> × Cao <code>75mm</code> × Sâu <code>40mm</code>. <strong>Bắt buộc chôn 2 tai vít NẰM DỌC (ĐỨNG)</strong>. <span class="text-rose-400 font-bold">❌ Cấm dùng đế đôi vuông liền khối!</span></p>
+                <p>• <strong>Đế chữ nhật (<code class="text-emerald-400">Sino S2157</code>):</strong> Dài <code>106mm</code> × Rộng <code>56mm</code> × Sâu <code>40mm</code>. Chôn tai ngang hoặc dọc tùy ý.</p>
+                <p>• <strong>Khoảng cách tối thiểu (2 mặt kính sát khít nhau):</strong><br>
+                &nbsp;&nbsp;+ Đế vuông <code>S3157L</code>: Cách nhau <strong>2 cm</strong> (cả ngang và dọc).<br>
+                &nbsp;&nbsp;+ Đế chữ nhật <code>S2157</code>: Cách nhau <strong>2,5 cm (ngang)</strong> và <strong>2 cm (dọc)</strong>.</p>
+                <p>• <strong>Khoảng cách khuyên dùng thực tế:</strong> Cách nhau <strong>3 – 4 cm</strong> cho đẹp và thoáng [00:03:41].</p>
+                <p>• <strong>Độ sâu chôn đế:</strong> Chôn bằng mặt gạch thô; sau khi trát vữa hoàn thiện thì mặt đế <strong>lõm sâu vào 1 – 2 cm</strong> [00:03:48].</p>
+                <p>• <strong>Quản lý MAC 4 ký tự Hex [00:05:23]:</strong> Mỗi thiết bị có mã MAC riêng (VD trên slide: <code>493A</code> là MAC công tắc, <code>A55B</code> là MAC bộ trung tâm HC).</p>
+            </div>
+
+            <div class="lg:col-span-7 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <h4 class="font-bold text-emerald-400 text-sm">🛠️ Bảng 6 Tính Năng Cài Đặt Trực Tiếp Trên Công Tắc [00:05:51]:</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <div class="font-bold text-cyan-400">1. Nhóm Binding (Đảo chiều không dây)</div>
+                        <p class="mt-0.5">Nhấn giữ <strong>nút cảm ứng 10 giây</strong> trên Công tắc 1 (mở chờ) ➔ Sang Công tắc 2 <strong>chạm vào nút cần liên kết</strong> (không cần giữ 10s ở công tắc 2).</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <div class="font-bold text-rose-400">2. Reset công tắc (Về mặc định)</div>
+                        <p class="mt-0.5">Ấn <strong>nút Config 5 lần</strong> (dùng khi chưa gia nhập mạng HC hoặc tháo từ nhà A sang nhà B).</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <div class="font-bold text-amber-400">3. Đổi Nhấn giữ / Nhấn nhả</div>
+                        <p class="mt-0.5">Nhấn giữ <strong>nút Config 3 giây</strong> (chuyển đổi giữa chế độ công tắc thường và nút nhấn chuông/Rule).</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <div class="font-bold text-purple-400">4. Khóa cảm ứng toàn bộ công tắc</div>
+                        <p class="mt-0.5">Ấn <strong>nút Config 10 lần</strong> (khóa toàn bộ mặt kính không cho bấm tay, chỉ điều khiển qua App).</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <div class="font-bold text-indigo-400">5. Khóa cảm ứng từng nút lẻ</div>
+                        <p class="mt-0.5">Nhấn giữ <strong>nút Config 9 giây</strong> (VD: khóa riêng nút máy bơm tưới cây trên công tắc 3 nút).</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-500/40">
+                        <div class="font-bold text-emerald-400">6. Đổi độ sáng LED viền (100% ⇄ 30%)</div>
+                        <p class="mt-0.5">Nhấn giữ <strong>nút Config 5 giây</strong> (tháo nhẹ mặt kính để bấm nút Config hoặc chỉnh trên App). Mức 30% tránh chói mắt phòng ngủ người già.</p>
+                    </div>
+                </div>
             </div>
         </div>`
       },
       {
-        title: '2. Hệ Thống 3 Loại Cảm Biến: Chuyển Động, Cầu Thang 2in1 & Cảm Biến Cửa',
+        title: '3. Bảng Tổng Hợp 6 Mã Cảm Biến Lumi & So Sánh LM-MDZ/2.0 (Zigbee) vs LM-MDB (BLE Mesh) [00:07:11 - 00:18:50]',
         html: `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
-                <div class="font-bold text-emerald-400">1. Cảm biến chuyển động [07:25]</div>
-                <p>• Bản Pin (Zigbee/BLE) & Bản Nguồn 220V -> 3.3VDC (Zigbee).</p>
-                <p>• Góc quét 90°. <strong>Ấn 2 lần nút Config</strong> đổi thời gian trễ: <span class="text-emerald-400 font-bold">Xanh (30s)</span>, <span class="text-rose-400 font-bold">Đỏ (120s)</span>, <span class="text-pink-400 font-bold">Hồng (300s)</span>.</p>
+        <div class="space-y-4 text-xs">
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                <table class="w-full border-collapse text-left">
+                    <thead>
+                        <tr class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                            <th class="p-2.5">Tên Cảm Biến</th>
+                            <th class="p-2.5">Mã Sản Phẩm</th>
+                            <th class="p-2.5">Nguồn Cấp</th>
+                            <th class="p-2.5">Chuẩn Sóng</th>
+                            <th class="p-2.5">Thông Số Kỹ Thuật & Lưu Ý Lắp Đặt Trên Slide</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                        <tr>
+                            <td class="p-2.5 font-bold text-emerald-400">1. CB Chuyển động Pin (Zigbee)</td>
+                            <td class="p-2.5 font-mono font-bold"><code>LM-MDZ/2.0</code></td>
+                            <td class="p-2.5">Pin tiểu mặt sau</td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Zigbee</span></td>
+                            <td class="p-2.5" rowspan="3">
+                                • <strong>Góc quét hình nón 90°:</strong> Trần cao <strong>3m ➔ Đường kính sàn 6m</strong>; Trần cao <strong>6m ➔ Đường kính sàn 12m</strong> [00:08:19].<br>
+                                • <strong>3 Vị trí cấm lắp:</strong> (1) Gần nguồn nhiệt lớn (bếp, cục nóng), (2) Cây cối đung đưa, (3) Ngoài trời nắng chiếu trực tiếp.<br>
+                                • <strong>Độ trễ nút Config (Ấn nhanh 2 lần):</strong> <span class="text-emerald-400 font-bold">Xanh = 30s</span> | <span class="text-rose-400 font-bold">Đỏ = 120s (2p)</span> | <span class="text-pink-400 font-bold">Hồng = 300s (5p)</span>. Trên App chỉnh từ <strong>10s – 60 phút</strong>.<br>
+                                • <span class="text-amber-400 font-bold">⚠️ Ghi chú vàng [00:09:18]:</span> <em>"Đánh thức cảm biến để lưu thông số cài đặt trên App"</em> (bấm nút hoặc khua tay trước mắt cảm biến khi lưu trên App).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-cyan-400">2. CB Chuyển động Pin (Bluetooth)</td>
+                            <td class="p-2.5 font-mono font-bold"><code>LM-MDB</code></td>
+                            <td class="p-2.5">Pin tiểu mặt sau</td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">BLE Mesh</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-teal-400">3. CB Chuyển động Nguồn</td>
+                            <td class="p-2.5 font-mono font-bold"><code>LM-MDZ/2.1</code></td>
+                            <td class="p-2.5">220VAC qua Adapter <code>3.3VDC</code></td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Chỉ có Zigbee</span></td>
+                        </tr>
+                        <tr class="bg-amber-500/5">
+                            <td class="p-2.5 font-bold text-amber-400">4. CB Gắn trần bản thường độc lập</td>
+                            <td class="p-2.5 font-mono font-bold"><code>LM-MC</code></td>
+                            <td class="p-2.5">220V AC trực tiếp<br>Chân: <code>L | 1 | Trống | N</code></td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-slate-700 text-slate-300 font-bold">Không sóng (Độc lập)</span></td>
+                            <td class="p-2.5">
+                                • Không cần HC, không cần công tắc Lumi. Tự đóng cắt rơ-le chân <code>1</code> ra đèn.<br>
+                                • Chỉnh bằng <strong>2 núm vặn biến trở 10 nấc</strong> mặt sau: <strong>Time (5s – 30 phút)</strong> và <strong>Lux (Cả ngày – Khi tối – Lux 20..300)</strong> [00:10:40].
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-indigo-400">5. Công tắc CB Cầu thang 2in1</td>
+                            <td class="p-2.5 font-mono font-bold"><code>LM-MSZ</code></td>
+                            <td class="p-2.5">220V AC (1 rơ-le)<br>Chân: <code>L | 1 | N</code></td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Zigbee</span></td>
+                            <td class="p-2.5">
+                                • Góc ngang <strong>150°</strong> (lắp <strong>Mắt che</strong> giảm còn <strong>50°</strong>), góc dọc <strong>35°</strong>, xa <strong>5m</strong>.<br>
+                                • <strong>Chôn đế âm bắt buộc:</strong> Đế vuông chôn tai <strong>ĐỨNG</strong>; Đế chữ nhật chôn tai <strong>NẰM NGANG</strong> [00:14:53].<br>
+                                • 2 chế độ: <strong>Auto</strong> (vặn 2 biến trở 10 nấc mặt sau) hoặc <strong>Manual</strong> (tắt đèn nút Auto, cài Rule trên App chuẩn hơn).<br>
+                                • <strong>Rule 2 cảm biến 2 đầu cầu thang:</strong> Bật đèn dùng <strong>HOẶC (OR)</strong>; Tắt đèn dùng <strong>VÀ (AND)</strong> [00:15:52].
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-rose-400">6. Cảm biến cửa</td>
+                            <td class="p-2.5 font-mono font-bold"><code>LM-DSZ/1.1</code></td>
+                            <td class="p-2.5">Pin <code>3.3V</code></td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Zigbee</span></td>
+                            <td class="p-2.5">
+                                • <strong>Phần Cảm biến (To):</strong> Gắn trên <strong>Cánh cửa</strong> (di động). <strong>Phần Nam châm (Nhỏ):</strong> Gắn trên <strong>Khung/Lề cửa</strong> (cố định) [00:16:43].<br>
+                                • Hai mặt có <strong>rãnh đánh dấu</strong> quay vào nhau, khoảng cách khi đóng <strong><code>&lt;= 2 cm</code></strong>.<br>
+                                • <strong>Rule An Ninh:</strong> Kết hợp điều kiện <strong>AND (Và)</strong> với 1 <strong>Nút công tắc ảo "An Ninh"</strong> [00:18:04].
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
-                <div class="font-bold text-amber-400">2. Cầu thang 2 in 1 [12:59]</div>
-                <p>• Góc ngang 150° (lắp <strong>Mắt che</strong> giảm còn <strong>50°</strong> tránh quét nhầm hành lang).</p>
-                <p>• Cài Rule 2 đầu cầu thang: <strong>Bật dùng HOẶC (OR)</strong>, <strong>Tắt dùng VÀ (AND)</strong>.</p>
-            </div>
-            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
-                <div class="font-bold text-cyan-400">3. Cảm biến cửa [16:25]</div>
-                <p>• <strong>Phần To</strong> gắn lên Cánh cửa; <strong>Phần Nhỏ (nam châm)</strong> gắn lên Khung cửa.</p>
-                <p>• Hai vạch khuyết đối diện nhau, tách xa <strong>> 2cm</strong> sẽ báo Mở.</p>
+
+            <div class="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
+                <div class="font-bold text-cyan-400 mb-1">💡 Khi Nào Chọn LM-MDZ/2.0 (Zigbee) vs. LM-MDB (BLE Mesh)?</div>
+                <p>• Nếu điều khiển qua <strong>Rule (If-Then) trên bộ trung tâm HC</strong>: Vì HC thu phát được cả 2 sóng Zigbee và BLE Mesh nên thiết bị của 2 chuẩn sóng vẫn phối hợp chéo qua HC được.</p>
+                <p>• <strong>NHƯNG bắt buộc chọn đúng mã cùng chuẩn sóng khi:</strong> (1) Cần <strong>tiếp sóng mở rộng mạng Mesh</strong> (nhà toàn công tắc Zigbee thì phải dùng <code>LM-MDZ/2.0</code> để nhờ công tắc tiếp sóng; nhà toàn đèn âm trần BLE Smart Lighting thì chọn <code>LM-MDB</code>), hoặc (2) Cài <strong>Binding trực tiếp</strong> không qua HC [00:12:24].</p>
             </div>
         </div>`
       }
@@ -166,81 +318,203 @@ export const coreModules: ModuleData[] = [
     labType: 'lab_mod1',
     miniQuiz: [
       {
-        q: 'Trên công tắc công suất cao 3 nút của Lumi, nút nào chịu được tải 3000W thuần trở để đấu Bình nóng lạnh?',
+        q: "Trên Công tắc công suất cao LM-SxH (tối đa 3 nút), thứ tự cầu đấu dây ở mặt sau và vị trí đấu Bình nóng lạnh 2500W có gì đặc biệt?",
         options: [
-          'Cả 3 nút đều chịu được 3000W.',
-          'Chỉ duy nhất NÚT SỐ 1 (chân số 1). Nút 2 và 3 chỉ chịu tải thường 150W LED / 700W thuần trở.',
-          'Chỉ nút số 3.',
-          'Phải đấu chập nút 1 và nút 2.'
+          'Thứ tự chân giống hệt công tắc thường và nút nào cũng chịu được 3000W.',
+          'Thứ tự chân là N | L | 1 | 2 | 3 (chân N nằm ngoài cùng bên trái, ngược với LM-SxN) và CHỈ DUY NHẤT NÚT SỐ 1 chịu tải 3000W thuần trở (~16A).',
+          'Không cần đấu dây Nguội (N).',
+          'Đấu bình nóng lạnh vào chân số 3.'
         ],
         correct: 1,
-        explain: 'Chính xác [00:01:41]! Đấu nhầm bình nóng lạnh sang chân 2 hoặc 3 sẽ làm cháy rơ-le ngay lập tức.'
+        explain: 'Chính xác [00:01:43 & 00:05:09]! Mã LM-SxH có chân N nằm ngoài cùng bên trái (N | L | 1 | 2 | 3) và chỉ rơ-le số 1 chịu tải 3000W.'
       },
       {
-        q: 'Khi ấn 2 lần vào nút Config trên Cảm biến chuyển động Lumi và thấy đèn nháy ĐỎ, thời gian trễ tắt đèn đang là bao nhiêu?',
+        q: "Khi cài đặt thông số độ trễ (10s - 60 phút) hoặc độ nhạy cho Cảm biến chuyển động dùng Pin (LM-MDZ/2.0 hoặc LM-MDB) trên App Lumi Life, bạn phải làm thao tác gì để cảm biến nhận lệnh?",
         options: [
-          '30 giây (Nháy Xanh).',
-          '120 giây / 2 phút (Nháy Đỏ).',
-          '300 giây / 5 phút (Nháy Hồng).',
-          '10 giây.'
+          'Cứ bấm lưu trên App là xong, không cần làm gì thêm.',
+          'Phải "Đánh thức cảm biến" (bấm nút hoặc khua tay trước mắt cảm biến) ngay lúc lưu trên App vì cảm biến dùng pin thường ở chế độ ngủ.',
+          'Phải tháo pin ra lắp lại 5 lần.',
+          'Phải tắt Aptomat tổng.'
         ],
         correct: 1,
-        explain: 'Đúng [00:10:05]! Xanh = 30s, Đỏ = 120s, Hồng = 300s.'
+        explain: 'Chuẩn xác theo ghi chú trên Slide [00:09:18]: "Đánh thức cảm biến để lưu thông số cài đặt trên app"!'
+      },
+      {
+        q: "Khi lắp Công tắc Cảm biến cầu thang 2in1 (mã LM-MSZ), chiều chôn đế âm và cách cài Rule cho 2 cảm biến ở 2 đầu cầu thang chuẩn nhất là gì?",
+        options: [
+          'Đế vuông chôn tai đứng, đế chữ nhật chôn tai nằm ngang; cài Rule Bật đèn dùng HOẶC (OR) và Tắt đèn dùng VÀ (AND).',
+          'Đế chữ nhật chôn đứng; cả Bật và Tắt đều dùng HOẶC (OR).',
+          'Không cần phân biệt chiều đế âm.',
+          'Chỉ lắp được 1 cảm biến duy nhất.'
+        ],
+        correct: 0,
+        explain: 'Chính xác [00:14:53 & 00:15:52]!'
       }
     ]
   },
   {
     id: 'mod2',
     step: 'Chặng 2',
-    title: 'Bài 1B: Hồng Ngoại IR, Điều Hòa VRV Daikin & Bộ 3 Module',
-    subtitle: 'Module VRV Daikin (Mạch DTA116A51), Module Input, Module 2in2out (giữ công tắc cơ) & Module 5in1 LED dây',
-    badge: 'Video Bài 1 (18:55 - 32:00)',
+    title: 'Bài 1B: Hồng Ngoại LM-IR/2.0, VRV Daikin LM-DK & Bộ 3 Module (Đầy Đủ Sơ Đồ Chân)',
+    subtitle: 'Đấu chân DATA(+)/B(-) mạch DTA116A51, công thức NetID = ID + 1, LM-INPUT, LM-2120 (8 chân) & LM-5IN1 (sáng 100% -> 12%)',
+    badge: 'Video Bài 1 (18:57 - 32:45)',
     badgeColor: 'bg-teal-500/20 text-teal-400 border-teal-500/30',
     videoUrl: 'https://www.youtube.com/watch?v=-RhVDFZZfnc',
     timestamps: [
-      { label: '19:00 Bộ Hồng ngoại IR (5m)', sec: 1140 },
-      { label: '20:39 Module VRV Daikin & DTA116A51', sec: 1239 },
-      { label: '24:50 Bắt bệnh đèn LED VRV', sec: 1490 },
-      { label: '25:27 Module Input (9-24VDC)', sec: 1527 },
-      { label: '26:41 Module 2 in 2 out', sec: 1601 },
-      { label: '29:23 Module 5 in 1 LED Dây', sec: 1763 }
+      { label: '18:57 Hồng ngoại LM-IR/2.0 (5VDC)', sec: 1137 },
+      { label: '20:38 Module Daikin LM-DK & DTA116A51', sec: 1238 },
+      { label: '23:06 Đấu chân DATA+/B- & NetID=ID+1', sec: 1386 },
+      { label: '24:30 Bắt bệnh LED H1P-H4P & LM-DK', sec: 1470 },
+      { label: '25:28 Module LM-INPUT (COM/NO/NC)', sec: 1528 },
+      { label: '26:43 Module LM-2120/Z-B (8 chân)', sec: 1603 },
+      { label: '29:22 Module LM-5IN1 (100% -> 12%)', sec: 1762 }
     ],
-    summary: 'Cách tích hợp điều hòa trung tâm VRV Daikin phản hồi 2 chiều bằng mạch DTA116A51, giữ lại công tắc cơ cổ điển bằng Module 2in2out và điều khiển 5 chế độ LED dây 24VDC.',
+    summary: 'Nắm trọn bộ thông số chuyên sâu Phần 3 & 4 của Bài 1: Sơ đồ đấu chéo chân DATA(+)/B(-) giữa LM-DK và DTA116A51, danh sách mã khiển BRC Daikin, công thức NetID = ID + 1, sơ đồ 8 chân LM-2120 và quy luật đèn sáng 100% -> 12% trên Module 5in1.',
     theoryBlocks: [
       {
-        title: '1. So Sánh Hồng Ngoại IR vs. Module Điều Hòa Trung Tâm Daikin VRV',
+        title: '1. Bộ Hồng Ngoại LM-IR/2.0 & Module Điều Hòa Trung Tâm VRV Daikin (LM-DK + DTA116A51) [00:18:57 - 00:25:20]',
         html: `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
-                <h4 class="font-bold text-emerald-400">📺 Hồng Ngoại IR (Điều hòa 2 cục, TV, Quạt) [19:00]</h4>
-                <p>• Khoảng cách tối đa <strong>5m</strong>, không vật cản, điều khiển <strong>1 chiều</strong> (bấm remote ngoài thì App không biết).</p>
-                <p>• Có 2 chế độ: Chọn Thư viện có sẵn hoặc Học lệnh từ Remote cũ (tối đa 6 ngữ cảnh).</p>
-            </div>
-            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
-                <h4 class="font-bold text-amber-400">❄️ Module Zigbee Daikin VRV (Đồng bộ 2 chiều) [20:39]</h4>
-                <p>• <strong>Bắt buộc mua thêm mạch mở rộng <code class="text-white bg-rose-600 px-1.5 py-0.5 rounded">DTA116A51</code> của Daikin</strong> lắp ở Cục nóng, kéo cáp RS485 (F1, F2) <strong>&lt; 100m</strong> về Module Lumi.</p>
-                <p>• Quản lý tối đa <strong>2 Cục nóng</strong> (đấu liên động) và <strong>16 Mặt lạnh</strong>.</p>
+        <div class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <!-- Hồng ngoại LM-IR/2.0 -->
+                <div class="lg:col-span-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-sm text-emerald-400">📺 Hồng Ngoại IR [18:57]</span>
+                        <code class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LM-IR/2.0</code>
+                    </div>
+                    <p>• <strong>Nguồn cấp:</strong> <code>5V DC / 1A</code> (qua củ sạc Adapter). Truyền thông: <strong>Zigbee</strong>.</p>
+                    <p>• <strong>Yêu cầu lắp đặt:</strong> Khoảng cách <strong><code>&lt;= 5m</code></strong>, không vật cản, mắt IR nhìn thẳng thiết bị. Điều khiển <strong>1 chiều</strong>.</p>
+                    <p>• <strong>2 Chế độ điều khiển [19:42]:</strong><br>
+                    &nbsp;&nbsp;1. <em>Thư viện có sẵn:</em> Đủ nút tăng giảm từng °C, Mode, Fan, Swing.<br>
+                    &nbsp;&nbsp;2. <em>Học lệnh từ Remote cũ:</em> Với điều hòa chỉ tạo được tối đa <strong>6 ô ngữ cảnh cài sẵn</strong> (VD: Cool 18°C, 20°C, 25°C, 26°C, Heat 28°C, 30°C) + 2 nút <code>ON / OFF</code>.</p>
+                </div>
+
+                <!-- VRV Daikin LM-DK + DTA116A51 -->
+                <div class="lg:col-span-8 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="font-bold text-sm text-amber-400">❄️ Module Zigbee Daikin VRV (Đồng bộ 2 chiều) [20:38]</span>
+                        <div class="flex gap-1.5">
+                            <code class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">LM-DK (12-24VDC)</code>
+                            <code class="px-2 py-0.5 rounded bg-rose-600 text-white font-bold">+ Mạch Daikin DTA116A51</code>
+                        </div>
+                    </div>
+                    <p>• <strong>Giới hạn phần cứng [22:27]:</strong> 1 bộ <code>LM-DK</code> + 1 mạch <code>DTA116A51</code> (lắp tại cục nóng) quản lý tối đa <strong>2 Cục nóng nối Chính–Phụ</strong> và <strong>16 Mặt lạnh</strong>. <em>(Nếu 2 cục nóng chạy độc lập song song ➔ Phải dùng 2 bộ LM-DK + 2 mạch DTA116A51)</em>. Dây tín hiệu RS485 dùng cáp <strong>CAT6 / CAT6A dài <code>&lt; 100m</code></strong>.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1">
+                        <div class="p-2.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700">
+                            <div class="font-bold text-cyan-400 mb-1">🔌 Sơ Đồ Đấu Chân Chuẩn [23:06 & 23:30]:</div>
+                            <p>1. <strong>Cục nóng Daikin ➔ Mạch DTA116A51:</strong><br>
+                            &nbsp;&nbsp;• Cấp nguồn: Chân <code>X37A</code> (cục nóng) ➔ <code>X1A</code> (16-24VDC trên DTA).<br>
+                            &nbsp;&nbsp;• Tín hiệu: Chân <code>F1, F2</code> (cục nóng) ➔ <code>X7A</code> (DIII-NET trên DTA).</p>
+                            <p class="mt-1">2. <strong>Mạch DTA (Cầu X2M) ➔ Module Lumi LM-DK:</strong><br>
+                            &nbsp;&nbsp;• Gạt DIP Switch <code>DS1, DS2</code> & <code>SS1, SS2, SS3</code> chọn RS485.<br>
+                            &nbsp;&nbsp;• <span class="text-amber-300 font-bold">Chân <code>DATA(+)</code> của Lumi ➔ Đấu vào <code>B(-)</code> của DTA!</span><br>
+                            &nbsp;&nbsp;• <span class="text-amber-300 font-bold">Chân <code>DATA(-)</code> của Lumi ➔ Đấu vào <code>A(+)</code> của DTA!</span></p>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700">
+                            <div class="font-bold text-emerald-400 mb-1">📟 Mã Khiển Daikin Hỗ Trợ Cài ID & Công Thức NetID [23:41]:</div>
+                            <p>• <strong>Bảng điều khiển hỗ trợ:</strong> <code>BRC1C61</code>, <code>BRC1C62-9</code>, <code>BRC4C151 / 152 / 153</code> (Remote), <code>BRC1E61 / 62 / 63</code>, <code>BRC2E61</code>.</p>
+                            <p class="mt-1.5 p-1.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono font-bold text-center">
+                                Công thức App [23:59]: NetID device = ID mặt lạnh + 1
+                            </p>
+                            <p class="text-[11px] text-slate-400 mt-1">• <strong>Đèn LED trên DTA116A51 [24:30]:</strong> <code>H1P/H2P</code> nháy vàng = thông DIII-NET với cục nóng; <code>H3P/H4P</code> nháy vàng = thông Modbus với LM-DK.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>`
       },
       {
-        title: '2. Bộ 3 Module Chuyên Dụng: Input, 2 In 2 Out & 5 In 1 (LED Dây)',
+        title: '2. Bộ 3 Module Chuyên Dụng: LM-INPUT, LM-2120/Z-B (2 In 2 Out) & LM-5IN1/Z-B (LED Dây) [00:25:28 - 00:32:10]',
         html: `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
-                <div class="font-bold text-emerald-400">1. Module Input [25:27]</div>
-                <p>• Cấp nguồn <strong>9–24V DC</strong>. Có 4 ngõ vào (IN1–IN4 đấu với GND).</p>
-                <p>• Tích hợp cảm biến hãng thứ 3 (khói, beam hàng rào NO/NC) vào Lumi.</p>
+        <div class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Module Input LM-INPUT -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-sm text-emerald-400">1. Module Input [25:28]</span>
+                        <code class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LM-INPUT</code>
+                    </div>
+                    <p>• <strong>Nguồn cấp:</strong> <code>12 – 24V DC</code> (Sơ đồ đấu nối hỗ trợ dải <code>9 – 24V DC</code> vào chân <code>24V/12V</code> và <code>GND</code>). Sóng: <strong>Zigbee</strong>.</p>
+                    <p>• <strong>Chức năng:</strong> Tích hợp tối đa <strong>4 cảm biến hãng thứ 3</strong> có tiếp điểm khô <code>NO</code> (Normal Open) hoặc <code>NC</code> (Normal Close) như beam hàng rào, báo khói, báo cháy.</p>
+                    <p>• <strong>Sơ đồ đấu 4 cặp chân <code>IN1-, IN1+</code> đến <code>IN4-, IN4+</code> [26:25]:</strong><br>
+                    &nbsp;&nbsp;+ Chân <strong><code>IN-</code></strong> ➔ Đấu vào chân <strong><code>COM</code></strong> của cảm biến.<br>
+                    &nbsp;&nbsp;+ Chân <strong><code>IN+</code></strong> ➔ Đấu vào chân <strong><code>NO</code></strong> hoặc <strong><code>NC</code></strong> của cảm biến.</p>
+                </div>
+
+                <!-- Module 2 IN 2 OUT LM-2120 -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-sm text-amber-400">2. Module 2 IN 2 OUT [26:43]</span>
+                        <code class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">LM-2120/Z & LM-2120/B</code>
+                    </div>
+                    <p>• <strong>Nguồn & Công suất:</strong> <code>110–230V AC</code>. Chịu tải <strong>1000W thuần trở / 200W LED mỗi rơ-le</strong> (công tắc cơ 4 nút cần 2 module hoặc gộp tải).</p>
+                    <p>• <strong>Thứ tự 8 chân trên thân [27:36]:</strong> <code class="px-1.5 py-0.5 rounded bg-slate-900 text-amber-300 font-bold">IN2 | IN1 | O2 | O1 | S | NC | N | L</code><br>
+                    &nbsp;&nbsp;(Cắt dây từ công tắc cơ lên đèn: đầu ra công tắc cơ vào <code>IN1, IN2</code>; đầu lên bóng đèn vào <code>O1, O2</code>).</p>
+                    <p>• <strong>Cấu hình sâu trên App [27:58 - 29:11]:</strong><br>
+                    &nbsp;&nbsp;+ <em>3 Chế độ Đầu vào:</em> <strong>Any change</strong> (Mặc định khuyên dùng), <strong>Nhấn giữ</strong> (bất tiện vì lệch trạng thái tay/App), <strong>Nhấn nhả</strong>.<br>
+                    &nbsp;&nbsp;+ <em>5 Chế độ Đầu ra:</em> <code>Mặc định</code>, <code>Tự động bật</code>, <code>Tự động tắt</code>, <code>Bật trễ</code>, <code>Tắt trễ</code>.<br>
+                    &nbsp;&nbsp;+ <em>Liên kết In-Out & Trạng thái khởi động sau mất điện:</em> <code>Mặc định</code> (nhớ trạng thái cũ), <code>Bật</code>, hoặc <code>Tắt</code>.</p>
+                </div>
             </div>
-            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
-                <div class="font-bold text-amber-400">2. Module 2 In 2 Out [26:41]</div>
-                <p>• Giữ lại mặt công tắc cơ cũ của chủ nhà. Chịu tải <strong>1000W trở / 200W LED</strong> mỗi kênh.</p>
-                <p>• 3 chế độ: <strong>Change (Mặc định)</strong>, Nhấn giữ, Nhấn nhả.</p>
-            </div>
-            <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
-                <div class="font-bold text-purple-400">3. Module 5 in 1 LED Dây [29:23]</div>
-                <p>• Dùng nguồn tổ ong <strong>12V/24V DC</strong>.</p>
-                <p>• Giữ nút Config <strong>10s</strong> rồi bấm <strong>1 đến 5 lần</strong>: (1) RGBW, (2) RGB+WW, (3) 5 Dim, (4) 1WW+3Dim, (5) 2WW+1Dim.</p>
+
+            <!-- Bảng 5 Chế độ Module 5 IN 1 LM-5IN1/Z & LM-5IN1/B -->
+            <div class="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="font-bold text-sm text-purple-300">3. Module 5 IN 1 Điều Khiển LED Dây (Nhấn giữ Config 10s ➔ Nhấn 1 đến 5 lần) [00:29:22 - 00:31:58]</span>
+                    <code class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 font-bold">LM-5IN1/Z (Zigbee) & LM-5IN1/B (BLE) • 12-24VDC</code>
+                </div>
+                <p>Tất cả dây Dương (<code>+12V/24V</code>) của cuộn LED đấu chung vào chân <code>+</code> của nguồn tổ ong MeanWell. Các dây Âm điều khiển màu đấu vào 5 chân <code>1, 2, 3, 4, 5</code> theo bảng chuẩn trên slide:</p>
+                <div class="overflow-x-auto rounded-xl border border-purple-500/30">
+                    <table class="w-full border-collapse text-left">
+                        <thead>
+                            <tr class="bg-slate-900 text-purple-200">
+                                <th class="p-2">Thao Tác Nút Config</th>
+                                <th class="p-2">Tên Chế Độ</th>
+                                <th class="p-2">Sơ Đồ Đấu 5 Chân (1 - 2 - 3 - 4 - 5)</th>
+                                <th class="p-2">Trạng Thái Khi Mới Cấp Nguồn</th>
+                                <th class="p-2">Trạng Thái Sau Khi Gia Nhập Mạng HC</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 bg-slate-950/80 text-slate-200">
+                            <tr>
+                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 1 lần</td>
+                                <td class="p-2 font-bold">1. RGBWW<br><span class="text-[10px] text-slate-400">(Chỉ chạy 1 trong 2 kênh cùng lúc)</span></td>
+                                <td class="p-2 font-mono"><code>1=B | 2=G | 3=R | 4=CW | 5=WW</code></td>
+                                <td class="p-2">Kênh WW sáng trắng <strong>100%</strong>, RGB tắt</td>
+                                <td class="p-2 text-amber-300">Kênh WW sáng vàng <strong>100%</strong>, RGB tắt</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 2 lần</td>
+                                <td class="p-2 font-bold">2. RGB & WW<br><span class="text-[10px] text-emerald-400">(2 kênh chạy độc lập cùng lúc)</span></td>
+                                <td class="p-2 font-mono"><code>1=B | 2=G | 3=R | 4=CW | 5=WW</code></td>
+                                <td class="p-2">Cả 2 kênh sáng trắng <strong>100%</strong></td>
+                                <td class="p-2 text-emerald-300 font-bold">Cả 2 kênh giảm xuống sáng vàng <strong>12%</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 3 lần</td>
+                                <td class="p-2 font-bold">3. 5Dim<br><span class="text-[10px] text-slate-400">(5 lộ LED đơn sắc độc lập)</span></td>
+                                <td class="p-2 font-mono"><code>1=D1 | 2=D2 | 3=D3 | 4=D4 | 5=D5</code></td>
+                                <td class="p-2">Cả 5 kênh sáng trắng <strong>100%</strong></td>
+                                <td class="p-2 text-emerald-300 font-bold">Cả 5 kênh giảm xuống sáng <strong>12%</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 4 lần</td>
+                                <td class="p-2 font-bold">4. 1WW 3Dim<br><span class="text-[10px] text-slate-400">(1 lộ WW + 3 lộ Dim)</span></td>
+                                <td class="p-2 font-mono"><code>1=CW | 2=WW | 3=D1 | 4=D2 | 5=D3</code></td>
+                                <td class="p-2">4 lộ LED sáng trắng <strong>100%</strong></td>
+                                <td class="p-2 text-emerald-300 font-bold">Kênh WW sáng vàng <strong>12%</strong>, 3 Dim sáng <strong>12%</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 5 lần</td>
+                                <td class="p-2 font-bold">5. 2WW 1Dim<br><span class="text-[10px] text-slate-400">(2 lộ WW + 1 lộ Dim)</span></td>
+                                <td class="p-2 font-mono"><code>1=CW1 | 2=WW1 | 3=CW2 | 4=WW2 | 5=D1</code></td>
+                                <td class="p-2">Tất cả kênh sáng trắng <strong>100%</strong></td>
+                                <td class="p-2 text-emerald-300 font-bold">Tất cả kênh giảm xuống sáng <strong>12%</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>`
       }
@@ -248,26 +522,37 @@ export const coreModules: ModuleData[] = [
     labType: 'lab_mod2',
     miniQuiz: [
       {
-        q: 'Để tích hợp điều hòa trung tâm Daikin VRV với Module Zigbee Lumi, ta bắt buộc phải lắp thêm bo mạch gì tại cục nóng?',
+        q: "Khi đấu dây tín hiệu RS485 từ cầu đấu X2M của mạch mở rộng Daikin DTA116A51 sang Module Lumi LM-DK, quy tắc đấu chân nào sau đây là ĐÚNG theo slide [00:23:30]?",
         options: [
-          'Mạch mở rộng (Adaptor) mã DTA116A51 của hãng Daikin và kéo dây tín hiệu RS485 dưới 100m.',
-          'Nguồn tổ ong 24VDC.',
-          'Cục phát hồng ngoại IR.',
-          'Module Input 4 kênh.'
-        ],
-        correct: 0,
-        explain: 'Chính xác [00:21:29]! Mạch DTA116A51 giúp chuyển đổi giao tiếp để Module Lumi đồng bộ 2 chiều tối đa 2 cục nóng và 16 dàn lạnh.'
-      },
-      {
-        q: 'Trên Module 5 in 1 điều khiển LED dây, để chuyển sang chế độ số 2 (RGB + WW), bạn thao tác nút Config như thế nào?',
-        options: [
-          'Ấn 5 lần liên tiếp.',
-          'Ấn giữ nút Config 10 giây đến khi đèn nháy, sau đó ấn nút Config 2 lần.',
-          'Ấn giữ 2 giây.',
-          'Rút nguồn cắm lại 2 lần.'
+          'Đấu DATA(+) vào A(+) và DATA(-) vào B(-).',
+          'Đấu chéo: Chân DATA(+) của Lumi LM-DK đấu vào chân B(-) của DTA116A51; chân DATA(-) của Lumi đấu vào chân A(+) của DTA116A51 (và tính địa chỉ NetID = ID mặt lạnh + 1).',
+          'Đấu trực tiếp vào điện 220V AC.',
+          'Chỉ cần đấu 1 sợi dây duy nhất.'
         ],
         correct: 1,
-        explain: 'Đúng [00:31:10]! Giữ 10s để mở khóa chọn mode, sau đó bấm từ 1 đến 5 lần tương ứng 5 chế độ LED.'
+        explain: 'Chính xác [00:23:30 & 00:23:59]! Phải đấu DATA(+) vào B(-) và DATA(-) vào A(+), đồng thời trên App Lumi Life địa chỉ NetID device = ID mặt lạnh + 1.'
+      },
+      {
+        q: "Trên Module 5 IN 1 (LM-5IN1/Z hoặc LM-5IN1/B), dấu hiệu nhận biết trên dải đèn LED khi thiết bị vừa gia nhập mạng HC thành công ở các chế độ 2 (RGB & WW), 3 (5Dim), 4 (1WW 3Dim) và 5 (2WW 1Dim) là gì?",
+        options: [
+          'Đèn tắt hẳn về 0%.',
+          'Khi mới cấp nguồn đèn sáng trắng 100%, ngay sau khi gia nhập mạng HC thành công độ sáng các kênh tự động giảm xuống mức 12%.',
+          'Đèn nhấp nháy màu đỏ liên tục.',
+          'Nguồn tổ ong tự ngắt.'
+        ],
+        correct: 1,
+        explain: 'Chuẩn xác theo các slide [00:30:11 - 00:31:58]! Việc độ sáng tự hạ từ 100% xuống 12% giúp kỹ thuật viên nhìn bằng mắt thường biết ngay Module 5in1 đã vào mạng thành công.'
+      },
+      {
+        q: "Khi đấu nối Module Input (LM-INPUT) với cảm biến hãng thứ 3 (như cảm biến hàng rào hoặc báo cháy), cặp chân tín hiệu IN- và IN+ được đấu vào đâu?",
+        options: [
+          'Chân IN- đấu vào chân COM của cảm biến; chân IN+ đấu vào chân NO hoặc NC của cảm biến (nguồn nuôi module là 9-24VDC).',
+          'Đấu thẳng điện 220V vào IN- và IN+.',
+          'Đấu cả 2 chân vào GND.',
+          'Không cần đấu dây.'
+        ],
+        correct: 0,
+        explain: 'Chính xác [00:26:25]!'
       }
     ]
   },

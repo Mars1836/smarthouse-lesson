@@ -7,7 +7,7 @@ export function getAllMasterQuestions(): QuizQuestion[] {
     (m.miniQuiz || []).forEach(q => list.push({ ...q, step: m.step }));
   });
 
-  // 3 comprehensive practical questions added to make 15
+  // Comprehensive practical questions added to cover field scenarios
   list.push(
     {
       step: 'Chặng 1',

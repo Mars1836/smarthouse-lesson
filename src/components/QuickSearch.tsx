@@ -40,7 +40,7 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ onSelectModule }) => {
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          placeholder="Tra cứu nhanh: nhảy CB, bình nóng lạnh, trễ 5s, CRI..."
+          placeholder="Tra mã SP & lỗi: LM-SxH, LM-MDB, LM-MC, DTA116A51, NetID, 12%, nhảy CB..."
           className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
         />
         <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400 pointer-events-none" />

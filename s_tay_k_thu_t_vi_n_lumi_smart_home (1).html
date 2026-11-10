@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumi SmartHome Academy — Nền Tảng Học & Thực Hành Nghề Điện Thông Minh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.4); }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 6px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        @keyframes flow {
+            to { stroke-dashoffset: -24; }
+        }
+        .wire-active {
+            stroke-dasharray: 8 4;
+            animation: flow 0.55s linear infinite;
+        }
+        .glow-amber {
+            box-shadow: 0 0 16px rgba(251, 191, 36, 0.75);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
+        }
+        .glow-rose {
+            box-shadow: 0 0 14px rgba(244, 63, 94, 0.85);
+        }
+        .glow-pink {
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.85);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+
+    <!-- ==========================================
+         TOP HEADER BAR (STICKY)
+         ========================================== -->
+    <header class="sticky top-0 z-40 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 lg:px-6 flex items-center justify-between gap-3">
+        <!-- Left: Hamburger & Brand -->
+        <div class="flex items-center gap-3">
+            <button onclick="toggleSidebarMobile()" class="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-500/20">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white font-extrabold text-lg shadow-md">
+                    L
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white">Lumi SmartHome Academy</span>
+                        <span class="hidden sm:inline-block px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">Lộ Trình Thực Chiến 4-Trong-1</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Học lý thuyết • Thực hành mô phỏng • Bắt bệnh công trình ngay trên 1 màn hình</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center: Instant Field Troubleshooter Search -->
+        <div class="flex-1 max-w-md relative">
+            <input 
+                type="text" 
+                id="globalSearchInput"
+                oninput="handleQuickSearch(this.value)"
+                placeholder="Tra mã SP & lỗi: LM-SxH, LM-MDB, LM-MC, DTA116A51, NetID, 12%, nhảy CB..."
+                class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <button id="clearSearchBtn" onclick="closeQuickSearch()" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-200 text-xs">✕</button>
+
+            <!-- Dropdown Quick Search Results -->
+            <div id="quickSearchDropdown" class="hidden absolute left-0 right-0 top-12 bg-white dark:bg-slate-900 border-2 border-emerald-500 rounded-2xl shadow-2xl p-3 max-h-96 overflow-y-auto z-50">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-800">
+                    <span class="text-xs font-bold text-emerald-500">🔍 Kết quả tra cứu nhanh (Bấm để nhảy tới Chặng học)</span>
+                    <button onclick="closeQuickSearch()" class="text-[11px] text-slate-400 hover:text-white">Đóng</button>
+                </div>
+                <div id="quickSearchList" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- Right: Progress, Master Exam & Theme -->
+        <div class="flex items-center gap-2 sm:gap-3">
+            <div class="hidden md:flex items-center gap-2.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                <div class="text-xs">
+                    <span class="text-slate-500 dark:text-slate-400">Hoàn thành:</span>
+                    <span id="overallProgressText" class="font-extrabold text-emerald-500 ml-1">0/6 Chặng</span>
+                </div>
+                <div class="w-20 h-2 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div id="overallProgressBar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <button onclick="openMasterExamModal()" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm flex items-center gap-1.5 transition shrink-0">
+                <span>🏆</span> <span class="hidden sm:inline">Thi Sát Hạch Tổng (15 Câu)</span><span class="sm:hidden">Thi Tổng</span>
+            </button>
+
+            <button onclick="toggleTheme()" title="Đổi giao diện Sáng / Tối" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700">
+                <span id="themeToggleIcon">☀️</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         MAIN WORKSPACE: SIDEBAR ROADMAP + LESSON VIEW
+         ========================================== -->
+    <div class="flex-1 flex relative max-w-[1600px] w-full mx-auto">
+
+        <!-- Mobile Backdrop -->
+        <div id="sidebarBackdrop" onclick="toggleSidebarMobile()" class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden"></div>
+
+        <!-- LEFT SIDEBAR: LEARNING ROADMAP -->
+        <aside id="roadmapSidebar" class="fixed lg:sticky top-16 left-0 z-30 w-80 h-[calc(100vh-4rem)] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shrink-0">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Lộ Trình Từ Zero Đến Thợ Cứng</h2>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Mỗi chặng tích hợp: Video + Sơ đồ + Thực hành + Quiz</p>
+                </div>
+            </div>
+
+            <!-- Module List -->
+            <div id="roadmapList" class="flex-1 overflow-y-auto p-3 space-y-2">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- Add New Lesson / Backup Footer -->
+            <div class="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 space-y-2">
+                <button onclick="openAddModuleModal()" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow flex items-center justify-center gap-2 transition">
+                    <span>➕</span> Thêm Chặng Mới (Bài 8, 9...)
+                </button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="exportAllData()" class="py-1.5 px-2 rounded-lg text-[11px] font-semibold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
+                        ⬇️ Sao lưu (.JSON)
+                    </button>
+                    <label class="py-1.5 px-2 rounded-lg text-[11px] font-semibold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-center cursor-pointer">
+                        ⬆️ Khôi phục
+                        <input type="file" accept=".json" onchange="importAllData(event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT MAIN AREA: UNIFIED LESSON + INTERACTIVE WORKBENCH + MINI QUIZ + NOTES -->
+        <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 space-y-8 overflow-y-auto">
+            <!-- Dynamic Module Content Rendered Here -->
+            <div id="activeModuleContainer" class="max-w-5xl mx-auto space-y-8"></div>
+        </main>
+    </div>
+
+    <!-- ==========================================
+         MODAL 1: THÊM CHẶNG BÀI HỌC MỚI (BÀI 8, 9...)
+         ========================================== -->
+    <div id="addModuleModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <h3 class="font-extrabold text-lg text-emerald-500">➕ Thêm Chặng Học Mới Vào Lộ Trình</h3>
+                <button onclick="closeAddModuleModal()" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            <form onsubmit="handleSaveCustomModule(event)" class="space-y-3.5 text-xs sm:text-sm">
+                <div>
+                    <label class="block font-bold mb-1">Tên Chặng / Bài Học Tiếp Theo *</label>
+                    <input type="text" id="newModTitle" required placeholder="VD: Chặng 6: Động Cơ Rèm, Cửa Cuốn & Khóa Thông Minh" class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">Link Video YouTube (Không bắt buộc)</label>
+                    <input type="url" id="newModVideo" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">Tóm tắt cốt lõi & Sơ đồ chân đấu nối *</label>
+                    <textarea id="newModContent" rows="6" required placeholder="- Nguyên lý đấu nối...\n- Các lưu ý quan trọng khi đi dây...\n- Cách cài đặt trên App Lumi Life..." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeAddModuleModal()" class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 font-semibold">Hủy</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold">💾 Lưu Vào Cây Lộ Trình</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 2: THI SÁT HẠCH TỔNG HỢP 15 CÂU
+         ========================================== -->
+    <div id="masterExamModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-6">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl">
+            <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <h3 class="font-extrabold text-lg sm:text-xl text-amber-400 flex items-center gap-2">
+                        <span>🏆</span> Đề Thi Sát Hạch Kỹ Thuật Viên Lumi Toàn Diện (15 Câu)
+                    </h3>
+                    <p class="text-xs text-slate-400">Tổng hợp toàn bộ tình huống thực tế từ Chặng 0 đến Chặng 5</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="masterExamScore" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-400 font-extrabold text-xs sm:text-sm border border-emerald-500/30">0 / 15</span>
+                    <button onclick="resetMasterExam()" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold hover:bg-slate-700">Làm lại</button>
+                    <button onclick="closeMasterExamModal()" class="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white">✕</button>
+                </div>
+            </div>
+            <div id="masterExamContainer" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT ENGINE: ALL-IN-ONE LMS & LABS
+         ========================================== -->
+    <script>
+        // STATE MANAGEMENT
+        let currentModuleId = 'mod0';
+        const STORAGE_COMPLETED = 'lumi_lms_completed_v2';
+        const STORAGE_NOTES = 'lumi_lms_notes_v2';
+        const STORAGE_CUSTOM_MODS = 'lumi_lms_custom_mods_v2';
+        const STORAGE_MINIQUIZ = 'lumi_lms_miniquiz_v2';
+
+        // 1. CẤU TRÚC 6 CHẶNG HỌC (TÍCH HỢP LÝ THUYẾT + LAB TƯƠNG TÁC + MINI QUIZ)
+        const coreModules = [
+            {
+                id: 'mod0',
+                step: 'Chặng 0',
+                title: 'Nhập Môn Điện Dân Dụng & An Toàn Đế Âm',
+                subtitle: 'Dành cho người mới 100%: Phân biệt L/N/Tải/PE, xử lý đế âm 5 dây đỏ & lỗi nhảy CB chống giật',
+                badge: 'Nền tảng bắt buộc',
+                badgeColor: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+                videoUrl: null,
+                timestamps: [],
+                summary: 'Khác với công tắc cơ chỉ cắt dây Lửa, Công tắc thông minh Lumi bắt buộc phải có cả Dây Lửa (L - 220V) và Dây Nguội/Mát (N) để nuôi nguồn mạch điện tử 24/7.',
+                theoryBlocks: [
+                    {
+                        title: '1. Bảng Nhận Diện 4 Loại Dây Điện Trong Đế Âm Tường',
+                        html: `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30">
+                                <div class="flex justify-between font-bold text-red-400 mb-1"><span>🔥 Dây Lửa (L)</span><span>220V AC</span></div>
+                                <p class="text-slate-600 dark:text-slate-300">Bút thử điện <strong>sáng đỏ rực</strong>. Cấp nguồn chính vào chân <code>L</code> của công tắc.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/30">
+                                <div class="flex justify-between font-bold text-blue-400 mb-1"><span>💧 Dây Nguội / Mát (N)</span><span>~0V</span></div>
+                                <p class="text-slate-600 dark:text-slate-300">Bút thử điện không sáng. Thường được <strong>xoắn chụm nhiều dây xanh/trắng</strong> trong đế âm. Đấu vào chân <code>N</code>.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                                <div class="flex justify-between font-bold text-amber-400 mb-1"><span>💡 Dây Tải Ra Đèn</span><span>Chân 1,2,3,4</span></div>
+                                <p class="text-slate-600 dark:text-slate-300">Dây chạy từ công tắc lên bóng đèn. Thợ hay kéo <strong>cùng màu đỏ</strong> với dây Lửa nên phải tách ra thử bút điện.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                                <div class="flex justify-between font-bold text-emerald-400 mb-1"><span>🛡️ Dây Tiếp Địa (PE)</span><span>Xanh lá-Vàng</span></div>
+                                <p class="text-slate-600 dark:text-slate-300">Đo đồng hồ với L vẫn lên 220V! <strong>Cấm đấu nhầm vào chân N</strong> (sẽ làm nhảy CB chống giật ngay).</p>
+                            </div>
+                        </div>`
+                    },
+                    {
+                        title: '2. Giải Mã Bức Ảnh Đế Âm Có "5 Dây Đỏ + 1 Cụm Dây Xanh" & Lỗi Mượn Mát Nhảy CB',
+                        html: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                                <h4 class="font-bold text-amber-400">🛠️ 4 Bước Xử Lý 5 Dây Đỏ Cùng Màu:</h4>
+                                <p>1. <strong>Tắt CB</strong>, tách rời 5 đầu dây đỏ không chạm nhau.</p>
+                                <p>2. <strong>Bật CB</strong>, chạm bút thử điện vào từng dây đỏ: <strong>Duy nhất 1 dây làm bút sáng đỏ là Lửa nguồn (L)</strong> -> Đánh dấu lại.</p>
+                                <p>3. <strong>Tắt CB</strong>, lấy sợi dây xanh trích từ bó dây chụm chung đấu vào chân <strong>N</strong>.</p>
+                                <p>4. Đấu 4 sợi đỏ còn lại vào chân <strong>1, 2, 3, 4</strong> (lệch nút nào chỉ cần tráo dây ở 1,2,3,4).</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1.5">
+                                <h4 class="font-bold text-rose-400">⚠️ Tại Sao Mượn Dây Mát (N) Của Ổ Cắm Lại Nhảy CB Chống Giật?</h4>
+                                <p>• <strong>Nguy cơ nhà 3 pha:</strong> Đấu nhầm 2 dây Lửa khác pha (L1 và L2) sẽ tạo điện áp <strong>380V</strong> nổ tung công tắc!</p>
+                                <p>• <strong>Nguyên lý CB chống giật (RCBO/RCCB):</strong> Điện đi ra từ dây L của CB Đèn thì bắt buộc phải quay về đúng dây N của CB Đèn. Nếu bạn mượn dây N của CB Ổ cắm, dòng điện bị lệch -> <strong>CB chống giật tưởng rò điện và nhảy cúp ngay khi bật đèn!</strong></p>
+                            </div>
+                        </div>`
+                    }
+                ],
+                labType: 'lab_mod0',
+                miniQuiz: [
+                    {
+                        q: "Khi mở hộp đế âm công tắc 4 nút thấy 5 sợi dây màu đỏ giống hệt nhau và 1 cụm dây màu xanh dương xoắn chung, làm sao tìm đúng dây Lửa nguồn (L)?",
+                        options: [
+                            "Đoán theo màu đầu cosse nhựa.",
+                            "Ngắt CB tách rời 5 đầu dây đỏ, bật lại CB rồi dùng bút thử điện chạm từng dây: duy nhất 1 dây làm bút sáng đỏ chính là dây Lửa nguồn (L).",
+                            "Đấu đại 1 dây đỏ bất kỳ vào chân L.",
+                            "Cắt bỏ bớt 3 dây đỏ."
+                        ],
+                        correct: 1,
+                        explain: "Chính xác! Thợ điện thường đi chung 1 cuộn dây đỏ cho cả Lửa nguồn và Tải đèn. Chỉ có dây Lửa nguồn (L) mới làm bút thử điện sáng khi đã tách rời các dây."
+                    },
+                    {
+                        q: "Vì sao khi đế âm công tắc bị thiếu dây Nguội (N), bạn câu dây Nguội từ ổ cắm gần đó (nhưng khác Aptomat chống giật RCBO) thì vừa bật đèn là nhảy CB?",
+                        options: [
+                            "Do công tắc tiêu thụ quá nhiều điện.",
+                            "Do dòng điện đi ra từ L của CB Đèn nhưng lại trở về qua N của CB Ổ cắm, làm lệch dòng điện so sánh khiến CB chống giật nhảy bảo vệ.",
+                            "Do dây ổ cắm bị đứt.",
+                            "Do bóng đèn bị cháy."
+                        ],
+                        correct: 1,
+                        explain: "Chuẩn xác! Chỉ được mượn dây Mát từ ổ cắm nếu ổ cắm đó đi CHUNG cùng 1 CB chống giật với đèn (tắt CB đèn thì ổ cắm mất điện theo)."
+                    }
+                ]
+            },
+            {
+                id: 'mod1',
+                step: 'Chặng 1',
+                title: 'Bài 1A: Công Tắc Cảm Ứng, Đế Âm & Hệ Thống Cảm Biến (Bản Đầy Đủ Mã SP)',
+                subtitle: 'Đầy đủ mã LM-SxN/LM-S1D/LM-SxH, thứ tự chân đấu, đế Sino S3157L/S2157, 6 thao tác Config, LM-MDZ/LM-MDB/LM-MC/LM-MSZ/LM-DSZ',
+                badge: 'Video Bài 1 (00:00 - 18:50)',
+                badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                videoUrl: 'https://www.youtube.com/watch?v=-RhVDFZZfnc',
+                timestamps: [
+                    { label: '00:29 4 Tiêu chí & 7 Dòng CT', sec: 29 },
+                    { label: '00:59 Mã LM-SxN / LM-S1D / LM-SxH', sec: 59 },
+                    { label: '02:32 Đế âm Sino S3157L & S2157', sec: 152 },
+                    { label: '05:23 Địa chỉ MAC & 6 Tính năng Config', sec: 323 },
+                    { label: '07:25 Mã LM-MDZ/2.0, LM-MDB, LM-MDZ/2.1', sec: 445 },
+                    { label: '10:40 10 Nấc vặn biến trở LM-MC', sec: 640 },
+                    { label: '12:59 Cầu thang 2in1 LM-MSZ', sec: 779 },
+                    { label: '16:22 Cảm biến cửa LM-DSZ/1.1', sec: 982 }
+                ],
+                summary: 'Tổng hợp 100% thông số trên từng slide Bài 1 (Phần 1 & 2): Giải mã ký hiệu mã sản phẩm, sự ngược chân N trên công tắc công suất cao LM-SxH, kích thước milimet đế âm Sino, 6 thao tác vật lý và toàn bộ 6 mã cảm biến (bao gồm 10 nấc vặn biến trở Time/Lux).',
+                theoryBlocks: [
+                    {
+                        title: '1. Phân Loại Ngoại Hình & Giải Mã Mã Sản Phẩm + Thứ Tự Chân Đấu Trên Tem [00:00:29 - 00:05:15]',
+                        html: `
+                        <div class="space-y-4 text-xs sm:text-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                                    <div class="font-bold text-emerald-400 mb-1">🎨 4 Tiêu Chí Ngoại Hình Công Tắc [00:00:29]:</div>
+                                    <p>• <strong>Màu sắc:</strong> Đen, Trắng &nbsp;|&nbsp; <strong>Hình dạng:</strong> Vuông, Chữ nhật</p>
+                                    <p>• <strong>Viền:</strong> Viền thẳng, Viền bo &nbsp;|&nbsp; <strong>Mặt kính:</strong> Kính phẳng, Kính lõm</p>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                                    <div class="font-bold text-amber-400 mb-1">⚡ 7 Dòng Công Tắc Cảm Ứng Lumi:</div>
+                                    <p>1. CS Thường &bull; 2. CS Cao &bull; 3. Chiết áp (Dimmer) &bull; 4. Công tắc Rèm &bull; 5. Cửa cuốn &bull; 6. Cổng &bull; 7. Dual Mode.</p>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                                <table class="w-full border-collapse text-left text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                                            <th class="p-2.5">Loại Công Tắc</th>
+                                            <th class="p-2.5">Mã Sản Phẩm & Giải Nghĩa Ký Hiệu</th>
+                                            <th class="p-2.5">Công Suất & Thông Số Tem</th>
+                                            <th class="p-2.5">Thứ Tự Cầu Đấu Trên Tem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-emerald-400">1. Công tắc thường<br><span class="text-[10px] text-slate-400">[00:00:59]</span></td>
+                                            <td class="p-2.5">
+                                                <code class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LM-SxN</code><br>
+                                                <span class="text-[11px] text-slate-400">Tem hộp: <code>LM-SZN-xK(G)/W(B)/V.2</code></span><br>
+                                                • <b>LM</b>: Lumi | <b>S</b>: Switch<br>
+                                                • <b>x = 1, 2, 3, 4</b>: Số nút (tối đa 4 nút)<br>
+                                                • <b>N</b>: Normal (Loại thường)
+                                            </td>
+                                            <td class="p-2.5">
+                                                • Nguồn: <code>100–240V AC ~ 50/60Hz</code><br>
+                                                • Tải mỗi rơ-le (1 nút): <strong>700W thuần trở</strong> / <strong>150W LED</strong><br>
+                                                • Nhiệt độ: <code>0°C–50°C</code> | Bảo vệ: <code>IP2X</code>
+                                            </td>
+                                            <td class="p-2.5 font-mono font-bold">
+                                                <span class="px-1.5 py-1 rounded bg-slate-900 text-red-400 border border-slate-700">L | 1 | 2 | 3 | 4 | N</span><br>
+                                                <span class="text-[10px] text-slate-400 font-sans">Chân L bên trái, chân N ngoài cùng bên phải</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-purple-400">2. Công tắc chiết áp (Dimmer/Quạt)<br><span class="text-[10px] text-slate-400">[00:01:22]</span></td>
+                                            <td class="p-2.5">
+                                                <code class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">LM-S1D</code><br>
+                                                <span class="text-[11px] text-slate-400">Tem hộp: <code>LM-S1D/A(W)</code></span><br>
+                                                • <b>1</b>: Chỉ có duy nhất <strong>1 nút bấm</strong><br>
+                                                • <b>D</b>: Dimmer (Chiết áp TRIAC)
+                                            </td>
+                                            <td class="p-2.5">
+                                                • Tải: <strong>500W thuần trở</strong> / <strong>150W LED Dim</strong><br>
+                                                • <span class="text-rose-400 font-bold">Cảnh báo:</span> Cấm dùng bật/tắt (On/Off) thiết bị thường vì sẽ gây hỏng mạch TRIAC!
+                                            </td>
+                                            <td class="p-2.5 font-mono font-bold">
+                                                <span class="px-1.5 py-1 rounded bg-slate-900 text-purple-300 border border-slate-700">L | 1 | 2 | N</span><br>
+                                                <span class="text-[10px] text-amber-400 font-sans">Dây tải đấu vào chân 1, chân 2 bỏ trống [00:04:50]</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-rose-500/10">
+                                            <td class="p-2.5 font-bold text-rose-400">3. Công tắc công suất cao<br><span class="text-[10px] text-slate-400">[00:01:43]</span></td>
+                                            <td class="p-2.5">
+                                                <code class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">LM-SxH</code><br>
+                                                • <b>x = 1, 2, 3</b>: Tối đa <strong>3 nút</strong><br>
+                                                • <b>H</b>: High power (Công suất cao)
+                                            </td>
+                                            <td class="p-2.5">
+                                                • <strong>Duy nhất Nút 1: 3000W thuần trở (~16A) / 300W LED</strong> (Bình nóng lạnh 30L 2500W, máy bơm, đèn sưởi)<br>
+                                                • <strong>Nút 2 & 3:</strong> CS thường (<strong>700W trở / 150W LED</strong>)
+                                            </td>
+                                            <td class="p-2.5 font-mono font-bold">
+                                                <span class="px-1.5 py-1 rounded bg-slate-900 text-amber-300 border border-rose-500">N | L | 1 | 2 | 3</span><br>
+                                                <span class="text-[10px] text-rose-400 font-sans font-bold">⚠️ Chú ý: Chân N nằm ngoài cùng bên trái (ngược với LM-SxN!) [00:05:09]</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`
+                    },
+                    {
+                        title: '2. Khảo Sát Đế Âm (Sino S3157L / S2157) & 6 Thao Tác Vật Lý Nút Config [00:02:32 - 00:07:05]',
+                        html: `
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
+                            <div class="lg:col-span-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                                <h4 class="font-bold text-amber-400 text-sm">📐 Kích Thước Đế Âm Chuẩn & Độ Sâu [00:02:49]:</h4>
+                                <p>• <strong>Đế vuông (<code class="text-emerald-400">Sino S3157L</code>):</strong> Rộng <code>75mm</code> × Cao <code>75mm</code> × Sâu <code>40mm</code>. <strong>Bắt buộc chôn 2 tai vít NẰM DỌC (ĐỨNG)</strong>. <span class="text-rose-400 font-bold">❌ Cấm dùng đế đôi vuông liền khối!</span></p>
+                                <p>• <strong>Đế chữ nhật (<code class="text-emerald-400">Sino S2157</code>):</strong> Dài <code>106mm</code> × Rộng <code>56mm</code> × Sâu <code>40mm</code>. Chôn tai ngang hoặc dọc tùy ý.</p>
+                                <p>• <strong>Khoảng cách tối thiểu (2 mặt kính sát khít nhau):</strong><br>
+                                &nbsp;&nbsp;+ Đế vuông <code>S3157L</code>: Cách nhau <strong>2 cm</strong> (cả ngang và dọc).<br>
+                                &nbsp;&nbsp;+ Đế chữ nhật <code>S2157</code>: Cách nhau <strong>2,5 cm (ngang)</strong> và <strong>2 cm (dọc)</strong>.</p>
+                                <p>• <strong>Khoảng cách khuyên dùng thực tế:</strong> Cách nhau <strong>3 – 4 cm</strong> cho đẹp và thoáng [00:03:41].</p>
+                                <p>• <strong>Độ sâu chôn đế:</strong> Chôn bằng mặt gạch thô; sau khi trát vữa hoàn thiện thì mặt đế <strong>lõm sâu vào 1 – 2 cm</strong> [00:03:48].</p>
+                                <p>• <strong>Quản lý MAC 4 ký tự Hex [00:05:23]:</strong> Mỗi thiết bị có mã MAC riêng (VD trên slide: <code>493A</code> là MAC công tắc, <code>A55B</code> là MAC bộ trung tâm HC).</p>
+                            </div>
+
+                            <div class="lg:col-span-7 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                                <h4 class="font-bold text-emerald-400 text-sm">🛠️ Bảng 6 Tính Năng Cài Đặt Trực Tiếp Trên Công Tắc [00:05:51]:</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                        <div class="font-bold text-cyan-400">1. Nhóm Binding (Đảo chiều không dây)</div>
+                                        <p class="mt-0.5">Nhấn giữ <strong>nút cảm ứng 10 giây</strong> trên Công tắc 1 (mở chờ) ➔ Sang Công tắc 2 <strong>chạm vào nút cần liên kết</strong> (không cần giữ 10s ở công tắc 2).</p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                        <div class="font-bold text-rose-400">2. Reset công tắc (Về mặc định)</div>
+                                        <p class="mt-0.5">Ấn <strong>nút Config 5 lần</strong> (dùng khi chưa gia nhập mạng HC hoặc tháo từ nhà A sang nhà B).</p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                        <div class="font-bold text-amber-400">3. Đổi Nhấn giữ / Nhấn nhả</div>
+                                        <p class="mt-0.5">Nhấn giữ <strong>nút Config 3 giây</strong> (chuyển đổi giữa chế độ công tắc thường và nút nhấn chuông/Rule).</p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                        <div class="font-bold text-purple-400">4. Khóa cảm ứng toàn bộ công tắc</div>
+                                        <p class="mt-0.5">Ấn <strong>nút Config 10 lần</strong> (khóa toàn bộ mặt kính không cho bấm tay, chỉ điều khiển qua App).</p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                        <div class="font-bold text-indigo-400">5. Khóa cảm ứng từng nút lẻ</div>
+                                        <p class="mt-0.5">Nhấn giữ <strong>nút Config 9 giây</strong> (VD: khóa riêng nút máy bơm tưới cây trên công tắc 3 nút).</p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-500/40">
+                                        <div class="font-bold text-emerald-400">6. Đổi độ sáng LED viền (100% ⇄ 30%)</div>
+                                        <p class="mt-0.5">Nhấn giữ <strong>nút Config 5 giây</strong> (tháo nhẹ mặt kính để bấm nút Config hoặc chỉnh trên App). Mức 30% tránh chói mắt phòng ngủ người già.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                    },
+                    {
+                        title: '3. Bảng Tổng Hợp 6 Mã Cảm Biến Lumi & So Sánh LM-MDZ/2.0 (Zigbee) vs LM-MDB (BLE Mesh) [00:07:11 - 00:18:50]',
+                        html: `
+                        <div class="space-y-4 text-xs">
+                            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                                <table class="w-full border-collapse text-left">
+                                    <thead>
+                                        <tr class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                                            <th class="p-2.5">Tên Cảm Biến</th>
+                                            <th class="p-2.5">Mã Sản Phẩm</th>
+                                            <th class="p-2.5">Nguồn Cấp</th>
+                                            <th class="p-2.5">Chuẩn Sóng</th>
+                                            <th class="p-2.5">Thông Số Kỹ Thuật & Lưu Ý Lắp Đặt Trên Slide</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-emerald-400">1. CB Chuyển động Pin (Zigbee)</td>
+                                            <td class="p-2.5 font-mono font-bold"><code>LM-MDZ/2.0</code></td>
+                                            <td class="p-2.5">Pin tiểu mặt sau</td>
+                                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Zigbee</span></td>
+                                            <td class="p-2.5" rowspan="3">
+                                                • <strong>Góc quét hình nón 90°:</strong> Trần cao <strong>3m ➔ Đường kính sàn 6m</strong>; Trần cao <strong>6m ➔ Đường kính sàn 12m</strong> [00:08:19].<br>
+                                                • <strong>3 Vị trí cấm lắp:</strong> (1) Gần nguồn nhiệt lớn (bếp, cục nóng), (2) Cây cối đung đưa, (3) Ngoài trời nắng chiếu trực tiếp.<br>
+                                                • <strong>Độ trễ nút Config (Ấn nhanh 2 lần):</strong> <span class="text-emerald-400 font-bold">Xanh = 30s</span> | <span class="text-rose-400 font-bold">Đỏ = 120s (2p)</span> | <span class="text-pink-400 font-bold">Hồng = 300s (5p)</span>. Trên App chỉnh từ <strong>10s – 60 phút</strong>.<br>
+                                                • <span class="text-amber-400 font-bold">⚠️ Ghi chú vàng [00:09:18]:</span> <em>"Đánh thức cảm biến để lưu thông số cài đặt trên App"</em> (bấm nút hoặc khua tay trước mắt cảm biến khi lưu trên App).
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-cyan-400">2. CB Chuyển động Pin (Bluetooth)</td>
+                                            <td class="p-2.5 font-mono font-bold"><code>LM-MDB</code></td>
+                                            <td class="p-2.5">Pin tiểu mặt sau</td>
+                                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">BLE Mesh</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-teal-400">3. CB Chuyển động Nguồn</td>
+                                            <td class="p-2.5 font-mono font-bold"><code>LM-MDZ/2.1</code></td>
+                                            <td class="p-2.5">220VAC qua Adapter <code>3.3VDC</code></td>
+                                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Chỉ có Zigbee</span></td>
+                                        </tr>
+                                        <tr class="bg-amber-500/5">
+                                            <td class="p-2.5 font-bold text-amber-400">4. CB Gắn trần bản thường độc lập</td>
+                                            <td class="p-2.5 font-mono font-bold"><code>LM-MC</code></td>
+                                            <td class="p-2.5">220V AC trực tiếp<br>Chân: <code>L | 1 | Trống | N</code></td>
+                                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-slate-700 text-slate-300 font-bold">Không sóng (Độc lập)</span></td>
+                                            <td class="p-2.5">
+                                                • Không cần HC, không cần công tắc Lumi. Tự đóng cắt rơ-le chân <code>1</code> ra đèn.<br>
+                                                • Chỉnh bằng <strong>2 núm vặn biến trở 10 nấc</strong> mặt sau: <strong>Time (5s – 30 phút)</strong> và <strong>Lux (Cả ngày – Khi tối – Lux 20..300)</strong> [00:10:40].
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-indigo-400">5. Công tắc CB Cầu thang 2in1</td>
+                                            <td class="p-2.5 font-mono font-bold"><code>LM-MSZ</code></td>
+                                            <td class="p-2.5">220V AC (1 rơ-le)<br>Chân: <code>L | 1 | N</code></td>
+                                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Zigbee</span></td>
+                                            <td class="p-2.5">
+                                                • Góc ngang <strong>150°</strong> (lắp <strong>Mắt che</strong> giảm còn <strong>50°</strong>), góc dọc <strong>35°</strong>, xa <strong>5m</strong>.<br>
+                                                • <strong>Chôn đế âm bắt buộc:</strong> Đế vuông chôn tai <strong>ĐỨNG</strong>; Đế chữ nhật chôn tai <strong>NẰM NGANG</strong> [00:14:53].<br>
+                                                • 2 chế độ: <strong>Auto</strong> (vặn 2 biến trở 10 nấc mặt sau) hoặc <strong>Manual</strong> (tắt đèn nút Auto, cài Rule trên App chuẩn hơn).<br>
+                                                • <strong>Rule 2 cảm biến 2 đầu cầu thang:</strong> Bật đèn dùng <strong>HOẶC (OR)</strong>; Tắt đèn dùng <strong>VÀ (AND)</strong> [00:15:52].
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold text-rose-400">6. Cảm biến cửa</td>
+                                            <td class="p-2.5 font-mono font-bold"><code>LM-DSZ/1.1</code></td>
+                                            <td class="p-2.5">Pin <code>3.3V</code></td>
+                                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Zigbee</span></td>
+                                            <td class="p-2.5">
+                                                • <strong>Phần Cảm biến (To):</strong> Gắn trên <strong>Cánh cửa</strong> (di động). <strong>Phần Nam châm (Nhỏ):</strong> Gắn trên <strong>Khung/Lề cửa</strong> (cố định) [00:16:43].<br>
+                                                • Hai mặt có <strong>rãnh đánh dấu</strong> quay vào nhau, khoảng cách khi đóng <strong><code>&lt;= 2 cm</code></strong>.<br>
+                                                • <strong>Rule An Ninh:</strong> Kết hợp điều kiện <strong>AND (Và)</strong> với 1 <strong>Nút công tắc ảo "An Ninh"</strong> [00:18:04].
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
+                                <div class="font-bold text-cyan-400 mb-1">💡 Khi Nào Chọn LM-MDZ/2.0 (Zigbee) vs. LM-MDB (BLE Mesh)?</div>
+                                <p>• Nếu điều khiển qua <strong>Rule (If-Then) trên bộ trung tâm HC</strong>: Vì HC thu phát được cả 2 sóng Zigbee và BLE Mesh nên thiết bị của 2 chuẩn sóng vẫn phối hợp chéo qua HC được.</p>
+                                <p>• <strong>NHƯNG bắt buộc chọn đúng mã cùng chuẩn sóng khi:</strong> (1) Cần <strong>tiếp sóng mở rộng mạng Mesh</strong> (nhà toàn công tắc Zigbee thì phải dùng <code>LM-MDZ/2.0</code> để nhờ công tắc tiếp sóng; nhà toàn đèn âm trần BLE Smart Lighting thì chọn <code>LM-MDB</code>), hoặc (2) Cài <strong>Binding trực tiếp</strong> không qua HC [00:12:24].</p>
+                            </div>
+                        </div>`
+                    }
+                ],
+                labType: 'lab_mod1',
+                miniQuiz: [
+                    {
+                        q: "Trên Công tắc công suất cao LM-SxH (tối đa 3 nút), thứ tự cầu đấu dây ở mặt sau và vị trí đấu Bình nóng lạnh 2500W có gì đặc biệt?",
+                        options: [
+                            "Thứ tự chân giống hệt công tắc thường và nút nào cũng chịu được 3000W.",
+                            "Thứ tự chân là N | L | 1 | 2 | 3 (chân N nằm ngoài cùng bên trái, ngược với LM-SxN) và CHỈ DUY NHẤT NÚT SỐ 1 chịu tải 3000W thuần trở (~16A).",
+                            "Không cần đấu dây Nguội (N).",
+                            "Đấu bình nóng lạnh vào chân số 3."
+                        ],
+                        correct: 1,
+                        explain: "Chính xác [00:01:43 & 00:05:09]! Mã LM-SxH có chân N nằm ngoài cùng bên trái (N | L | 1 | 2 | 3) và chỉ rơ-le số 1 chịu tải 3000W."
+                    },
+                    {
+                        q: "Khi cài đặt thông số độ trễ (10s - 60 phút) hoặc độ nhạy cho Cảm biến chuyển động dùng Pin (LM-MDZ/2.0 hoặc LM-MDB) trên App Lumi Life, bạn phải làm thao tác gì để cảm biến nhận lệnh?",
+                        options: [
+                            "Cứ bấm lưu trên App là xong, không cần làm gì thêm.",
+                            "Phải 'Đánh thức cảm biến' (bấm nút hoặc khua tay trước mắt cảm biến) ngay lúc lưu trên App vì cảm biến dùng pin thường ở chế độ ngủ.",
+                            "Phải tháo pin ra lắp lại 5 lần.",
+                            "Phải tắt Aptomat tổng."
+                        ],
+                        correct: 1,
+                        explain: "Chuẩn xác theo ghi chú trên Slide [00:09:18]: 'Đánh thức cảm biến để lưu thông số cài đặt trên app'!"
+                    },
+                    {
+                        q: "Khi lắp Công tắc Cảm biến cầu thang 2in1 (mã LM-MSZ), chiều chôn đế âm và cách cài Rule cho 2 cảm biến ở 2 đầu cầu thang chuẩn nhất là gì?",
+                        options: [
+                            "Đế vuông chôn tai đứng, đế chữ nhật chôn tai nằm ngang; cài Rule Bật đèn dùng HOẶC (OR) và Tắt đèn dùng VÀ (AND).",
+                            "Đế chữ nhật chôn đứng; cả Bật và Tắt đều dùng HOẶC (OR).",
+                            "Không cần phân biệt chiều đế âm.",
+                            "Chỉ lắp được 1 cảm biến duy nhất."
+                        ],
+                        correct: 0,
+                        explain: "Chính xác [00:14:53 & 00:15:52]!"
+                    }
+                ]
+            },
+            {
+                id: 'mod2',
+                step: 'Chặng 2',
+                title: 'Bài 1B: Hồng Ngoại LM-IR/2.0, VRV Daikin LM-DK & Bộ 3 Module (Đầy Đủ Sơ Đồ Chân)',
+                subtitle: 'Đấu chân DATA(+)/B(-) mạch DTA116A51, công thức NetID = ID + 1, LM-INPUT, LM-2120 (8 chân) & LM-5IN1 (sáng 100% -> 12%)',
+                badge: 'Video Bài 1 (18:57 - 32:45)',
+                badgeColor: 'bg-teal-500/20 text-teal-400 border-teal-500/30',
+                videoUrl: 'https://www.youtube.com/watch?v=-RhVDFZZfnc',
+                timestamps: [
+                    { label: '18:57 Hồng ngoại LM-IR/2.0 (5VDC)', sec: 1137 },
+                    { label: '20:38 Module Daikin LM-DK & DTA116A51', sec: 1238 },
+                    { label: '23:06 Đấu chân DATA+/B- & NetID=ID+1', sec: 1386 },
+                    { label: '24:30 Bắt bệnh LED H1P-H4P & LM-DK', sec: 1470 },
+                    { label: '25:28 Module LM-INPUT (COM/NO/NC)', sec: 1528 },
+                    { label: '26:43 Module LM-2120/Z-B (8 chân)', sec: 1603 },
+                    { label: '29:22 Module LM-5IN1 (100% -> 12%)', sec: 1762 }
+                ],
+                summary: 'Nắm trọn bộ thông số chuyên sâu Phần 3 & 4 của Bài 1: Sơ đồ đấu chéo chân DATA(+)/B(-) giữa LM-DK và DTA116A51, danh sách mã khiển BRC Daikin, công thức NetID = ID + 1, sơ đồ 8 chân LM-2120 và quy luật đèn sáng 100% -> 12% trên Module 5in1.',
+                theoryBlocks: [
+                    {
+                        title: '1. Bộ Hồng Ngoại LM-IR/2.0 & Module Điều Hòa Trung Tâm VRV Daikin (LM-DK + DTA116A51) [00:18:57 - 00:25:20]',
+                        html: `
+                        <div class="space-y-4 text-xs">
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                                <!-- Hồng ngoại LM-IR/2.0 -->
+                                <div class="lg:col-span-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-sm text-emerald-400">📺 Hồng Ngoại IR [18:57]</span>
+                                        <code class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LM-IR/2.0</code>
+                                    </div>
+                                    <p>• <strong>Nguồn cấp:</strong> <code>5V DC / 1A</code> (qua củ sạc Adapter). Truyền thông: <strong>Zigbee</strong>.</p>
+                                    <p>• <strong>Yêu cầu lắp đặt:</strong> Khoảng cách <strong><code>&lt;= 5m</code></strong>, không vật cản, mắt IR nhìn thẳng thiết bị. Điều khiển <strong>1 chiều</strong>.</p>
+                                    <p>• <strong>2 Chế độ điều khiển [19:42]:</strong><br>
+                                    &nbsp;&nbsp;1. <em>Thư viện có sẵn:</em> Đủ nút tăng giảm từng °C, Mode, Fan, Swing.<br>
+                                    &nbsp;&nbsp;2. <em>Học lệnh từ Remote cũ:</em> Với điều hòa chỉ tạo được tối đa <strong>6 ô ngữ cảnh cài sẵn</strong> (VD: Cool 18°C, 20°C, 25°C, 26°C, Heat 28°C, 30°C) + 2 nút <code>ON / OFF</code>.</p>
+                                </div>
+
+                                <!-- VRV Daikin LM-DK + DTA116A51 -->
+                                <div class="lg:col-span-8 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <span class="font-bold text-sm text-amber-400">❄️ Module Zigbee Daikin VRV (Đồng bộ 2 chiều) [20:38]</span>
+                                        <div class="flex gap-1.5">
+                                            <code class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">LM-DK (12-24VDC)</code>
+                                            <code class="px-2 py-0.5 rounded bg-rose-600 text-white font-bold">+ Mạch Daikin DTA116A51</code>
+                                        </div>
+                                    </div>
+                                    <p>• <strong>Giới hạn phần cứng [22:27]:</strong> 1 bộ <code>LM-DK</code> + 1 mạch <code>DTA116A51</code> (lắp tại cục nóng) quản lý tối đa <strong>2 Cục nóng nối Chính–Phụ</strong> và <strong>16 Mặt lạnh</strong>. <em>(Nếu 2 cục nóng chạy độc lập song song ➔ Phải dùng 2 bộ LM-DK + 2 mạch DTA116A51)</em>. Dây tín hiệu RS485 dùng cáp <strong>CAT6 / CAT6A dài <code>&lt; 100m</code></strong>.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1">
+                                        <div class="p-2.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700">
+                                            <div class="font-bold text-cyan-400 mb-1">🔌 Sơ Đồ Đấu Chân Chuẩn [23:06 & 23:30]:</div>
+                                            <p>1. <strong>Cục nóng Daikin ➔ Mạch DTA116A51:</strong><br>
+                                            &nbsp;&nbsp;• Cấp nguồn: Chân <code>X37A</code> (cục nóng) ➔ <code>X1A</code> (16-24VDC trên DTA).<br>
+                                            &nbsp;&nbsp;• Tín hiệu: Chân <code>F1, F2</code> (cục nóng) ➔ <code>X7A</code> (DIII-NET trên DTA).</p>
+                                            <p class="mt-1">2. <strong>Mạch DTA (Cầu X2M) ➔ Module Lumi LM-DK:</strong><br>
+                                            &nbsp;&nbsp;• Gạt DIP Switch <code>DS1, DS2</code> & <code>SS1, SS2, SS3</code> chọn RS485.<br>
+                                            &nbsp;&nbsp;• <span class="text-amber-300 font-bold">Chân <code>DATA(+)</code> của Lumi ➔ Đấu vào <code>B(-)</code> của DTA!</span><br>
+                                            &nbsp;&nbsp;• <span class="text-amber-300 font-bold">Chân <code>DATA(-)</code> của Lumi ➔ Đấu vào <code>A(+)</code> của DTA!</span></p>
+                                        </div>
+                                        <div class="p-2.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700">
+                                            <div class="font-bold text-emerald-400 mb-1">📟 Mã Khiển Daikin Hỗ Trợ Cài ID & Công Thức NetID [23:41]:</div>
+                                            <p>• <strong>Bảng điều khiển hỗ trợ:</strong> <code>BRC1C61</code>, <code>BRC1C62-9</code>, <code>BRC4C151 / 152 / 153</code> (Remote), <code>BRC1E61 / 62 / 63</code>, <code>BRC2E61</code>.</p>
+                                            <p class="mt-1.5 p-1.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono font-bold text-center">
+                                                Công thức App [23:59]: NetID device = ID mặt lạnh + 1
+                                            </p>
+                                            <p class="text-[11px] text-slate-400 mt-1">• <strong>Đèn LED trên DTA116A51 [24:30]:</strong> <code>H1P/H2P</code> nháy vàng = thông DIII-NET với cục nóng; <code>H3P/H4P</code> nháy vàng = thông Modbus với LM-DK.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                    },
+                    {
+                        title: '2. Bộ 3 Module Chuyên Dụng: LM-INPUT, LM-2120/Z-B (2 In 2 Out) & LM-5IN1/Z-B (LED Dây) [00:25:28 - 00:32:10]',
+                        html: `
+                        <div class="space-y-4 text-xs">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Module Input LM-INPUT -->
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-sm text-emerald-400">1. Module Input [25:28]</span>
+                                        <code class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LM-INPUT</code>
+                                    </div>
+                                    <p>• <strong>Nguồn cấp:</strong> <code>12 – 24V DC</code> (Sơ đồ đấu nối hỗ trợ dải <code>9 – 24V DC</code> vào chân <code>24V/12V</code> và <code>GND</code>). Sóng: <strong>Zigbee</strong>.</p>
+                                    <p>• <strong>Chức năng:</strong> Tích hợp tối đa <strong>4 cảm biến hãng thứ 3</strong> có tiếp điểm khô <code>NO</code> (Normal Open) hoặc <code>NC</code> (Normal Close) như beam hàng rào, báo khói, báo cháy.</p>
+                                    <p>• <strong>Sơ đồ đấu 4 cặp chân <code>IN1-, IN1+</code> đến <code>IN4-, IN4+</code> [26:25]:</strong><br>
+                                    &nbsp;&nbsp;+ Chân <strong><code>IN-</code></strong> ➔ Đấu vào chân <strong><code>COM</code></strong> của cảm biến.<br>
+                                    &nbsp;&nbsp;+ Chân <strong><code>IN+</code></strong> ➔ Đấu vào chân <strong><code>NO</code></strong> hoặc <strong><code>NC</code></strong> của cảm biến.</p>
+                                </div>
+
+                                <!-- Module 2 IN 2 OUT LM-2120 -->
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-sm text-amber-400">2. Module 2 IN 2 OUT [26:43]</span>
+                                        <code class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">LM-2120/Z & LM-2120/B</code>
+                                    </div>
+                                    <p>• <strong>Nguồn & Công suất:</strong> <code>110–230V AC</code>. Chịu tải <strong>1000W thuần trở / 200W LED mỗi rơ-le</strong> (công tắc cơ 4 nút cần 2 module hoặc gộp tải).</p>
+                                    <p>• <strong>Thứ tự 8 chân trên thân [27:36]:</strong> <code class="px-1.5 py-0.5 rounded bg-slate-900 text-amber-300 font-bold">IN2 | IN1 | O2 | O1 | S | NC | N | L</code><br>
+                                    &nbsp;&nbsp;(Cắt dây từ công tắc cơ lên đèn: đầu ra công tắc cơ vào <code>IN1, IN2</code>; đầu lên bóng đèn vào <code>O1, O2</code>).</p>
+                                    <p>• <strong>Cấu hình sâu trên App [27:58 - 29:11]:</strong><br>
+                                    &nbsp;&nbsp;+ <em>3 Chế độ Đầu vào:</em> <strong>Any change</strong> (Mặc định khuyên dùng), <strong>Nhấn giữ</strong> (bất tiện vì lệch trạng thái tay/App), <strong>Nhấn nhả</strong>.<br>
+                                    &nbsp;&nbsp;+ <em>5 Chế độ Đầu ra:</em> <code>Mặc định</code>, <code>Tự động bật</code>, <code>Tự động tắt</code>, <code>Bật trễ</code>, <code>Tắt trễ</code>.<br>
+                                    &nbsp;&nbsp;+ <em>Liên kết In-Out & Trạng thái khởi động sau mất điện:</em> <code>Mặc định</code> (nhớ trạng thái cũ), <code>Bật</code>, hoặc <code>Tắt</code>.</p>
+                                </div>
+                            </div>
+
+                            <!-- Bảng 5 Chế độ Module 5 IN 1 LM-5IN1/Z & LM-5IN1/B -->
+                            <div class="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 space-y-2.5">
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <span class="font-bold text-sm text-purple-300">3. Module 5 IN 1 Điều Khiển LED Dây (Nhấn giữ Config 10s ➔ Nhấn 1 đến 5 lần) [00:29:22 - 00:31:58]</span>
+                                    <code class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 font-bold">LM-5IN1/Z (Zigbee) & LM-5IN1/B (BLE) • 12-24VDC</code>
+                                </div>
+                                <p>Tất cả dây Dương (<code>+12V/24V</code>) của cuộn LED đấu chung vào chân <code>+</code> của nguồn tổ ong MeanWell. Các dây Âm điều khiển màu đấu vào 5 chân <code>1, 2, 3, 4, 5</code> theo bảng chuẩn trên slide:</p>
+                                <div class="overflow-x-auto rounded-xl border border-purple-500/30">
+                                    <table class="w-full border-collapse text-left">
+                                        <thead>
+                                            <tr class="bg-slate-900 text-purple-200">
+                                                <th class="p-2">Thao Tác Nút Config</th>
+                                                <th class="p-2">Tên Chế Độ</th>
+                                                <th class="p-2">Sơ Đồ Đấu 5 Chân (1 - 2 - 3 - 4 - 5)</th>
+                                                <th class="p-2">Trạng Thái Khi Mới Cấp Nguồn</th>
+                                                <th class="p-2">Trạng Thái Sau Khi Gia Nhập Mạng HC</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-800 bg-slate-950/80 text-slate-200">
+                                            <tr>
+                                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 1 lần</td>
+                                                <td class="p-2 font-bold">1. RGBWW<br><span class="text-[10px] text-slate-400">(Chỉ chạy 1 trong 2 kênh cùng lúc)</span></td>
+                                                <td class="p-2 font-mono"><code>1=B | 2=G | 3=R | 4=CW | 5=WW</code></td>
+                                                <td class="p-2">Kênh WW sáng trắng <strong>100%</strong>, RGB tắt</td>
+                                                <td class="p-2 text-amber-300">Kênh WW sáng vàng <strong>100%</strong>, RGB tắt</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 2 lần</td>
+                                                <td class="p-2 font-bold">2. RGB & WW<br><span class="text-[10px] text-emerald-400">(2 kênh chạy độc lập cùng lúc)</span></td>
+                                                <td class="p-2 font-mono"><code>1=B | 2=G | 3=R | 4=CW | 5=WW</code></td>
+                                                <td class="p-2">Cả 2 kênh sáng trắng <strong>100%</strong></td>
+                                                <td class="p-2 text-emerald-300 font-bold">Cả 2 kênh giảm xuống sáng vàng <strong>12%</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 3 lần</td>
+                                                <td class="p-2 font-bold">3. 5Dim<br><span class="text-[10px] text-slate-400">(5 lộ LED đơn sắc độc lập)</span></td>
+                                                <td class="p-2 font-mono"><code>1=D1 | 2=D2 | 3=D3 | 4=D4 | 5=D5</code></td>
+                                                <td class="p-2">Cả 5 kênh sáng trắng <strong>100%</strong></td>
+                                                <td class="p-2 text-emerald-300 font-bold">Cả 5 kênh giảm xuống sáng <strong>12%</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 4 lần</td>
+                                                <td class="p-2 font-bold">4. 1WW 3Dim<br><span class="text-[10px] text-slate-400">(1 lộ WW + 3 lộ Dim)</span></td>
+                                                <td class="p-2 font-mono"><code>1=CW | 2=WW | 3=D1 | 4=D2 | 5=D3</code></td>
+                                                <td class="p-2">4 lộ LED sáng trắng <strong>100%</strong></td>
+                                                <td class="p-2 text-emerald-300 font-bold">Kênh WW sáng vàng <strong>12%</strong>, 3 Dim sáng <strong>12%</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-2 font-bold text-amber-400">Giữ 10s + Nhấn 5 lần</td>
+                                                <td class="p-2 font-bold">5. 2WW 1Dim<br><span class="text-[10px] text-slate-400">(2 lộ WW + 1 lộ Dim)</span></td>
+                                                <td class="p-2 font-mono"><code>1=CW1 | 2=WW1 | 3=CW2 | 4=WW2 | 5=D1</code></td>
+                                                <td class="p-2">Tất cả kênh sáng trắng <strong>100%</strong></td>
+                                                <td class="p-2 text-emerald-300 font-bold">Tất cả kênh giảm xuống sáng <strong>12%</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>`
+                    }
+                ],
+                labType: 'lab_mod2',
+                miniQuiz: [
+                    {
+                        q: "Khi đấu dây tín hiệu RS485 từ cầu đấu X2M của mạch mở rộng Daikin DTA116A51 sang Module Lumi LM-DK, quy tắc đấu chân nào sau đây là ĐÚNG theo slide [00:23:30]?",
+                        options: [
+                            "Đấu DATA(+) vào A(+) và DATA(-) vào B(-).",
+                            "Đấu chéo: Chân DATA(+) của Lumi LM-DK đấu vào chân B(-) của DTA116A51; chân DATA(-) của Lumi đấu vào chân A(+) của DTA116A51 (và tính địa chỉ NetID = ID mặt lạnh + 1).",
+                            "Đấu trực tiếp vào điện 220V AC.",
+                            "Chỉ cần đấu 1 sợi dây duy nhất."
+                        ],
+                        correct: 1,
+                        explain: "Chính xác [00:23:30 & 00:23:59]! Phải đấu DATA(+) vào B(-) và DATA(-) vào A(+), đồng thời trên App Lumi Life địa chỉ NetID device = ID mặt lạnh + 1."
+                    },
+                    {
+                        q: "Trên Module 5 IN 1 (LM-5IN1/Z hoặc LM-5IN1/B), dấu hiệu nhận biết trên dải đèn LED khi thiết bị vừa gia nhập mạng HC thành công ở các chế độ 2 (RGB & WW), 3 (5Dim), 4 (1WW 3Dim) và 5 (2WW 1Dim) là gì?",
+                        options: [
+                            "Đèn tắt hẳn về 0%.",
+                            "Khi mới cấp nguồn đèn sáng trắng 100%, ngay sau khi gia nhập mạng HC thành công độ sáng các kênh tự động giảm xuống mức 12%.",
+                            "Đèn nhấp nháy màu đỏ liên tục.",
+                            "Nguồn tổ ong tự ngắt."
+                        ],
+                        correct: 1,
+                        explain: "Chuẩn xác theo các slide [00:30:11 - 00:31:58]! Việc độ sáng tự hạ từ 100% xuống 12% giúp kỹ thuật viên nhìn bằng mắt thường biết ngay Module 5in1 đã vào mạng thành công."
+                    },
+                    {
+                        q: "Khi đấu nối Module Input (LM-INPUT) với cảm biến hãng thứ 3 (như cảm biến hàng rào hoặc báo cháy), cặp chân tín hiệu IN- và IN+ được đấu vào đâu?",
+                        options: [
+                            "Chân IN- đấu vào chân COM của cảm biến; chân IN+ đấu vào chân NO hoặc NC của cảm biến (nguồn nuôi module là 9-24VDC).",
+                            "Đấu thẳng điện 220V vào IN- và IN+.",
+                            "Đấu cả 2 chân vào GND.",
+                            "Không cần đấu dây."
+                        ],
+                        correct: 0,
+                        explain: "Chính xác [00:26:25]!"
+                    }
+                ]
+            },
+            {
+                id: 'mod3',
+                step: 'Chặng 3',
+                title: 'Bài 2: Bộ Trung Tâm HC/LC, Xử Lý Trễ Mạng & AI Camera Hub',
+                subtitle: 'Kiến trúc 4 tầng, 1 HC + 6 LC qua LAN, trị bệnh trễ 5-6s do trùng kênh Wi-Fi/Zigbee & AI Hub LMAI 2.0',
+                badge: 'Video Bài 2 (Full)',
+                badgeColor: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
+                videoUrl: 'https://www.youtube.com/watch?v=nPyDl1cZFkc',
+                timestamps: [
+                    { label: '00:38 Kiến trúc 4 tầng & Offline', sec: 38 },
+                    { label: '07:04 Phân biệt HC và LC (Qua LAN)', sec: 424 },
+                    { label: '13:32 Giới hạn 450 Endpoints', sec: 812 },
+                    { label: '16:45 Lỗi trễ 5-6s do trùng kênh Wi-Fi', sec: 1005 },
+                    { label: '18:35 Ưu thế kênh 37,38,39 BLE Mesh', sec: 1115 },
+                    { label: '20:25 AI Camera Hub LMAI 2.0', sec: 1225 }
+                ],
+                summary: 'Hiểu rõ trái tim hệ thống HC/LC, lý do mất mạng Internet vẫn điều khiển qua App bình thường, cách xử lý triệt để lỗi bấm App trễ 5-6 giây và quy chuẩn lắp AI Camera Hub.',
+                theoryBlocks: [
+                    {
+                        title: '1. Chế Độ Offline Khi Mất Internet & Phân Biệt HC (Master) vs. LC (Slave)',
+                        html: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
+                                <h4 class="font-bold text-emerald-400">🌐 Khi Nhà Khách Đứt Cáp Quang Internet [01:32]:</h4>
+                                <p>• <strong>Vẫn chạy 100%:</strong> Bấm công tắc, Cảnh, Rule tự động, Hẹn giờ và <strong>điều khiển qua App khi điện thoại bắt chung Wi-Fi nội bộ (Local)</strong>.</p>
+                                <p>• <strong>Chỉ mất:</strong> Điều khiển từ xa qua 4G và Giọng nói. Tự động Backup lên Cloud mỗi <strong>2 giờ/lần</strong>.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 space-y-1.5">
+                                <h4 class="font-bold text-indigo-400">🧠 Giới Hạn Hệ Thống & Kết Nối HC - LC [07:04 & 13:32]:</h4>
+                                <p>• Tối đa <strong>1 HC (Master) + 6 LC (Slave)</strong>, quản lý <strong>450 Endpoints</strong>, 70–100 Rule/Cảnh, 40 Nhóm.</p>
+                                <p>• <strong>Cực kỳ lưu ý:</strong> HC và LC nói chuyện với nhau qua <strong>Mạng LAN / IP (cùng lớp mạng Router)</strong>, KHÔNG phải qua sóng Zigbee!</p>
+                            </div>
+                        </div>`
+                    },
+                    {
+                        title: '2. Trị Bệnh "Bấm App 5-6 Giây Mới Sáng" & AI Camera Hub LMAI 2.0',
+                        html: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                            <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1.5">
+                                <h4 class="font-bold text-rose-400">📶 Xung Đột Kênh Wi-Fi 2.4GHz & Zigbee [16:45]:</h4>
+                                <p>• Wi-Fi kênh 1, 6, 11 (nhất là <strong>Kênh 6</strong>) đè trực tiếp lên <strong>Kênh 17 của Zigbee</strong> làm nghẽn bản tin.</p>
+                                <p>• <strong>Cách khắc phục:</strong> Vào App <strong>Xóa mạng Zigbee</strong> trước khi cài đặt để HC tự quét chọn kênh Zigbee sạch. (BLE Mesh chạy ở <strong>Kênh 37, 38, 39</strong> nằm ở khe trống nên không bao giờ trùng Wi-Fi).</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
+                                <h4 class="font-bold text-amber-400">📹 Thông Số AI Camera Hub (LMAI 2.0) [20:25]:</h4>
+                                <p>• <strong>Bắt buộc cắm dây LAN</strong>. Phải bật tính năng AI trên App thì <strong>đèn LED AI mới sáng xanh</strong>.</p>
+                                <p>• Tối đa <strong>6 Camera IP</strong> thuộc 4 hãng: <strong>Hikvision, Dahua, EZViz, KBVision</strong> (luồng phụ Sub-stream, lắp cao <strong>2.5m – 6m</strong>, tối đa 4 vùng x 8 điểm).</p>
+                            </div>
+                        </div>`
+                    }
+                ],
+                labType: 'lab_mod3',
+                miniQuiz: [
+                    {
+                        q: "Trong tòa nhà 5 tầng lắp 1 bộ HC ở tầng 1 và 3 bộ LC ở các tầng trên, HC và LC giao tiếp với nhau bằng đường truyền nào?",
+                        options: [
+                            "Truyền qua sóng Zigbee xuyên sàn bê tông.",
+                            "Kết nối qua mạng LAN / IP (cắm dây mạng hoặc Wi-Fi chung cùng 1 lớp mạng Router chính).",
+                            "Truyền qua hồng ngoại IR.",
+                            "Không cần kết nối với nhau."
+                        ],
+                        correct: 1,
+                        explain: "Chính xác [00:08:15]! HC và LC giao tiếp qua mạng LAN/IP nội bộ."
+                    },
+                    {
+                        q: "Vì sao mạng BLE Mesh không bị hiện tượng trễ 5-6 giây do nhiễu sóng Wi-Fi 2.4GHz như Zigbee?",
+                        options: [
+                            "Vì BLE Mesh dùng dây điện.",
+                            "Vì BLE Mesh hoạt động trên 3 kênh quảng bá 37, 38, 39 nằm hoàn toàn ở khoảng trống giữa các kênh Wi-Fi 1, 6, 11 và tự động nhảy kênh.",
+                            "Vì BLE Mesh phát công suất 1000W.",
+                            "Vì BLE Mesh không qua HC."
+                        ],
+                        correct: 1,
+                        explain: "Hoàn toàn chính xác [00:18:35]!"
+                    }
+                ]
+            },
+            {
+                id: 'mod4',
+                step: 'Chặng 4',
+                title: 'Bài 3 & 4: Khoa Học Chiếu Sáng & Lumi Smart Lighting',
+                subtitle: '5 thông số vàng: Nhiệt độ màu (Kelvin), Hoàn màu (CRI), Quang thông (Lumen), Lm/W & Độ rọi (Lux)',
+                badge: 'Video Bài 3 & Bài 4',
+                badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+                videoUrl: 'https://www.youtube.com/watch?v=zEtc_-wOoZU',
+                timestamps: [
+                    { label: 'Bài 3: Lời nói đầu Smart Lighting', sec: 34, url: 'https://www.youtube.com/watch?v=YbSMXxhpu1w&t=34s' },
+                    { label: '00:36 Nhiệt độ màu CCT (Kelvin)', sec: 36 },
+                    { label: '01:09 Chỉ số hoàn màu CRI (Ra)', sec: 69 },
+                    { label: '01:56 Quang thông (Lumen)', sec: 116 },
+                    { label: '02:13 Hiệu suất sáng (Lumen/W)', sec: 133 },
+                    { label: '02:35 Độ rọi (Lux = Lumen/m²)', sec: 155 }
+                ],
+                summary: 'Ra mắt cuối năm 2020, Lumi Smart Lighting giúp thay đổi không gian linh hoạt và bảo vệ sức khỏe. Thợ điện cần nắm vững 5 chỉ số quang học để tư vấn và thiết kế chiếu sáng chuẩn.',
+                theoryBlocks: [
+                    {
+                        title: '1. Năm Thông Số Kỹ Thuật Chiếu Sáng Bắt Buộc Phải Nhớ',
+                        html: `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+                            <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                                <div class="font-bold text-amber-400 mb-1">1. Nhiệt độ màu (CCT)</div>
+                                <p>Đơn vị: <strong>Kelvin (K)</strong>.<br>• 2700K-3200K: Vàng ấm<br>• 4000K-4500K: Trung tính<br>• 5000K-6500K: Trắng lạnh.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30">
+                                <div class="font-bold text-rose-400 mb-1">2. Độ hoàn màu (CRI)</div>
+                                <p>Độ trung thực màu sắc so với <strong>Mặt trời (CRI = 100)</strong>. Đèn tốt có <strong>CRI 80 – 95</strong> (quan trọng cho shop quần áo, bàn ăn).</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
+                                <div class="font-bold text-cyan-400 mb-1">3. Quang thông (Lumen)</div>
+                                <p>Tổng lượng ánh sáng đèn phát ra theo mọi hướng. Chỉ số <strong>Lumen (lm) càng cao đèn càng sáng</strong>.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                                <div class="font-bold text-emerald-400 mb-1">4. Hiệu suất (Lm/W)</div>
+                                <p>1 Watt điện sinh ra bao nhiêu Lumen. <strong>Lm/W càng cao thì đèn càng tiết kiệm điện</strong>.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-purple-500/10 border border-purple-500/30">
+                                <div class="font-bold text-purple-400 mb-1">5. Độ rọi (Lux)</div>
+                                <p><strong>1 Lux = 1 Lumen / m²</strong>. Đo lượng ánh sáng thực tế rơi trên mặt bàn học, văn phòng, bệnh viện.</p>
+                            </div>
+                        </div>`
+                    }
+                ],
+                labType: 'lab_mod4',
+                miniQuiz: [
+                    {
+                        q: "Đơn vị nào dùng để đo lượng ánh sáng thực tế rơi trên 1 mét vuông bề mặt (1 Lumen/m²) để đánh giá bàn học hay văn phòng có đủ sáng không?",
+                        options: [
+                            "Kelvin (K).",
+                            "Độ rọi Lux (lx).",
+                            "Chỉ số hoàn màu CRI.",
+                            "Ampe (A)."
+                        ],
+                        correct: 1,
+                        explain: "Chính xác [Bài 4 - 00:02:35]! Độ rọi Lux = Quang thông (Lumen) / Diện tích bề mặt (m²)."
+                    },
+                    {
+                        q: "Ánh sáng tự nhiên của Mặt Trời có chỉ số hoàn màu (CRI) bằng bao nhiêu?",
+                        options: [
+                            "CRI = 50.",
+                            "CRI = 80.",
+                            "CRI = 100 (Mức chuẩn tối đa).",
+                            "CRI = 6500."
+                        ],
+                        correct: 2,
+                        explain: "Đúng [Bài 4 - 00:01:42]! Mặt trời có CRI = 100, còn đèn LED chất lượng cao thông dụng có CRI từ 80 đến 95."
+                    }
+                ]
+            },
+            {
+                id: 'mod5',
+                step: 'Chặng 5',
+                title: 'Bài 5, 6, 7: Nhóm Lighting, Cảnh Lighting & Nhịp Sinh Học HCL',
+                subtitle: 'Group ID (1 đèn nhiều nhóm, nháy 3 lần), Scene ID Managed Flood (sáng đồng loạt) & HCL (mốc 1.5 - 2 giờ)',
+                badge: 'Video Bài 5, 6, 7',
+                badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+                videoUrl: 'https://www.youtube.com/watch?v=k1oF9RMb3wI',
+                timestamps: [
+                    { label: 'Bài 5 [01:08] Nhóm Lighting vs Đảo chiều', sec: 68, url: 'https://www.youtube.com/watch?v=k1oF9RMb3wI&t=68s' },
+                    { label: 'Bài 5 [02:12] 1 Đèn thuộc nhiều nhóm', sec: 132, url: 'https://www.youtube.com/watch?v=k1oF9RMb3wI&t=132s' },
+                    { label: 'Bài 6 [01:50] Cảnh thường >10 đèn bị trễ', sec: 110, url: 'https://www.youtube.com/watch?v=lI1myd9S7XI&t=110s' },
+                    { label: 'Bài 6 [02:17] Cảnh Lighting (Managed Flood)', sec: 137, url: 'https://www.youtube.com/watch?v=lI1myd9S7XI&t=137s' },
+                    { label: 'Bài 7 [01:52] Nhịp sinh học HCL (1.5-2h)', sec: 112, url: 'https://www.youtube.com/watch?v=ows6tattKCc&t=112s' }
+                ],
+                summary: 'Làm chủ 3 vũ khí mạnh nhất của đèn BLE Mesh: Nhóm Lighting (Group ID), Cảnh Lighting (Scene ID không độ trễ) và Ánh sáng sinh học HCL chuyển màu mượt mà theo Mặt Trời.',
+                theoryBlocks: [
+                    {
+                        title: '1. Nhóm Lighting (Bài 5) & Cảnh Lighting (Bài 6) Khác Gì Thông Thường?',
+                        html: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                            <div class="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 space-y-1.5">
+                                <h4 class="font-bold text-cyan-400">🔗 Ưu Thế Nhóm Lighting (Group ID) [Bài 5]:</h4>
+                                <p>• Điều khiển lẻ 1 đèn trong nhóm <strong>không làm ảnh hưởng</strong> các đèn khác.</p>
+                                <p>• <strong>1 đèn có thể nằm trong NHIỀU Nhóm Lighting cùng lúc</strong> (VD: Đèn sảnh chung thuộc cả Nhóm Khách và Nhóm Bếp).</p>
+                                <p>• Khi thêm vào nhóm trên App, đèn ngoài thực tế sẽ <strong>nhấp nháy 3 lần</strong>.</p>
+                                <p>• <em>Mẹo đi dây:</em> Cấp nguồn 220V liên tục cho cả dàn đèn rồi dùng Rule gán nút công tắc bất kỳ để bật/tắt Nhóm.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
+                                <h4 class="font-bold text-amber-400">🎬 Cảnh Thường vs. Cảnh Lighting (Scene ID) [Bài 6]:</h4>
+                                <p>• <strong>Cảnh Thường:</strong> HC bắn lệnh tới từng thiết bị một. Nếu <strong>&gt; 10 thiết bị</strong> sẽ bị bật đuổi nhau và sót lệnh (miss) -> <strong>Bắt buộc chia từng cụm 10 thiết bị cách nhau Delay 2 giây!</strong></p>
+                                <p>• <strong>Cảnh Lighting:</strong> Chỉ chứa đèn BLE trong cùng 1 HC/LC. Dùng <strong>Scene ID + Managed Flood</strong> giúp cả chục đèn đổi màu/bật tắt <strong>ĐỒNG LOẠT 100% cùng lúc</strong>.</p>
+                            </div>
+                        </div>`
+                    },
+                    {
+                        title: '2. HCL (Human Centric Lighting) — Chiếu Sáng Nhịp Sinh Học [Bài 7]',
+                        html: `
+                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm space-y-1.5">
+                            <p>• <strong>Nguyên lý:</strong> Mô phỏng ánh sáng Mặt Trời tự nhiên (Sáng 06:45 ấm nhẹ 5000K 50% -> 07:30 rực rỡ 6500K 100% giúp tỉnh táo -> Tối dịu dần về 2700K-3000K để không ức chế giấc ngủ).</p>
+                            <p class="text-emerald-400 font-bold">• Quy tắc cài đặt HCL [00:02:53]: Các mốc thời gian liên tiếp trong biểu đồ HCL nên đặt cách nhau từ 1.5 tiếng đến 2 tiếng để đèn biến thiên màu sắc mượt mà tự nhiên (khác với Hẹn giờ thường đổi màu đột ngột).</p>
+                        </div>`
+                    }
+                ],
+                labType: 'lab_mod5',
+                miniQuiz: [
+                    {
+                        q: "Khi tạo một 'Cảnh Thường' có hơn 10 thiết bị đầu ra (ví dụ 20 bóng đèn), bạn phải xử lý thế nào để tránh bị trễ và sót bản tin (miss lệnh)?",
+                        options: [
+                            "Chia thành từng cụm tối đa 10 thiết bị và chèn độ trễ (Delay) 2 giây giữa các cụm (hoặc chuyển sang dùng Cảnh Lighting nếu tất cả là đèn BLE chung 1 HC/LC).",
+                            "Bấm nút cảnh 5 lần liên tục.",
+                            "Thay dây điện to hơn.",
+                            "Không thể khắc phục."
+                        ],
+                        correct: 0,
+                        explain: "Chính xác [Bài 6 - 00:03:43]! Cảnh thường bắn từng lệnh đơn lẻ nên >10 thiết bị phải chèn Delay 2s; còn Cảnh Lighting dùng Scene ID sẽ sáng đồng loạt ngay lập tức."
+                    },
+                    {
+                        q: "Khi cài đặt biểu đồ ánh sáng nhịp sinh học HCL trên App Lumi Life, khoảng cách giữa các mốc thời gian liên tiếp nên đặt là bao lâu?",
+                        options: [
+                            "Cách nhau 1 phút.",
+                            "Cách nhau từ 1.5 tiếng đến 2 tiếng để ánh sáng chuyển màu mượt mà tự nhiên.",
+                            "Cách nhau 12 tiếng.",
+                            "Cách nhau 5 giây."
+                        ],
+                        correct: 1,
+                        explain: "Chuẩn xác [Bài 7 - 00:02:53]!"
+                    }
+                ]
+            }
+        ];
+
+        // 2. LẤY TẤT CẢ CHẶNG HỌC (GỒM 6 CHẶNG GỐC + CÁC CHẶNG NGƯỜI DÙNG TỰ THÊM)
+        function getAllModules() {
+            let custom = [];
+            try {
+                custom = JSON.parse(localStorage.getItem(STORAGE_CUSTOM_MODS) || '[]');
+            } catch (e) {}
+            return [...coreModules, ...custom];
+        }
+
+        function getCompletedMap() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_COMPLETED) || '{}'); } catch (e) { return {}; }
+        }
+
+        function getNotesMap() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_NOTES) || '{}'); } catch (e) { return {}; }
+        }
+
+        function getMiniQuizMap() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_MINIQUIZ) || '{}'); } catch (e) { return {}; }
+        }
+
+        // 3. RENDER CÂY LỘ TRÌNH BÊN TRÁI (ROADMAP SIDEBAR)
+        function renderSidebarRoadmap() {
+            const modules = getAllModules();
+            const completed = getCompletedMap();
+            const listEl = document.getElementById('roadmapList');
+
+            let doneCount = 0;
+            modules.forEach(m => { if (completed[m.id]) doneCount++; });
+
+            const pct = Math.round((doneCount / modules.length) * 100);
+            document.getElementById('overallProgressText').textContent = `${doneCount}/${modules.length} Chặng`;
+            document.getElementById('overallProgressBar').style.width = `${pct}%`;
+
+            listEl.innerHTML = modules.map(m => {
+                const isActive = m.id === currentModuleId;
+                const isDone = !!completed[m.id];
+                return `
+                <button onclick="selectModule('${m.id}')" class="w-full text-left p-3 rounded-xl border transition flex items-start gap-3 ${isActive ? 'bg-emerald-600 text-white border-emerald-500 shadow-md' : 'bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200'}">
+                    <div class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5 ${isDone ? (isActive ? 'bg-white text-emerald-700' : 'bg-emerald-500 text-white') : (isActive ? 'bg-emerald-800 text-emerald-200' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300')}">
+                        ${isDone ? '✓' : m.step.replace('Chặng ', '')}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] font-mono uppercase tracking-wider ${isActive ? 'text-emerald-100' : 'text-emerald-500 font-bold'}">${m.step}</span>
+                            ${m.isCustom ? `<span onclick="deleteCustomModule(event, '${m.id}')" class="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 hover:bg-rose-600 hover:text-white">Xóa</span>` : ''}
+                        </div>
+                        <div class="font-bold text-xs sm:text-sm line-clamp-2 mt-0.5">${m.title}</div>
+                    </div>
+                </button>
+                `;
+            }).join('');
+        }
+
+        function selectModule(modId) {
+            currentModuleId = modId;
+            renderSidebarRoadmap();
+            renderActiveModule();
+            // Đóng sidebar trên mobile nếu đang mở
+            document.getElementById('roadmapSidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarBackdrop').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleSidebarMobile() {
+            const sb = document.getElementById('roadmapSidebar');
+            const bd = document.getElementById('sidebarBackdrop');
+            sb.classList.toggle('-translate-x-full');
+            bd.classList.toggle('hidden');
+        }
+
+        // 4. RENDER CHẶNG HỌC HIỆN TẠI (4 KHỐI LIỀN MẠCH TRÊN 1 MÀN HÌNH)
+        function renderActiveModule() {
+            const modules = getAllModules();
+            const modIdx = modules.findIndex(m => m.id === currentModuleId);
+            const mod = modules[modIdx] || modules[0];
+            const completed = getCompletedMap();
+            const notes = getNotesMap();
+            const miniQuizState = getMiniQuizMap()[mod.id] || {};
+            const isDone = !!completed[mod.id];
+
+            const prevMod = modIdx > 0 ? modules[modIdx - 1] : null;
+            const nextMod = modIdx < modules.length - 1 ? modules[modIdx + 1] : null;
+
+            const container = document.getElementById('activeModuleContainer');
+
+            container.innerHTML = `
+                <!-- KHỐI 1: HEADER CHẶNG & MỐC VIDEO YOUTUBE -->
+                <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950 rounded-2xl p-5 sm:p-7 text-white border border-emerald-500/30 shadow-lg">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-lg text-xs font-extrabold uppercase bg-emerald-500 text-slate-950">${mod.step}</span>
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${mod.badgeColor || 'bg-white/10 text-slate-200'}">${mod.badge || 'Bài học mở rộng'}</span>
+                        </div>
+                        <button onclick="toggleModuleComplete('${mod.id}')" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition ${isDone ? 'bg-emerald-500 text-slate-950 shadow-md' : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'}">
+                            <span>${isDone ? '✅ Đã Hoàn Thành Chặng Này' : '⬜ Đánh Dấu Đã Học Xong'}</span>
+                        </button>
+                    </div>
+
+                    <h1 class="text-xl sm:text-3xl font-extrabold mt-3">${mod.title}</h1>
+                    <p class="text-slate-300 text-xs sm:text-sm mt-1.5 leading-relaxed">${mod.summary}</p>
+
+                    ${mod.videoUrl ? `
+                        <div class="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
+                            <a href="${mod.videoUrl}" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-500 text-white flex items-center gap-1.5 shadow transition">
+                                <span>▶</span> Mở Video Gốc Trên YouTube
+                            </a>
+                            ${(mod.timestamps || []).map(ts => `
+                                <a href="${ts.url ? ts.url : `${mod.videoUrl}&t=${ts.sec}s`}" target="_blank" class="px-2.5 py-1.5 rounded-lg text-[11px] font-mono bg-white/10 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 transition">
+                                    ⏱️ ${ts.label}
+                                </a>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+
+                <!-- KHỐI 2: SỔ TAY LÝ THUYẾT & SƠ ĐỒ TRỰC QUAN -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center text-sm">1</span>
+                        <h2 class="text-base sm:text-lg font-extrabold tracking-tight">Kiến Thức Cốt Lõi & Quy Tắc Công Trình</h2>
+                    </div>
+                    ${(mod.theoryBlocks || []).map(tb => `
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400">${tb.title}</h3>
+                            <div>${tb.html}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- KHỐI 3: BÀN THỰC HÀNH TƯƠNG TÁC NGAY TẠI BÀI HỌC (CONTEXTUAL LAB) -->
+                ${mod.labType ? `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 font-extrabold flex items-center justify-center text-sm">2</span>
+                            <h2 class="text-base sm:text-lg font-extrabold tracking-tight text-amber-500 dark:text-amber-400">Bàn Thực Hành Mô Phỏng Ngay Tại Bài Học</h2>
+                        </div>
+                        <span class="text-xs text-slate-400 hidden sm:inline">Thao tác trực tiếp bên dưới để hiểu sâu nguyên lý</span>
+                    </div>
+                    <div id="contextualLabBox" class="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border-2 border-amber-500/40 shadow-md">
+                        <!-- Lab specific content injected by mountContextualLab() -->
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- KHỐI 4: MINI-QUIZ KIỂM TRA HIỂU BÀI + GHI CHÚ CÁ NHÂN -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Mini Quiz -->
+                    <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 font-extrabold flex items-center justify-center text-sm">3</span>
+                                <h3 class="font-extrabold text-sm sm:text-base">Kiểm Tra Nhanh Kiến Thức ${mod.step}</h3>
+                            </div>
+                            <span class="text-[11px] text-slate-400">Trả lời đúng để tự động hoàn thành chặng</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            ${(mod.miniQuiz || []).map((qItem, qIdx) => {
+                                const userAns = miniQuizState[qIdx];
+                                return `
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2.5">
+                                    <p class="font-bold text-xs sm:text-sm">${qIdx + 1}. ${qItem.q}</p>
+                                    <div class="space-y-1.5">
+                                        ${qItem.options.map((opt, oIdx) => {
+                                            let cls = "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-emerald-500";
+                                            if (userAns !== undefined) {
+                                                if (oIdx === qItem.correct) cls = "bg-emerald-500/20 border-emerald-500 text-emerald-400 font-bold";
+                                                else if (oIdx === userAns) cls = "bg-rose-500/20 border-rose-500 text-rose-400";
+                                            }
+                                            return `
+                                            <button onclick="answerMiniQuiz('${mod.id}', ${qIdx}, ${oIdx})" class="w-full text-left p-2.5 rounded-lg border text-xs transition flex items-start gap-2 ${cls}">
+                                                <span class="font-mono font-bold">${String.fromCharCode(65 + oIdx)}.</span>
+                                                <span>${opt}</span>
+                                            </button>`;
+                                        }).join('')}
+                                    </div>
+                                    ${userAns !== undefined ? `
+                                        <div class="p-2.5 rounded-lg text-xs ${userAns === qItem.correct ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}">
+                                            <strong>${userAns === qItem.correct ? '✅ Chính xác!' : '💡 Giải thích:'}</strong> ${qItem.explain}
+                                        </div>
+                                    ` : ''}
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Contextual Personal Notes -->
+                    <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-3">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-extrabold text-sm sm:text-base flex items-center gap-2">
+                                    <span>📝</span> Sổ Tay Ghi Chú Riêng Cho ${mod.step}
+                                </h3>
+                                <span id="noteSaveStatus" class="text-[11px] text-emerald-400 font-mono">Đã lưu tự động</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Ghi lại mẹo đi dây, giá thiết bị hoặc thắc mắc của bạn ở bài này:</p>
+                            <textarea 
+                                oninput="saveModuleNote('${mod.id}', this.value)"
+                                rows="7" 
+                                placeholder="Nhập ghi chú cá nhân của bạn cho ${mod.step}..."
+                                class="w-full p-3 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            >${notes[mod.id] || ''}</textarea>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/70 text-[11px] text-slate-400">
+                            💡 Mọi ghi chú được lưu trực tiếp trên máy của bạn và gắn liền với từng Chặng học.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHỐI 5: ĐIỀU HƯỚNG CHẶNG TIẾP THEO -->
+                <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+                    ${prevMod ? `
+                        <button onclick="selectModule('${prevMod.id}')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 hover:border-emerald-500 transition">
+                            ← Quay lại: ${prevMod.step}
+                        </button>
+                    ` : '<div></div>'}
+
+                    ${nextMod ? `
+                        <button onclick="selectModule('${nextMod.id}')" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition">
+                            Học tiếp: ${nextMod.step} — ${nextMod.title.split(':')[0]} →
+                        </button>
+                    ` : `
+                        <button onclick="openMasterExamModal()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition">
+                            🏆 Làm Bài Thi Sát Hạch Tổng Hợp (15 Câu) →
+                        </button>
+                    `}
+                </div>
+            `;
+
+            if (mod.labType) {
+                mountContextualLab(mod.labType);
+            }
+        }
+
+        // =========================================================================
+        // 5. HỆ THỐNG 6 BÀN THỰC HÀNH TƯƠNG TÁC GẮN LIỀN TỪNG CHẶNG (CONTEXTUAL LABS)
+        // =========================================================================
+        function mountContextualLab(labType) {
+            const box = document.getElementById('contextualLabBox');
+            if (!box) return;
+
+            // ---------------------------------------------------------
+            // LAB CHẶNG 0: BÚT THỬ ĐIỆN 5 DÂY ĐỎ + MÔ PHỎNG NHẢY CB CHỐNG GIẬT
+            // ---------------------------------------------------------
+            if (labType === 'lab_mod0') {
+                box.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Bài tập 1: Dùng bút thử điện tìm dây Lửa trong 5 dây đỏ -->
+                    <div class="p-4 rounded-xl bg-slate-950 text-white border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-sm text-amber-400">🔦 Thực hành 1: Chạm Bút Thử Điện Tìm Dây Lửa (L)</h4>
+                            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">CB Đang Bật 220V</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Trong hộp đế âm có 5 sợi dây màu đỏ giống hệt nhau và 1 cụm dây xanh. Hãy bấm chọn từng đầu dây để đưa đầu bút thử điện vào kiểm tra:</p>
+                        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-1">
+                            ${[1,2,3,4,5].map(i => `
+                                <button onclick="testWirePen(${i})" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-red-500/40 flex flex-col items-center gap-1 transition">
+                                    <span class="w-4 h-8 rounded bg-red-600 block border-t-4 border-amber-300"></span>
+                                    <span class="text-[11px] font-bold">Dây Đỏ ${i}</span>
+                                </button>
+                            `).join('')}
+                            <button onclick="testWirePen(6)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-blue-500/40 flex flex-col items-center gap-1 transition">
+                                <span class="w-4 h-8 rounded bg-blue-600 block border-t-4 border-amber-300"></span>
+                                <span class="text-[11px] font-bold text-blue-400">Cụm Xanh</span>
+                            </button>
+                        </div>
+                        <div id="penResultBox" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-300">
+                            👉 Hãy bấm vào một sợi dây phía trên để xem đèn bút thử điện có sáng không!
+                        </div>
+                    </div>
+
+                    <!-- Bài tập 2: Thử nghiệm mượn Mát (N) khác CB chống giật -->
+                    <div class="p-4 rounded-xl bg-slate-950 text-white border border-slate-800 space-y-3 flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-bold text-sm text-rose-400">⚡ Thực hành 2: Mô Phỏng Lỗi Mượn Mát Nhảy CB Chống Giật</h4>
+                                <span id="rcboStatusBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-600 text-white font-bold">RCBO: ON</span>
+                            </div>
+                            <p class="text-xs text-slate-300">Đế âm công tắc chỉ có dây Lửa (của CB Đèn), bị thiếu dây Mát (N). Hãy thử 2 phương án lấy dây Mát dưới đây rồi bấm Bật đèn:</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                <button onclick="testRcboNeutral('wrong')" class="p-3 rounded-xl bg-rose-950/60 hover:bg-rose-900/70 border border-rose-500/50 text-left text-xs transition">
+                                    <div class="font-bold text-rose-300">❌ Cách 1: Mượn N từ Ổ cắm (Khác RCBO)</div>
+                                    <div class="text-[11px] text-slate-300 mt-0.5">Lấy L của CB Đèn + N của CB Ổ cắm</div>
+                                </button>
+                                <button onclick="testRcboNeutral('correct')" class="p-3 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-500/50 text-left text-xs transition">
+                                    <div class="font-bold text-emerald-300">✅ Cách 2: Kéo N từ Hộp đèn trần (Cùng RCBO)</div>
+                                    <div class="text-[11px] text-slate-300 mt-0.5">Cùng đi ra và quay về 1 CB Đèn</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="rcboResultBox" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-300">
+                            👉 Chọn 1 trong 2 cách đấu dây Mát phía trên để kiểm tra phản ứng của Aptomat chống giật!
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // ---------------------------------------------------------
+            // LAB CHẶNG 1: SƠ ĐỒ ĐẤU NỐI 220V + CÔNG SUẤT CAO + CẢM BIẾN
+            // ---------------------------------------------------------
+            else if (labType === 'lab_mod1') {
+                box.innerHTML = `
+                <div class="space-y-5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="switchMod1Sim('switch2')" id="m1Btn_switch2" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white">1. Đấu Công Tắc 2 Nút Chuẩn</button>
+                            <button onclick="switchMod1Sim('highpower')" id="m1Btn_highpower" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800">2. Công Tắc CS Cao (Bình Nóng Lạnh 2500W)</button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleMod1CB()" id="m1CbBtn" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white">⚡ CB 220V: ĐANG BẬT</button>
+                            <button onclick="toggleMod1Load(1)" id="m1Load1Btn" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-white border border-slate-600">🔘 Bấm Nút 1</button>
+                            <button onclick="toggleMod1Load(2)" id="m1Load2Btn" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-white border border-slate-600">🔘 Bấm Nút 2</button>
+                            <button onclick="testOverloadPort2()" id="m1OverloadBtn" class="hidden px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-600 text-white">⚠️ Thử đấu nhầm Bình Nóng Lạnh vào Chân 2</button>
+                        </div>
+                    </div>
+
+                    <div id="m1OverloadBanner" class="hidden p-3.5 rounded-xl bg-rose-950 border-2 border-rose-500 text-rose-200 text-xs flex items-center justify-between">
+                        <span>🔥 <strong>CHÁY RƠ-LE CHÂN SỐ 2!</strong> Chân số 2 chỉ chịu tải 700W thuần trở, đấu Bình nóng lạnh 2500W (~11.3A) làm dính tiếp điểm ngay! Phải đấu vào <strong>CHÂN SỐ 1 (3000W)</strong>.</span>
+                        <button onclick="fixOverloadPort1()" class="px-3 py-1 rounded-lg bg-rose-600 text-white font-bold shrink-0 ml-3">Đấu lại Chân 1</button>
+                    </div>
+
+                    <div id="mod1SvgBox" class="bg-slate-950 rounded-2xl p-4 border border-slate-800 overflow-x-auto flex justify-center"></div>
+
+                    <!-- Bộ test nhanh đèn nháy Cảm biến chuyển động -->
+                    <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="text-xs space-y-1">
+                            <div class="font-bold text-sm text-emerald-500 flex items-center gap-2">
+                                <span>📡 Mô phỏng Ấn 2 Lần Nút Config Cảm Biến Chuyển Động (LM-MDZ/LM-MDB) [00:10:05]:</span>
+                                <span id="m1SensorLed" class="w-3.5 h-3.5 rounded-full bg-emerald-500 glow-emerald inline-block"></span>
+                            </div>
+                            <p id="m1SensorText" class="text-slate-600 dark:text-slate-300">Đang ở chế độ mặc định: <strong>Nháy Xanh = Sau 30 giây</strong> hết người đèn tự tắt. <em>(Lưu ý: Nhớ đánh thức cảm biến khi lưu cài đặt từ App!)</em></p>
+                        </div>
+                        <div class="flex gap-2 shrink-0 text-xs">
+                            <button onclick="setM1Sensor('green')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold">Nháy Xanh (30s)</button>
+                            <button onclick="setM1Sensor('red')" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white font-bold">Nháy Đỏ (120s)</button>
+                            <button onclick="setM1Sensor('pink')" class="px-3 py-1.5 rounded-lg bg-pink-600 text-white font-bold">Nháy Hồng (300s)</button>
+                        </div>
+                    </div>
+
+                    <!-- Bộ mô phỏng 2 núm vặn biến trở 10 nấc trên cảm biến LM-MC và LM-MSZ -->
+                    <div class="p-4 rounded-xl bg-slate-950 text-white border border-amber-500/40 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h4 class="font-bold text-xs sm:text-sm text-amber-400">🎛️ Thực hành 3: Vặn 2 Núm Biến Trở 10 Nấc Trên Cảm Biến Gắn Trần (LM-MC) & Cầu Thang (LM-MSZ) [00:10:40]</h4>
+                            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">Chế độ Auto Vật Lý</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                                <div class="flex justify-between font-bold">
+                                    <span>⏱️ Núm vặn TIME (10 nấc độ trễ):</span>
+                                    <span id="knobTimeLabel" class="text-emerald-400">Nấc 1: Mặc định 5 giây</span>
+                                </div>
+                                <input type="range" id="knobTimeInput" min="0" max="9" step="1" value="0" oninput="updateLmMcKnobs()" class="w-full accent-emerald-500 cursor-pointer">
+                                <div class="text-[10px] text-slate-400 flex justify-between font-mono">
+                                    <span>5s</span><span>15s</span><span>30s</span><span>1p</span><span>2p</span><span>5p</span><span>10p</span><span>20p</span><span>30p</span><span>Có</span>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                                <div class="flex justify-between font-bold">
+                                    <span>☀️ Núm vặn LUX (10 nấc ánh sáng):</span>
+                                    <span id="knobLuxLabel" class="text-amber-400">Nấc 1: Hoạt động cả ngày</span>
+                                </div>
+                                <input type="range" id="knobLuxInput" min="0" max="9" step="1" value="0" oninput="updateLmMcKnobs()" class="w-full accent-amber-500 cursor-pointer">
+                                <div class="text-[10px] text-slate-400 flex justify-between font-mono">
+                                    <span>Ngày</span><span>Tối</span><span>20</span><span>40</span><span>80</span><span>100</span><span>120</span><span>140</span><span>300</span><span>Có</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="knobSummaryBox" class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
+                            👉 Kéo thử 2 thanh trượt phía trên để tra cứu chính xác 10 nấc vặn biến trở phía sau lưng cảm biến <code>LM-MC</code> và <code>LM-MSZ</code>.
+                        </div>
+                    </div>
+                </div>`;
+                renderMod1Svg();
+            }
+
+            // ---------------------------------------------------------
+            // LAB CHẶNG 2: BẮT BỆNH LED VRV DAIKIN, MÁY TÍNH NETID & MODULE 5 IN 1
+            // ---------------------------------------------------------
+            else if (labType === 'lab_mod2') {
+                box.innerHTML = `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Bắt bệnh đèn LED Module VRV Daikin + DTA116A51 -->
+                        <div class="p-4 rounded-xl bg-slate-950 text-white border border-slate-800 space-y-3">
+                            <h4 class="font-bold text-sm text-amber-400">❄️ Thực hành 1: Bắt Bệnh Đèn LED Trên Mạch DTA116A51 & Module LM-DK [00:24:30]</h4>
+                            <p class="text-xs text-slate-300">Chọn tình huống để kiểm tra đèn <code>H1P–H4P</code> trên DTA116A51 và 3 đèn LED trên Module <code>LM-DK</code>:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="setVrvDiag('ok')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white">1. Chuẩn (DATA+ đấu B-)</button>
+                                <button onclick="setVrvDiag('cut_rs485')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white">2. Đấu nhầm DATA+/A+ hoặc đứt cáp</button>
+                                <button onclick="setVrvDiag('no_zigbee')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white">3. Chưa vào mạng Zigbee HC</button>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs">
+                                <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1"></span>
+                                    <div class="font-bold">DTA: H1P/H2P</div>
+                                    <div class="text-[10px] text-amber-300">Nháy vàng = Thông DIII-NET</div>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                                    <span id="vrvLedZigbee" class="w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1"></span>
+                                    <div class="font-bold">LM-DK: Zigbee</div>
+                                    <div id="vrvZigbeeTxt" class="text-[10px] text-emerald-400">Xanh = Đã vào mạng</div>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                                    <span id="vrvLedRs485" class="w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1"></span>
+                                    <div class="font-bold">LM-DK: RS485 & H3P/H4P</div>
+                                    <div id="vrvRs485Txt" class="text-[10px] text-emerald-400">Nháy = Thông Modbus</div>
+                                </div>
+                            </div>
+                            <div id="vrvDiagExplain" class="p-3 rounded-xl bg-slate-900 text-xs text-emerald-300 border border-slate-800">
+                                ✅ Đấu đúng: Chân <code>DATA(+)</code> vào <code>B(-)</code>, <code>DATA(-)</code> vào <code>A(+)</code>. Đèn H3P/H4P trên DTA nháy vàng và LED RS485 trên LM-DK nháy xanh!
+                            </div>
+
+                            <!-- Máy tính NetID = ID mặt lạnh + 1 -->
+                            <div class="p-3 rounded-xl bg-slate-900 border border-amber-500/40 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+                                <div>
+                                    <span class="font-bold text-amber-300">🧮 Tính nhanh NetID trên App [00:23:59]:</span>
+                                    <span class="text-slate-400 block text-[11px]">Nhập ID mặt lạnh cài trên khiển BRC (00 - 15):</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="number" id="daikinIdInput" value="0" min="0" max="15" oninput="calcDaikinNetId()" class="w-16 px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-center font-mono font-bold text-white">
+                                    <span id="daikinNetIdOutput" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono font-bold border border-emerald-500/30">➔ NetID = 1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chuyển 5 chế độ Module 5 in 1 + Trạng thái 100% vs 12% -->
+                        <div class="p-4 rounded-xl bg-slate-950 text-white border border-slate-800 space-y-3 flex flex-col justify-between">
+                            <div class="space-y-2">
+                                <h4 class="font-bold text-sm text-purple-400">🌈 Thực hành 2: Cấu Hình Module 5 IN 1 (LM-5IN1/Z-B) & Trạng Thái Sáng 100% ➔ 12% [00:30:11]</h4>
+                                <p class="text-xs text-slate-300">Sau khi giữ nút Config 10 giây, chọn số lần nhấn nút Config (1–5 lần) để xem sơ đồ 5 chân <code>1, 2, 3, 4, 5</code> và trạng thái sáng khi chưa vào mạng vs đã vào mạng:</p>
+                                <div class="grid grid-cols-5 gap-1.5 pt-1">
+                                    ${[1,2,3,4,5].map(n => `
+                                        <button onclick="select5in1Mode(${n})" class="p-2 rounded-xl bg-slate-900 hover:bg-purple-900/50 border border-purple-500/40 text-xs font-bold transition">
+                                            Nhấn ${n} lần
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div id="mod5in1Result" class="p-3.5 rounded-xl bg-slate-900 border border-purple-500/40 text-xs space-y-1.5">
+                                <div class="font-bold text-amber-400">Đang chọn: Nhấn 1 lần = Chế độ 1 (RGBWW)</div>
+                                <div class="font-mono text-cyan-300">Sơ đồ chân: 1 = B | 2 = G | 3 = R | 4 = CW | 5 = WW (Dây dương chung vào +)</div>
+                                <p class="text-slate-300">• <strong>Mới cấp nguồn:</strong> Kênh WW sáng trắng <strong>100%</strong>, RGB tắt.<br>• <strong>Sau khi gia nhập mạng HC:</strong> Kênh WW sáng vàng <strong>100%</strong>, RGB tắt (Chỉ điều khiển được 1 trong 2 kênh tại 1 thời điểm).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // ---------------------------------------------------------
+            // LAB CHẶNG 3: PHÂN TÍCH PHỔ SÓNG 2.4GHZ (WI-FI ĐÈ ZIGBEE VS BLE MESH)
+            // ---------------------------------------------------------
+            else if (labType === 'lab_mod3') {
+                box.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h4 class="font-bold text-sm sm:text-base text-rose-400">📡 Mô Phỏng Phổ Tần 2.4GHz: Tại Sao Bấm App Bị Trễ 5–6 Giây? [Bài 2 - 00:16:45]</h4>
+                            <p class="text-xs text-slate-400">Quan sát sự chồng lấn giữa Kênh Wi-Fi 6 và Kênh Zigbee 17, sau đó bấm nút "Xóa & Tạo lại mạng Zigbee" để xem HC tự động nhảy sang kênh sạch!</p>
+                        </div>
+                        <div class="flex gap-2 shrink-0">
+                            <button onclick="setSpectrumState('conflict')" class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-600 text-white">⚠️ Tạo Lỗi Trùng Kênh 6 Wi-Fi</button>
+                            <button onclick="setSpectrumState('clean')" class="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white">✅ Xóa Mạng Zigbee Để HC Tự Né Kênh</button>
+                        </div>
+                    </div>
+
+                    <div id="spectrumSvgBox" class="bg-slate-950 rounded-2xl p-4 border border-slate-800 overflow-x-auto"></div>
+                    <div id="spectrumStatusText" class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs sm:text-sm text-rose-300">
+                        ⚠️ <strong>TRẠNG THÁI HIỆN TẠI: ĐANG TRÙNG KÊNH!</strong> Router Wi-Fi của chủ nhà đang phát ở <strong>Kênh 6</strong> đè thẳng lên đỉnh <strong>Kênh 17 của Zigbee</strong>. Hậu quả: Bấm bật đèn trên App mất <strong>5 – 6 giây</strong> đèn mới phản hồi! Trong khi đó <strong>BLE Mesh (Kênh 37, 38, 39)</strong> nằm hoàn toàn ở khe trống nên phản hồi tức thì.
+                    </div>
+                </div>`;
+                renderSpectrumSvg('conflict');
+            }
+
+            // ---------------------------------------------------------
+            // LAB CHẶNG 4: PHÒNG THÍ NGHIỆM ÁNH SÁNG (KELVIN, CRI & TÍNH ĐỘ RỌI LUX)
+            // ---------------------------------------------------------
+            else if (labType === 'lab_mod4') {
+                box.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Trượt Kelvin & CRI -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <h4 class="font-bold text-sm text-amber-400">🎚️ Thực hành 1: Mô Phỏng Nhiệt Độ Màu (Kelvin) & Độ Hoàn Màu (CRI)</h4>
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <div class="flex justify-between font-bold mb-1">
+                                    <span>Nhiệt độ màu (CCT): <strong id="lab4KelvinLabel" class="text-amber-400">4000K (Trung tính)</strong></span>
+                                    <span class="text-slate-400">2700K ➔ 6500K</span>
+                                </div>
+                                <input type="range" id="lab4Kelvin" min="2700" max="6500" step="100" value="4000" oninput="updateLab4Studio()" class="w-full h-2.5 rounded-lg appearance-none cursor-pointer bg-gradient-to-r from-amber-500 via-yellow-100 to-sky-400">
+                            </div>
+                            <div class="flex items-center justify-between gap-2 pt-1">
+                                <span class="font-bold">So sánh Chỉ số hoàn màu (CRI) [00:01:09]:</span>
+                                <div class="flex gap-2">
+                                    <button onclick="setLab4Cri(70)" id="criBtn70" class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-bold">Đèn Rẻ Tiền (CRI 70)</button>
+                                    <button onclick="setLab4Cri(95)" id="criBtn95" class="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold">Đèn Lumi Chuẩn (CRI 95)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="lab4RoomBox" class="p-5 rounded-2xl border-2 border-slate-700 text-center transition-all duration-300" style="background: radial-gradient(circle, rgba(254,243,199,0.75) 0%, rgba(15,23,42,0.96) 100%);">
+                            <div id="lab4RoomTitle" class="font-extrabold text-base text-white">Không Gian 4000K • CRI 95 (Màu sắc trung thực rực rỡ)</div>
+                            <div id="lab4FruitRow" class="flex justify-center gap-6 my-3 text-3xl transition-all duration-300">
+                                <span>🍎</span><span>🍋</span><span>🥗</span><span>👗</span>
+                            </div>
+                            <p id="lab4RoomDesc" class="text-xs text-slate-200">Với CRI 95 tiệm cận ánh sáng mặt trời (CRI 100), màu đỏ của táo, đĩa thức ăn và quần áo hiện lên tươi tắn, chuẩn màu thiết kế.</p>
+                        </div>
+                    </div>
+
+                    <!-- Máy tính Độ rọi Lux = Lumen / m2 -->
+                    <div class="lg:col-span-5 p-4 rounded-xl bg-slate-950 text-white border border-slate-800 flex flex-col justify-between space-y-3">
+                        <div class="space-y-3">
+                            <h4 class="font-bold text-sm text-purple-400">📐 Thực hành 2: Máy Tính Độ Rọi (Lux = Lumen / m²) [00:02:35]</h4>
+                            <p class="text-xs text-slate-300">Thử thay đổi số bóng đèn Downlight Lumi (mỗi bóng 9W phát ra ~810 Lumen, hiệu suất 90 lm/W) và diện tích phòng:</p>
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-slate-400 mb-1">Số bóng đèn (810 lm/bóng):</label>
+                                    <input type="number" id="calcBulbs" value="8" min="1" max="50" oninput="calcLux()" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 font-bold text-emerald-400">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-400 mb-1">Diện tích phòng (m²):</label>
+                                    <input type="number" id="calcArea" value="20" min="5" max="200" oninput="calcLux()" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 font-bold text-amber-400">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="calcLuxResult" class="p-3.5 rounded-xl bg-slate-900 border border-purple-500/40 text-xs space-y-1">
+                            <div class="text-sm font-extrabold text-purple-300">Tổng Quang Thông: 6,480 Lumen ➔ Độ rọi: ~324 Lux</div>
+                            <p class="text-slate-300">Đạt chuẩn độ rọi sinh hoạt Phòng khách / Phòng học tiêu chuẩn (300 - 400 Lux).</p>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // ---------------------------------------------------------
+            // LAB CHẶNG 5: 12 ĐÈN DOWNLIGHT BLE MESH (GROUP ID + SCENE ID + HCL)
+            // ---------------------------------------------------------
+            else if (labType === 'lab_mod5') {
+                box.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="runMod5Lab('group_living')" class="px-3 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white">🛋️ Bật Nhóm Khách (Đèn 1–6)</button>
+                            <button onclick="runMod5Lab('group_kitchen')" class="px-3 py-2 rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-500 text-white">🍳 Bật Nhóm Bếp (Đèn 6–12)</button>
+                            <button onclick="runMod5Lab('normal_scene')" class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white">🐢 Chạy "Cảnh Thường" (Bị trễ & Miss đèn 11)</button>
+                            <button onclick="runMod5Lab('lighting_scene')" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950">⚡ Chạy "Cảnh Lighting" (Scene ID 100% cùng lúc)</button>
+                        </div>
+                    </div>
+
+                    <div id="mod5LabStatus" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-emerald-400">
+                        👉 Bấm vào các nút phía trên hoặc bấm tắt/bật lẻ từng bóng đèn bên dưới. Chú ý <strong>Đèn số 6 (Sảnh Chung)</strong> thuộc cả 2 Nhóm Phòng Khách và Phòng Bếp!
+                    </div>
+
+                    <div id="mod5DownlightGrid" class="grid grid-cols-3 sm:grid-cols-6 gap-2.5"></div>
+                </div>`;
+                renderMod5Downlights();
+            }
+        }
+
+        // =========================================================================
+        // 6. HÀM XỬ LÝ TƯƠNG TÁC CHO TỪNG LAB
+        // =========================================================================
+
+        // --- LAB 0 HANDLERS ---
+        function testWirePen(wireIndex) {
+            const box = document.getElementById('penResultBox');
+            if (wireIndex === 3) {
+                box.className = "p-3 rounded-xl bg-red-950/90 border-2 border-red-500 text-xs text-red-200";
+                box.innerHTML = `💡 <strong>ĐÈN BÚT THỬ ĐIỆN SÁNG ĐỎ RỰC!</strong> Sợi <strong>Dây Đỏ số 3</strong> chính là <strong>Dây Lửa Nguồn (L - 220V)</strong>! Hãy quấn băng dính đánh dấu lại ngay để lát nữa đấu vào chân <code>L</code> của công tắc.`;
+            } else if (wireIndex === 6) {
+                box.className = "p-3 rounded-xl bg-blue-950/80 border border-blue-500 text-xs text-blue-200";
+                box.innerHTML = `💧 <strong>Bút thử điện KHÔNG sáng:</strong> Đây là cụm <strong>Dây Nguội / Mát chung (N)</strong>. Bạn trích 1 sợi từ bó này đấu vào chân <code>N</code> để nuôi nguồn công tắc.`;
+            } else {
+                box.className = "p-3 rounded-xl bg-slate-900 border border-amber-500/40 text-xs text-amber-200";
+                box.innerHTML = `🌑 <strong>Bút thử điện KHÔNG sáng:</strong> Sợi <strong>Dây Đỏ số ${wireIndex}</strong> là <strong>Dây Tải đi lên bóng đèn</strong> (đấu vào các chân <code>1, 2, 3, 4</code>). Hãy thử tiếp các sợi dây đỏ khác để tìm dây Lửa!`;
+            }
+        }
+
+        function testRcboNeutral(mode) {
+            const badge = document.getElementById('rcboStatusBadge');
+            const box = document.getElementById('rcboResultBox');
+            if (mode === 'wrong') {
+                badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-rose-600 text-white font-bold animate-pulse";
+                badge.textContent = "RCBO: TRIP (NHẢY CÚP!)";
+                box.className = "p-3 rounded-xl bg-rose-950 border-2 border-rose-500 text-xs text-rose-200";
+                box.innerHTML = `💥 <strong>CẠCH! NHẢY APTOMAT CHỐNG GIẬT NGAY LẬP TỨC!</strong> Dòng điện đi ra từ chân L của CB Đèn nhưng lại chạy về chân N của CB Ổ cắm. CB chống giật phát hiện dòng đi ≠ dòng về nên ngắt điện toàn phòng!`;
+            } else {
+                badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-600 text-white font-bold";
+                badge.textContent = "RCBO: ON (AN TOÀN)";
+                box.className = "p-3 rounded-xl bg-emerald-950 border border-emerald-500 text-xs text-emerald-200";
+                box.innerHTML = `✅ <strong>HOẠT ĐỘNG BÌNH THƯỜNG!</strong> Dây Lửa và dây Nguội cùng xuất phát và quay về trên 1 CB Đèn nên dòng điện cân bằng tuyệt đối, đèn sáng ổn định.`;
+            }
+        }
+
+        // --- LAB 1 HANDLERS ---
+        let mod1State = { mode: 'switch2', cb: true, sw1: true, sw2: false, overload: false };
+
+        function switchMod1Sim(mode) {
+            mod1State.mode = mode;
+            mod1State.overload = false;
+            document.getElementById('m1OverloadBanner').classList.add('hidden');
+            document.getElementById('m1Btn_switch2').className = mode === 'switch2' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800';
+            document.getElementById('m1Btn_highpower').className = mode === 'highpower' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800';
+            document.getElementById('m1OverloadBtn').classList.toggle('hidden', mode !== 'highpower');
+            renderMod1Svg();
+        }
+
+        function toggleMod1CB() {
+            mod1State.cb = !mod1State.cb;
+            const btn = document.getElementById('m1CbBtn');
+            btn.textContent = mod1State.cb ? '⚡ CB 220V: ĐANG BẬT' : '📴 CB 220V: ĐANG TẮT';
+            btn.className = mod1State.cb ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-600 text-white';
+            renderMod1Svg();
+        }
+
+        function toggleMod1Load(n) {
+            if (n === 1) mod1State.sw1 = !mod1State.sw1;
+            if (n === 2) mod1State.sw2 = !mod1State.sw2;
+            renderMod1Svg();
+        }
+
+        function testOverloadPort2() {
+            mod1State.overload = true;
+            mod1State.cb = true;
+            mod1State.sw2 = true;
+            document.getElementById('m1OverloadBanner').classList.remove('hidden');
+            renderMod1Svg();
+        }
+
+        function fixOverloadPort1() {
+            mod1State.overload = false;
+            mod1State.sw1 = true;
+            mod1State.sw2 = false;
+            document.getElementById('m1OverloadBanner').classList.add('hidden');
+            renderMod1Svg();
+        }
+
+        function renderMod1Svg() {
+            const box = document.getElementById('mod1SvgBox');
+            if (!box) return;
+            const lActive = mod1State.cb ? 'wire-active' : '';
+            const out1 = (mod1State.cb && mod1State.sw1 && !mod1State.overload);
+            const out2 = (mod1State.cb && mod1State.sw2);
+
+            const load1Title = mod1State.mode === 'highpower' ? 'BÌNH NÓNG LẠNH 2500W' : 'ĐÈN TRẦN SỐ 1 (40W)';
+            const port1Label = mod1State.mode === 'highpower' ? '1 (3000W)' : 'Chân 1';
+            const leftTerm1 = mod1State.mode === 'highpower' ? 'N (Trái!)' : 'L';
+            const leftTerm2 = mod1State.mode === 'highpower' ? 'L' : 'N (Phải)';
+
+            box.innerHTML = `
+            <svg viewBox="0 0 740 270" class="w-full max-w-3xl h-auto select-none">
+                <rect x="15" y="75" width="95" height="110" rx="10" fill="#1e293b" stroke="${mod1State.cb ? '#10b981' : '#f43f5e'}" stroke-width="2.5"/>
+                <text x="62" y="105" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">CB 220V AC</text>
+                <text x="62" y="130" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">L (Lửa)</text>
+                <text x="62" y="160" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="bold">N (Nguội)</text>
+
+                <!-- Dây Lửa -->
+                <path d="M 110 125 L 250 125 L 250 175" fill="none" stroke="${mod1State.cb ? '#ef4444' : '#475569'}" stroke-width="4" class="${lActive}"/>
+                <!-- Dây Nguội -->
+                <path d="M 110 155 L 210 155 L 210 175" fill="none" stroke="#3b82f6" stroke-width="4"/>
+                <path d="M 210 155 L 210 35 L 610 35 L 610 65" fill="none" stroke="#3b82f6" stroke-width="3.5"/>
+                <path d="M 465 35 L 465 65" fill="none" stroke="#3b82f6" stroke-width="3.5"/>
+                <circle cx="210" cy="155" r="5" fill="#3b82f6"/>
+
+                <!-- Công tắc Lumi -->
+                <rect x="175" y="175" width="220" height="82" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
+                <text x="285" y="228" text-anchor="middle" fill="#10b981" font-size="11" font-weight="bold">${mod1State.mode === 'highpower' ? 'MÃ LM-SxH (Chân: N | L | 1 | 2 | 3)' : 'MÃ LM-SxN (Chân: L | 1 | 2 | 3 | 4 | N)'}</text>
+                <text x="285" y="246" text-anchor="middle" fill="#94a3b8" font-size="10">Đế vuông Sino S3157L (75x75x40mm - Tai dọc)</text>
+                <text x="210" y="198" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="bold">N</text>
+                <text x="250" y="198" text-anchor="middle" fill="#f87171" font-size="10" font-weight="bold">L</text>
+                <text x="305" y="198" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">${port1Label}</text>
+                <text x="360" y="198" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">2 (150W)</text>
+
+                <!-- Dây Tải 1 & 2 -->
+                ${!mod1State.overload ? `
+                    <path d="M 305 175 L 305 115 L 465 115 L 465 100" fill="none" stroke="${out1 ? '#facc15' : '#475569'}" stroke-width="4" class="${out1 ? 'wire-active' : ''}"/>
+                ` : `
+                    <path d="M 360 175 L 360 115 L 465 115 L 465 100" fill="none" stroke="#f43f5e" stroke-width="5" class="wire-active"/>
+                `}
+                <path d="M 360 175 L 360 140 L 610 140 L 610 100" fill="none" stroke="${out2 ? '#facc15' : '#475569'}" stroke-width="3.5" class="${out2 ? 'wire-active' : ''}"/>
+
+                <!-- Tải 1 -->
+                <rect x="405" y="65" width="120" height="38" rx="8" fill="${out1 ? '#f59e0b' : (mod1State.overload ? '#e11d48' : '#1e293b')}" stroke="#f59e0b" stroke-width="2"/>
+                <text x="465" y="88" text-anchor="middle" fill="${out1 ? '#0f172a' : '#fff'}" font-size="10" font-weight="bold">${mod1State.overload ? '🔥 QUÁ TẢI CHÂN 2!' : load1Title}</text>
+
+                <!-- Tải 2 -->
+                <rect x="555" y="65" width="110" height="38" rx="8" fill="${out2 ? '#facc15' : '#1e293b'}" stroke="#94a3b8" stroke-width="2"/>
+                <text x="610" y="88" text-anchor="middle" fill="${out2 ? '#0f172a' : '#fff'}" font-size="10" font-weight="bold">ĐÈN SỐ 2 (30W)</text>
+            </svg>`;
+        }
+
+        function setM1Sensor(color) {
+            const led = document.getElementById('m1SensorLed');
+            const txt = document.getElementById('m1SensorText');
+            if (color === 'green') {
+                led.className = "w-3.5 h-3.5 rounded-full bg-emerald-500 glow-emerald inline-block";
+                txt.innerHTML = "Đang chọn: <strong>Nháy Xanh = Độ trễ 30 giây</strong> (Mặc định). Nhớ đánh thức cảm biến khi lưu thông số trên App!";
+            } else if (color === 'red') {
+                led.className = "w-3.5 h-3.5 rounded-full bg-rose-500 glow-rose inline-block";
+                txt.innerHTML = "Đang chọn: <strong>Nháy Đỏ = Độ trễ 120 giây (2 phút)</strong>. Nhớ đánh thức cảm biến khi lưu thông số trên App!";
+            } else {
+                led.className = "w-3.5 h-3.5 rounded-full bg-pink-500 glow-pink inline-block";
+                txt.innerHTML = "Đang chọn: <strong>Nháy Hồng = Độ trễ 300 giây (5 phút)</strong>. Nhớ đánh thức cảm biến khi lưu thông số trên App!";
+            }
+        }
+
+        function updateLmMcKnobs() {
+            const timeSteps = [
+                "Mặc định 5 giây", "15 giây", "30 giây", "1 phút", "2 phút",
+                "5 phút", "10 phút", "20 phút", "30 phút", "Trạng thái có (luôn giữ khi còn người)"
+            ];
+            const luxSteps = [
+                "Hoạt động cả ngày", "Hoạt động khi tối", "Lux = 20", "Lux = 40", "Lux = 80",
+                "Lux = 100", "Lux = 120", "Lux = 140", "Lux = 300", "Trạng thái có"
+            ];
+            const tIdx = parseInt(document.getElementById('knobTimeInput').value) || 0;
+            const lIdx = parseInt(document.getElementById('knobLuxInput').value) || 0;
+
+            document.getElementById('knobTimeLabel').textContent = `Nấc ${tIdx + 1}: ${timeSteps[tIdx]}`;
+            document.getElementById('knobLuxLabel').textContent = `Nấc ${lIdx + 1}: ${luxSteps[lIdx]}`;
+            document.getElementById('knobSummaryBox').innerHTML = `✅ <strong>Cấu hình biến trở hiện tại (LM-MC / LM-MSZ Auto):</strong> Cảm biến sẽ kích hoạt khi môi trường ở mức <strong>${luxSteps[lIdx]}</strong> và giữ đèn sáng trong <strong>${timeSteps[tIdx]}</strong> sau khi hết chuyển động.`;
+        }
+
+        // --- LAB 2 HANDLERS ---
+        function setVrvDiag(state) {
+            const zLed = document.getElementById('vrvLedZigbee');
+            const rLed = document.getElementById('vrvLedRs485');
+            const zTxt = document.getElementById('vrvZigbeeTxt');
+            const rTxt = document.getElementById('vrvRs485Txt');
+            const exp = document.getElementById('vrvDiagExplain');
+
+            if (state === 'ok') {
+                zLed.className = "w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1";
+                rLed.className = "w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1";
+                zTxt.textContent = "Xanh = Đã vào mạng";
+                rTxt.textContent = "Nháy = Thông Modbus";
+                exp.className = "p-3 rounded-xl bg-slate-900 text-xs text-emerald-300 border border-emerald-500/40";
+                exp.innerHTML = "✅ <strong>Hoạt động chuẩn:</strong> Đấu đúng chân <code>DATA(+)</code> vào <code>B(-)</code> và <code>DATA(-)</code> vào <code>A(+)</code>. Đèn H3P/H4P trên DTA116A51 nháy vàng và LED RS485 trên LM-DK nháy xanh.";
+            } else if (state === 'cut_rs485') {
+                zLed.className = "w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1";
+                rLed.className = "w-3 h-3 rounded-full bg-slate-600 inline-block mb-1";
+                zTxt.textContent = "Xanh = Đã vào mạng";
+                rTxt.textContent = "Tắt = Lỗi kết nối DTA";
+                exp.className = "p-3 rounded-xl bg-rose-950 text-xs text-rose-200 border border-rose-500";
+                exp.innerHTML = "⚠️ <strong>Bắt bệnh [00:24:47]:</strong> Đèn RS485 tắt báo hiệu chưa kết nối được với DTA116A51. Hãy kiểm tra: (1) Có đấu nhầm <code>DATA(+)</code> vào <code>A(+)</code> không (phải đấu <code>DATA+</code> vào <code>B-</code>), (2) Đứt dây CAT6, hoặc (3) Chưa gạt DIP Switch <code>DS1, DS2, SS1, SS2, SS3</code>.";
+            } else {
+                zLed.className = "w-3 h-3 rounded-full bg-rose-500 glow-rose inline-block mb-1";
+                rLed.className = "w-3 h-3 rounded-full bg-emerald-500 glow-emerald inline-block mb-1";
+                zTxt.textContent = "Đỏ = Chưa có mạng HC";
+                rTxt.textContent = "Nháy = Thông Modbus";
+                exp.className = "p-3 rounded-xl bg-amber-950 text-xs text-amber-200 border border-amber-500";
+                exp.innerHTML = "💡 <strong>Bắt bệnh:</strong> Đèn Zigbee sáng Đỏ nghĩa là Module <code>LM-DK</code> chưa gia nhập mạng HC (kiểm tra khoảng cách từ LM-DK tới HC hoặc công tắc Zigbee gần nhất).";
+            }
+        }
+
+        function calcDaikinNetId() {
+            const idVal = parseInt(document.getElementById('daikinIdInput').value);
+            const out = document.getElementById('daikinNetIdOutput');
+            if (isNaN(idVal) || idVal < 0) {
+                out.textContent = "Nhập ID >= 0";
+                return;
+            }
+            out.textContent = `➔ NetID = ${idVal + 1}`;
+        }
+
+        function select5in1Mode(n) {
+            const box = document.getElementById('mod5in1Result');
+            const modes = {
+                1: [
+                    "Nhấn 1 lần = Chế độ 1: RGBWW [00:30:11]",
+                    "Sơ đồ chân: 1 = B | 2 = G | 3 = R | 4 = CW | 5 = WW",
+                    "• <strong>Mới cấp nguồn:</strong> Kênh WW sáng trắng <strong>100%</strong>, RGB tắt.<br>• <strong>Sau khi gia nhập mạng HC:</strong> Kênh WW sáng vàng <strong>100%</strong>, RGB tắt (Tại 1 thời điểm chỉ điều khiển được 1 trong 2 kênh)."
+                ],
+                2: [
+                    "Nhấn 2 lần = Chế độ 2: RGB & WW [00:30:11]",
+                    "Sơ đồ chân: 1 = B | 2 = G | 3 = R | 4 = CW | 5 = WW",
+                    "• <strong>Mới cấp nguồn:</strong> Cả 2 kênh sáng trắng <strong>100%</strong>.<br>• <strong>Sau khi gia nhập mạng HC:</strong> Cả 2 kênh tự động giảm xuống <strong>sáng vàng 12%</strong> (2 kênh RGB và WW điều khiển độc lập cùng lúc)."
+                ],
+                3: [
+                    "Nhấn 3 lần = Chế độ 3: 5Dim [00:31:07]",
+                    "Sơ đồ chân: 1 = D1 | 2 = D2 | 3 = D3 | 4 = D4 | 5 = D5",
+                    "• <strong>Mới cấp nguồn:</strong> Cả 5 kênh LED đơn sắc sáng trắng <strong>100%</strong>.<br>• <strong>Sau khi gia nhập mạng HC:</strong> Cả 5 kênh tự động giảm xuống <strong>sáng 12%</strong>."
+                ],
+                4: [
+                    "Nhấn 4 lần = Chế độ 4: 1WW 3Dim [00:31:21]",
+                    "Sơ đồ chân: 1 = CW | 2 = WW | 3 = D1 | 4 = D2 | 5 = D3",
+                    "• <strong>Mới cấp nguồn:</strong> Cả 4 lộ LED sáng trắng <strong>100%</strong>.<br>• <strong>Sau khi gia nhập mạng HC:</strong> Kênh WW sáng vàng <strong>12%</strong> và 3 kênh Dim giảm xuống <strong>sáng 12%</strong>."
+                ],
+                5: [
+                    "Nhấn 5 lần = Chế độ 5: 2WW 1Dim [00:31:39]",
+                    "Sơ đồ chân: 1 = CW1 | 2 = WW1 | 3 = CW2 | 4 = WW2 | 5 = D1",
+                    "• <strong>Mới cấp nguồn:</strong> Tất cả các kênh sáng trắng <strong>100%</strong>.<br>• <strong>Sau khi gia nhập mạng HC:</strong> Tất cả các kênh tự động giảm xuống <strong>sáng 12%</strong>."
+                ]
+            };
+            box.innerHTML = `
+                <div class="font-bold text-amber-400">Đang chọn: ${modes[n][0]}</div>
+                <div class="font-mono text-cyan-300">${modes[n][1]}</div>
+                <p class="text-slate-300">${modes[n][2]}</p>
+            `;
+        }
+
+        // --- LAB 3 HANDLERS (2.4GHZ SPECTRUM) ---
+        function setSpectrumState(state) {
+            renderSpectrumSvg(state);
+            const txt = document.getElementById('spectrumStatusText');
+            if (state === 'conflict') {
+                txt.className = "p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs sm:text-sm text-rose-300";
+                txt.innerHTML = `⚠️ <strong>ĐANG TRÙNG KÊNH!</strong> Sóng Wi-Fi Kênh 6 đè bẹp Kênh 17 Zigbee làm trễ lệnh 5–6 giây! Hãy bấm nút <strong>"Xóa Mạng Zigbee Để HC Tự Né Kênh"</strong>.`;
+            } else {
+                txt.className = "p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300";
+                txt.innerHTML = `✅ <strong>ĐÃ XỬ LÝ TRIỆT ĐỂ!</strong> Sau khi Xóa mạng Zigbee trên App [00:17:51], HC đã tự động quét và chuyển mạng Zigbee sang <strong>Kênh 25</strong> nằm hoàn toàn ngoài vùng phủ của Kênh 6 Wi-Fi. Tốc độ bấm App phản hồi tức thì 0.5 – 1 giây!`;
+            }
+        }
+
+        function renderSpectrumSvg(state) {
+            const box = document.getElementById('spectrumSvgBox');
+            if (!box) return;
+            const zigbeeX = state === 'conflict' ? 290 : 545;
+            const zigbeeLabel = state === 'conflict' ? 'Zigbee Ch 17 (Bị Đè!)' : 'Zigbee Ch 25 (Sạch 100%)';
+            const zigbeeColor = state === 'conflict' ? '#f43f5e' : '#10b981';
+
+            box.innerHTML = `
+            <svg viewBox="0 0 700 180" class="w-full max-w-3xl h-auto select-none">
+                <line x1="30" y1="145" x2="670" y2="145" stroke="#475569" stroke-width="2"/>
+                <!-- Wi-Fi Ch 1, 6, 11 -->
+                <path d="M 60 145 Q 120 35 180 145" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
+                <text x="120" y="130" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="bold">Wi-Fi Kênh 1</text>
+
+                <path d="M 230 145 Q 290 25 350 145" fill="rgba(239,68,68,0.25)" stroke="#ef4444" stroke-width="2.5"/>
+                <text x="290" y="130" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold">Wi-Fi Kênh 6 (Mạnh)</text>
+
+                <path d="M 400 145 Q 460 35 520 145" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
+                <text x="460" y="130" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="bold">Wi-Fi Kênh 11</text>
+
+                <!-- BLE Mesh Channels 37, 38, 39 -->
+                <rect x="38" y="65" width="12" height="80" rx="3" fill="#06b6d4"/>
+                <text x="44" y="55" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">BLE 37</text>
+
+                <rect x="200" y="65" width="12" height="80" rx="3" fill="#06b6d4"/>
+                <text x="206" y="55" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">BLE 38</text>
+
+                <rect x="615" y="65" width="12" height="80" rx="3" fill="#06b6d4"/>
+                <text x="621" y="55" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">BLE 39</text>
+
+                <!-- Zigbee Peak -->
+                <rect x="${zigbeeX - 14}" y="40" width="28" height="105" rx="5" fill="${zigbeeColor}" opacity="0.85"/>
+                <text x="${zigbeeX}" y="28" text-anchor="middle" fill="${zigbeeColor}" font-size="11" font-weight="bold">${zigbeeLabel}</text>
+            </svg>`;
+        }
+
+        // --- LAB 4 HANDLERS (KELVIN, CRI & LUX) ---
+        let lab4CriValue = 95;
+        function setLab4Cri(val) {
+            lab4CriValue = val;
+            document.getElementById('criBtn70').className = val === 70 ? "px-3 py-1 rounded-lg bg-rose-600 text-white font-bold" : "px-3 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-bold";
+            document.getElementById('criBtn95').className = val === 95 ? "px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold" : "px-3 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-bold";
+            updateLab4Studio();
+        }
+
+        function updateLab4Studio() {
+            const k = parseInt(document.getElementById('lab4Kelvin').value);
+            const kLabel = document.getElementById('lab4KelvinLabel');
+            const box = document.getElementById('lab4RoomBox');
+            const title = document.getElementById('lab4RoomTitle');
+            const desc = document.getElementById('lab4RoomDesc');
+            const fruits = document.getElementById('lab4FruitRow');
+
+            let colorRgba = 'rgba(254, 243, 199, 0.78)';
+            let kName = 'Trung tính';
+            if (k <= 3300) { colorRgba = 'rgba(251, 191, 36, 0.78)'; kName = 'Vàng ấm'; }
+            else if (k >= 5000) { colorRgba = 'rgba(224, 242, 254, 0.82)'; kName = 'Trắng lạnh'; }
+
+            kLabel.textContent = `${k}K (${kName})`;
+            box.style.background = `radial-gradient(circle, ${colorRgba} 0%, rgba(15,23,42,0.96) 100%)`;
+
+            if (lab4CriValue < 80) {
+                fruits.style.filter = 'grayscale(55%) contrast(80%)';
+                title.textContent = `Không Gian ${k}K • CRI 70 (Màu sắc nhợt nhạt, xỉn màu)`;
+                desc.textContent = `Khi CRI thấp (70), ánh sáng thiếu phổ màu khiến trái cây, món ăn và quần áo trông xám xịt, sai lệch so với thực tế.`;
+            } else {
+                fruits.style.filter = 'none';
+                title.textContent = `Không Gian ${k}K • CRI 95 (Màu sắc trung thực rực rỡ)`;
+                desc.textContent = `Với CRI 95 tiệm cận ánh sáng mặt trời (CRI 100), vật thể lên màu tươi tắn, chuẩn xác tuyệt đối.`;
+            }
+        }
+
+        function calcLux() {
+            const bulbs = parseInt(document.getElementById('calcBulbs').value) || 1;
+            const area = parseInt(document.getElementById('calcArea').value) || 1;
+            const totalLumen = bulbs * 810;
+            const lux = Math.round(totalLumen / area);
+            const res = document.getElementById('calcLuxResult');
+
+            let advice = "Đạt chuẩn độ rọi sinh hoạt Phòng khách / Phòng học tiêu chuẩn (300 - 500 Lux).";
+            if (lux < 150) advice = "Ánh sáng hơi tối — chỉ phù hợp làm đèn ngủ hoặc hành lang (cần tăng thêm số bóng đèn).";
+            else if (lux > 600) advice = "Độ rọi rất cao — phù hợp cho siêu thị, showroom trưng bày hoặc bàn kỹ thuật chi tiết.";
+
+            res.innerHTML = `
+                <div class="text-sm font-extrabold text-purple-300">Tổng Quang Thông: ${totalLumen.toLocaleString()} Lumen ➔ Độ rọi: ~${lux} Lux</div>
+                <p class="text-slate-300">${advice}</p>
+            `;
+        }
+
+        // --- LAB 5 HANDLERS (12 BLE DOWNLIGHTS) ---
+        let mod5Lights = Array.from({ length: 12 }, (_, i) => ({
+            id: i + 1,
+            name: i + 1 === 6 ? 'Đèn 6 (Sảnh Chung)' : (i < 5 ? `Khách ${i + 1}` : `Bếp ${i + 1}`),
+            groups: i + 1 === 6 ? ['Khách', 'Bếp'] : (i < 5 ? ['Khách'] : ['Bếp']),
+            on: false,
+            missed: false
+        }));
+        let mod5Timers = [];
+
+        function renderMod5Downlights() {
+            const grid = document.getElementById('mod5DownlightGrid');
+            if (!grid) return;
+            grid.innerHTML = mod5Lights.map(d => `
+                <div onclick="toggleMod5Single(${d.id})" class="p-2.5 rounded-xl border cursor-pointer text-center transition ${d.on ? 'bg-amber-500/20 border-amber-400' : (d.missed ? 'bg-rose-950 border-rose-500' : 'bg-slate-900 border-slate-800')}">
+                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-extrabold mb-1 ${d.on ? 'bg-amber-300 text-slate-950 glow-amber' : (d.missed ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-400')}">${d.id}</div>
+                    <div class="text-[11px] font-bold ${d.id === 6 ? 'text-cyan-400' : 'text-white'}">${d.name}</div>
+                    <div class="text-[10px] font-mono ${d.on ? 'text-emerald-400' : (d.missed ? 'text-rose-400 font-bold' : 'text-slate-500')}">${d.on ? '● SÁNG' : (d.missed ? '✕ MISS!' : '○ TẮT')}</div>
+                </div>
+            `).join('');
+        }
+
+        function toggleMod5Single(id) {
+            const item = mod5Lights.find(x => x.id === id);
+            if (item) {
+                item.on = !item.on;
+                item.missed = false;
+                document.getElementById('mod5LabStatus').innerHTML = `💡 <strong>Điều khiển lẻ Đèn ${id} [Bài 5 - 01:58]:</strong> Bật/tắt riêng lẻ không làm ảnh hưởng đến các đèn còn lại trong Nhóm Lighting!`;
+                renderMod5Downlights();
+            }
+        }
+
+        function runMod5Lab(mode) {
+            mod5Timers.forEach(t => clearTimeout(t));
+            mod5Timers = [];
+            const st = document.getElementById('mod5LabStatus');
+
+            if (mode === 'group_living') {
+                mod5Lights.forEach(d => { d.missed = false; d.on = d.groups.includes('Khách'); });
+                st.innerHTML = `🛋️ <strong>Nhóm Phòng Khách (Đèn 1–6):</strong> Sáng đồng loạt! Chú ý <strong>Đèn 6 (Sảnh Chung)</strong> sáng theo vì thuộc cả Nhóm Khách và Nhóm Bếp [Bài 5 - 02:12].`;
+                renderMod5Downlights();
+            } else if (mode === 'group_kitchen') {
+                mod5Lights.forEach(d => { d.missed = false; d.on = d.groups.includes('Bếp'); });
+                st.innerHTML = `🍳 <strong>Nhóm Phòng Bếp (Đèn 6–12):</strong> Sáng đồng loạt! <strong>Đèn 6</strong> tham gia cả 2 nhóm nên cũng sáng.`;
+                renderMod5Downlights();
+            } else if (mode === 'normal_scene') {
+                mod5Lights.forEach(d => { d.on = false; d.missed = false; });
+                renderMod5Downlights();
+                st.innerHTML = `🐢 <strong>Đang chạy "Cảnh Thường" (>10 đèn) [Bài 6 - 01:57]:</strong> HC bắn từng gói tin đơn lẻ... Đèn bật đuổi nhau từng bóng và <strong>Đèn số 11 bị Miss bản tin</strong>! (Khắc phục: Chia cụm 10 thiết bị + Delay 2s).`;
+                mod5Lights.forEach((d, idx) => {
+                    const t = setTimeout(() => {
+                        if (d.id === 11) { d.on = false; d.missed = true; }
+                        else { d.on = true; d.missed = false; }
+                        renderMod5Downlights();
+                    }, (idx + 1) * 200);
+                    mod5Timers.push(t);
+                });
+            } else if (mode === 'lighting_scene') {
+                mod5Lights.forEach(d => { d.on = true; d.missed = false; });
+                st.innerHTML = `⚡ <strong>"Cảnh Lighting" (Scene ID + Managed Flood) [Bài 6 - 02:17]:</strong> Chỉ 1 bản tin duy nhất từ HC, cả 12 bóng đèn BLE Mesh sáng ĐỒNG LOẠT 100% không độ trễ, không bao giờ sót đèn!`;
+                renderMod5Downlights();
+            }
+        }
+
+        // =========================================================================
+        // 7. XỬ LÝ MINI-QUIZ, HOÀN THÀNH CHẶNG & GHI CHÚ THEO TỪNG BÀI
+        // =========================================================================
+        function answerMiniQuiz(modId, qIdx, oIdx) {
+            const all = getMiniQuizMap();
+            if (!all[modId]) all[modId] = {};
+            all[modId][qIdx] = oIdx;
+            localStorage.setItem(STORAGE_MINIQUIZ, JSON.stringify(all));
+
+            // Kiểm tra nếu trả lời đúng hết tất cả câu trong চặng thì tự động đánh dấu Hoàn thành
+            const mod = getAllModules().find(m => m.id === modId);
+            if (mod && mod.miniQuiz) {
+                const allCorrect = mod.miniQuiz.every((q, i) => all[modId][i] === q.correct);
+                if (allCorrect) {
+                    const comp = getCompletedMap();
+                    comp[modId] = true;
+                    localStorage.setItem(STORAGE_COMPLETED, JSON.stringify(comp));
+                }
+            }
+            renderSidebarRoadmap();
+            renderActiveModule();
+        }
+
+        function toggleModuleComplete(modId) {
+            const comp = getCompletedMap();
+            comp[modId] = !comp[modId];
+            localStorage.setItem(STORAGE_COMPLETED, JSON.stringify(comp));
+            renderSidebarRoadmap();
+            renderActiveModule();
+        }
+
+        function saveModuleNote(modId, text) {
+            const notes = getNotesMap();
+            notes[modId] = text;
+            localStorage.setItem(STORAGE_NOTES, JSON.stringify(notes));
+            const st = document.getElementById('noteSaveStatus');
+            if (st) {
+                st.textContent = 'Đang lưu...';
+                setTimeout(() => { st.textContent = 'Đã lưu tự động ✓'; }, 400);
+            }
+        }
+
+        // =========================================================================
+        // 8. THÊM / XÓA CHẶNG HỌC MỚI VÀO CÂY LỘ TRÌNH
+        // =========================================================================
+        function openAddModuleModal() {
+            document.getElementById('addModuleModal').classList.remove('hidden');
+            document.getElementById('addModuleModal').classList.add('flex');
+        }
+
+        function closeAddModuleModal() {
+            document.getElementById('addModuleModal').classList.add('hidden');
+            document.getElementById('addModuleModal').classList.remove('flex');
+        }
+
+        function handleSaveCustomModule(e) {
+            e.preventDefault();
+            const title = document.getElementById('newModTitle').value.trim();
+            const videoUrl = document.getElementById('newModVideo').value.trim();
+            const content = document.getElementById('newModContent').value.trim();
+            if (!title || !content) return;
+
+            let custom = [];
+            try { custom = JSON.parse(localStorage.getItem(STORAGE_CUSTOM_MODS) || '[]'); } catch (err) {}
+
+            const stepNum = coreModules.length + custom.length;
+            const newId = 'custom_' + Date.now();
+            const safeHtml = content.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+
+            custom.push({
+                id: newId,
+                step: `Chặng ${stepNum}`,
+                title: title,
+                subtitle: 'Bài học mở rộng do bạn thêm vào lộ trình',
+                badge: 'Sổ tay mở rộng',
+                videoUrl: videoUrl || null,
+                timestamps: [],
+                summary: 'Nội dung ghi chú và sơ đồ kỹ thuật mở rộng do bạn biênsoạn.',
+                isCustom: true,
+                theoryBlocks: [
+                    {
+                        title: 'Nội Dung Kỹ Thuật & Lưu Ý Lắp Đặt',
+                        html: `<div class="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-200">${safeHtml}</div>`
+                    }
+                ],
+                labType: null,
+                miniQuiz: [
+                    {
+                        q: "Bạn đã nắm vững toàn bộ sơ đồ đấu nối và lưu ý của bài học này chưa?",
+                        options: ["Đã nắm vững 100% và sẵn sàng đi công trình!", "Cần xem lại thêm video."],
+                        correct: 0,
+                        explain: "Tuyệt vời! Chặng học đã được đánh dấu hoàn thành trên lộ trình."
+                    }
+                ]
+            });
+
+            localStorage.setItem(STORAGE_CUSTOM_MODS, JSON.stringify(custom));
+            document.getElementById('newModTitle').value = '';
+            document.getElementById('newModVideo').value = '';
+            document.getElementById('newModContent').value = '';
+            closeAddModuleModal();
+            selectModule(newId);
+        }
+
+        function deleteCustomModule(e, modId) {
+            e.stopPropagation();
+            let custom = [];
+            try { custom = JSON.parse(localStorage.getItem(STORAGE_CUSTOM_MODS) || '[]'); } catch (err) {}
+            custom = custom.filter(m => m.id !== modId);
+            localStorage.setItem(STORAGE_CUSTOM_MODS, JSON.stringify(custom));
+            if (currentModuleId === modId) currentModuleId = 'mod0';
+            renderSidebarRoadmap();
+            renderActiveModule();
+        }
+
+        // =========================================================================
+        // 9. TRA CỨU NHANH TẠI CÔNG TRÌNH (GLOBAL SEARCH DROPDOWN)
+        // =========================================================================
+        const quickSearchIndex = [
+            { modId: 'mod0', title: 'Mượn dây Mát (N) ổ cắm bị nhảy CB chống giật', desc: 'Do lệch dòng đi/về trên RCBO. Chỉ mượn N khi chung 1 CB.' },
+            { modId: 'mod0', title: 'Cách tìm dây Lửa trong 5 sợi dây đỏ cùng màu', desc: 'Tách rời 5 đầu dây, bật CB dùng bút thử điện tìm 1 dây sáng đỏ.' },
+            { modId: 'mod1', title: 'Mã công tắc LM-SxN, LM-S1D (Dimmer), LM-SxH (CS Cao)', desc: 'LM-SxN (L|1|2|3|4|N, 700W/150W); LM-S1D (L|1|2|N, 1 nút); LM-SxH (N|L|1|2|3, Nút 1 = 3000W).' },
+            { modId: 'mod1', title: 'Đế âm vuông Sino S3157L (75x75x40) & chữ nhật S2157 (106x56x40)', desc: 'Đế vuông chôn tai dọc, cách tối thiểu 2cm (khuyên dùng 3-4cm), sâu 1-2cm sau trát.' },
+            { modId: 'mod1', title: '6 Thao tác nút Config công tắc & Địa chỉ MAC 4 ký tự Hex', desc: 'Binding 10s, Reset 5 lần, Nhấn nhả 3s, Khóa tổng 10 lần, Khóa lẻ 9s, Độ sáng LED 30%/100% giữ 5s.' },
+            { modId: 'mod1', title: 'So sánh cảm biến LM-MDZ/2.0 (Zigbee), LM-MDB (BLE), LM-MDZ/2.1', desc: 'Góc 90° (cao 3m rộng 6m; cao 6m rộng 12m). Nhớ đánh thức cảm biến khi lưu cài đặt từ App.' },
+            { modId: 'mod1', title: '10 Nấc vặn biến trở cảm biến LM-MC & Cầu thang 2in1 LM-MSZ', desc: 'Time (5s -> 30 phút), Lux (Cả ngày -> Khi tối -> 20..300). Cầu thang Bật dùng OR, Tắt dùng AND.' },
+            { modId: 'mod1', title: 'Cảm biến cửa LM-DSZ/1.1 (Pin 3.3V)', desc: 'Phần To gắn cánh cửa, phần Nhỏ (nam châm) gắn khung cửa, rãnh quay vào nhau <= 2cm.' },
+            { modId: 'mod2', title: 'Hồng ngoại LM-IR/2.0 (5VDC/1A) — Thư viện vs Học lệnh', desc: 'Khoảng cách <= 5m. Học lệnh điều hòa tối đa 6 ô ngữ cảnh cài sẵn + 2 nút ON/OFF.' },
+            { modId: 'mod2', title: 'Điều hòa VRV Daikin LM-DK & Mạch DTA116A51 (Đấu DATA+ vào B-)', desc: 'Đấu DATA(+) vào B(-), DATA(-) vào A(+). Công thức NetID = ID mặt lạnh + 1. Tối đa 2 cục nóng, 16 dàn lạnh.' },
+            { modId: 'mod2', title: 'Module LM-INPUT (9-24VDC) & LM-2120/Z-B (2 In 2 Out 8 chân)', desc: 'LM-INPUT: IN- vào COM, IN+ vào NO/NC. LM-2120: IN2|IN1|O2|O1|S|NC|N|L (Mode Any change).' },
+            { modId: 'mod2', title: 'Module LED dây LM-5IN1/Z & LM-5IN1/B (Độ sáng 100% -> 12%)', desc: 'Giữ Config 10s rồi bấm 1-5 lần (RGBWW, RGB&WW, 5Dim, 1WW3Dim, 2WW1Dim). Vào mạng giảm xuống 12%.' },
+            { modId: 'mod3', title: 'Bấm App bị trễ 5-6 giây đèn mới sáng', desc: 'Trùng kênh Wi-Fi 6 với Zigbee 17. Cần Xóa mạng Zigbee trên App để HC tự đổi kênh.' },
+            { modId: 'mod3', title: 'Kết nối HC và LC (Tối đa 1 HC + 6 LC, 450 Endpoints)', desc: 'HC và LC nối với nhau qua mạng LAN/IP nội bộ, KHÔNG qua Zigbee.' },
+            { modId: 'mod3', title: 'AI Camera Hub LMAI 2.0 (Đèn AI không sáng)', desc: 'Cắm dây LAN, bật AI trên App đèn mới sáng xanh. Tối đa 6 cam Hikvision/Dahua/EZViz/KBVision.' },
+            { modId: 'mod4', title: '5 Thông số ánh sáng: Kelvin, CRI, Lumen, Lm/W, Lux', desc: 'CRI mặt trời = 100 (đèn tốt 80-95). Độ rọi Lux = Lumen / m².' },
+            { modId: 'mod5', title: 'Nhóm Lighting (Group ID) & Đèn nháy 3 lần', desc: '1 đèn BLE có thể thuộc nhiều Nhóm Lighting cùng lúc.' },
+            { modId: 'mod5', title: 'Cảnh Thường (>10 đèn delay 2s) vs Cảnh Lighting (Scene ID)', desc: 'Cảnh thường >10 đèn phải chia cụm delay 2s. Cảnh Lighting sáng đồng loạt 100%.' },
+            { modId: 'mod5', title: 'Ánh sáng nhịp sinh học HCL (1.5 - 2 tiếng)', desc: 'Các mốc thời gian HCL nên đặt cách nhau 1.5 - 2 giờ để chuyển màu mượt mà.' }
+        ];
+
+        function handleQuickSearch(val) {
+            const q = val.trim().toLowerCase();
+            const drop = document.getElementById('quickSearchDropdown');
+            const list = document.getElementById('quickSearchList');
+            const clearBtn = document.getElementById('clearSearchBtn');
+
+            if (!q) {
+                drop.classList.add('hidden');
+                clearBtn.classList.add('hidden');
+                return;
+            }
+            clearBtn.classList.remove('hidden');
+            drop.classList.remove('hidden');
+
+            const matched = quickSearchIndex.filter(x => x.title.toLowerCase().includes(q) || x.desc.toLowerCase().includes(q));
+            if (matched.length === 0) {
+                list.innerHTML = `<div class="text-xs text-slate-400 py-2">Không tìm thấy từ khóa. Hãy thử: "bình nóng lạnh", "nhảy CB", "DTA", "trễ", "CRI", "HCL"...</div>`;
+                return;
+            }
+
+            list.innerHTML = matched.map(item => `
+                <div onclick="selectModule('${item.modId}'); closeQuickSearch();" class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 hover:border-emerald-500 border border-transparent cursor-pointer transition">
+                    <div class="font-bold text-xs text-emerald-500">${item.title}</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-300 mt-0.5">${item.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function closeQuickSearch() {
+            document.getElementById('globalSearchInput').value = '';
+            document.getElementById('quickSearchDropdown').classList.add('hidden');
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+        }
+
+        // =========================================================================
+        // 10. THI SÁT HẠCH TỔNG HỢP 15 CÂU (MODAL)
+        // =========================================================================
+        let masterExamAnswers = {};
+        function getAllMasterQuestions() {
+            const list = [];
+            coreModules.forEach(m => {
+                (m.miniQuiz || []).forEach(q => list.push({ ...q, step: m.step }));
+            });
+            // Thêm 3 câu nâng cao cho đủ 15 câu
+            list.push(
+                {
+                    step: 'Chặng 1',
+                    q: "Khi lắp Cảm biến cửa Lumi, hai phần của cảm biến được gắn như thế nào?",
+                    options: [
+                        "Phần To gắn lên cánh cửa di động, phần Nhỏ (nam châm) gắn lên khung cửa cố định, 2 vạch khuyết đối diện nhau, mở hé >2cm sẽ báo mở.",
+                        "Cả 2 phần gắn lên cánh cửa.",
+                        "Gắn cách nhau 20cm.",
+                        "Phải kéo dây 220V vào cảm biến cửa."
+                    ],
+                    correct: 0,
+                    explain: "Chính xác [Bài 1 - 00:16:25]!"
+                },
+                {
+                    step: 'Chặng 3',
+                    q: "Các cảm biến dùng Pin (như cảm biến cửa, cảm biến chuyển động pin) có làm nhiệm vụ tiếp sóng (Router mở rộng mạng Mesh) cho các công tắc ở xa không?",
+                    options: [
+                        "Có tiếp sóng rất mạnh.",
+                        "Không! Thiết bị dùng Pin là End Device (Low Power Node) thường ngủ để tiết kiệm pin nên KHÔNG mở rộng sóng cho thiết bị khác.",
+                        "Chỉ tiếp sóng khi hết pin.",
+                        "Tiếp sóng tối đa 100m."
+                    ],
+                    correct: 1,
+                    explain: "Đúng [Bài 2 - 00:15:34]! Chỉ các thiết bị cấp nguồn 220V mới làm Router chuyển tiếp sóng."
+                },
+                {
+                    step: 'Chặng 3',
+                    q: "Một bộ AI Camera Hub (LMAI 2.0) tích hợp được tối đa bao nhiêu Camera IP và của những hãng nào?",
+                    options: [
+                        "Tối đa 6 Camera IP thuộc 4 hãng: Hikvision, Dahua, EZViz, KBVision (dùng luồng phụ Sub-stream, lắp cao 2.5m - 6m).",
+                        "Tối đa 32 Camera bất kỳ.",
+                        "Chỉ 1 Camera duy nhất.",
+                        "Không cần cắm dây mạng LAN."
+                    ],
+                    correct: 0,
+                    explain: "Chính xác [Bài 2 - 00:25:15]!"
+                }
+            );
+            return list;
+        }
+
+        function openMasterExamModal() {
+            document.getElementById('masterExamModal').classList.remove('hidden');
+            document.getElementById('masterExamModal').classList.add('flex');
+            renderMasterExam();
+        }
+
+        function closeMasterExamModal() {
+            document.getElementById('masterExamModal').classList.add('hidden');
+            document.getElementById('masterExamModal').classList.remove('flex');
+        }
+
+        function renderMasterExam() {
+            const questions = getAllMasterQuestions();
+            const box = document.getElementById('masterExamContainer');
+            let correctCount = 0;
+            Object.keys(masterExamAnswers).forEach(k => {
+                if (masterExamAnswers[k] === questions[k].correct) correctCount++;
+            });
+            document.getElementById('masterExamScore').textContent = `Điểm: ${correctCount} / ${questions.length}`;
+
+            box.innerHTML = questions.map((item, idx) => {
+                const uAns = masterExamAnswers[idx];
+                return `
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-mono font-bold text-emerald-400">${item.step}</span>
+                        <span class="text-[11px] text-slate-400">Câu ${idx + 1}/${questions.length}</span>
+                    </div>
+                    <p class="font-bold text-xs sm:text-sm">${item.q}</p>
+                    <div class="space-y-1.5">
+                        ${item.options.map((opt, oIdx) => {
+                            let cls = "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700";
+                            if (uAns !== undefined) {
+                                if (oIdx === item.correct) cls = "bg-emerald-500/20 border-emerald-500 text-emerald-400 font-bold";
+                                else if (oIdx === uAns) cls = "bg-rose-500/20 border-rose-500 text-rose-400";
+                            }
+                            return `
+                            <button onclick="answerMasterExam(${idx}, ${oIdx})" class="w-full text-left p-2.5 rounded-lg border text-xs flex items-start gap-2 ${cls}">
+                                <span class="font-mono font-bold">${String.fromCharCode(65 + oIdx)}.</span>
+                                <span>${opt}</span>
+                            </button>`;
+                        }).join('')}
+                    </div>
+                    ${uAns !== undefined ? `<div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-300 text-xs">💡 ${item.explain}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        function answerMasterExam(qIdx, oIdx) {
+            masterExamAnswers[qIdx] = oIdx;
+            renderMasterExam();
+        }
+
+        function resetMasterExam() {
+            masterExamAnswers = {};
+            renderMasterExam();
+        }
+
+        // =========================================================================
+        // 11. SAO LƯU / KHÔI PHỤC & ĐỔI GIAO DIỆN SÁNG/TỐI
+        // =========================================================================
+        function exportAllData() {
+            const payload = {
+                completed: getCompletedMap(),
+                notes: getNotesMap(),
+                customMods: JSON.parse(localStorage.getItem(STORAGE_CUSTOM_MODS) || '[]')
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'lumi_academy_backup.json';
+            a.click();
+        }
+
+        function importAllData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (data.completed) localStorage.setItem(STORAGE_COMPLETED, JSON.stringify(data.completed));
+                    if (data.notes) localStorage.setItem(STORAGE_NOTES, JSON.stringify(data.notes));
+                    if (data.customMods) localStorage.setItem(STORAGE_CUSTOM_MODS, JSON.stringify(data.customMods));
+                    renderSidebarRoadmap();
+                    renderActiveModule();
+                } catch (err) {}
+            };
+            reader.readAsText(file);
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            document.getElementById('themeToggleIcon').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        // INIT ON LOAD
+        window.onload = function() {
+            renderSidebarRoadmap();
+            renderActiveModule();
+        };
+    </script>
+</body>
+</html>
